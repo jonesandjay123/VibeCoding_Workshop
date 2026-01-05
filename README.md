@@ -1,5 +1,7 @@
 # Vibe Coding Workshop Master Guide
-> **適合對象**：大二設計相關科系學生（無 Coding 背景）
+[繁體中文](README.md) | [日本語](README_JA.md)
+
+> **適合對象**：無 Coding 背景
 > **目標**：3 小時內完成「個人作品集網站」並上線
 > **核心概念**：不教寫 Code，教「怎麼做 PM (Product Manager) + CD (Creative Director) 來指揮 AI」
 
@@ -9,10 +11,10 @@
 
 ### 學生準備 (Student)
 - [ ] **Google Pro 帳號** (強烈建議申請學生 12 個月免費版，解鎖 Gemini Advanced)
-- [ ] **GitHub 帳號** (只需註冊，不需安裝 Git)
+- [ ] **GitHub 帳號** (只需註冊，暫時先不需安裝 Git)
 - [ ] **個人素材**：
     - 3-6 張作品圖 (JPG/PNG)
-    - 一段自我介紹 (日文 80-120 字 + 中文備用)
+    - 一段自我介紹 (80-120 字)
     - 一張大頭照或風格照
 - [ ] **心理建設**：「今天不是來考試，是來玩創意的。AI 是你的手，你負責出腦。」
 
