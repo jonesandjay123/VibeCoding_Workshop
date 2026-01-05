@@ -1,6 +1,10 @@
 # Vibe Coding Workshop Master Guide
 [繁體中文](README.md) | [日本語](README_JA.md)
 
+> ⚠️ 本工作坊的唯一成功標準：
+> 「今天一定要有一個可以公開分享的網址」
+
+
 > **適合對象**：無 Coding 背景
 > **目標**：3 小時內完成「個人作品集網站」並上線
 > **核心概念**：不教寫 Code，教「怎麼做 PM (Product Manager) + CD (Creative Director) 來指揮 AI」
