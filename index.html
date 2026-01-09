@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="ja">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -16,25 +16,31 @@
     <!-- Top bar: UI Level switcher -->
     <header>
       <div class="topbar" aria-label="UI level switcher">
-        <label for="uiLevelSelect"><strong>UI Level</strong></label>
+        <label for="uiLevelSelect"><strong data-i18n="uiLevelLabel">UI Level</strong></label>
         <select id="uiLevelSelect" name="uiLevel">
-          <option value="0" selected>Level 0: Bare HTML</option>
-          <option value="1">Level 1: Clean CSS</option>
-          <option value="2">Level 2: Polished UI</option>
+          <option value="0" selected data-i18n="uiLevel0">Level 0: Bare HTML</option>
+          <option value="1" data-i18n="uiLevel1">Level 1: Clean CSS</option>
+          <option value="2" data-i18n="uiLevel2">Level 2: Polished UI</option>
+        </select>
+
+        <label for="langSelect"><strong data-i18n="langLabel">Language</strong></label>
+        <select id="langSelect" name="language">
+          <option value="ja" selected>日本語</option>
+          <option value="zh-Hant">繁體中文</option>
         </select>
 
         <span class="topbar-hint">
-          同一份內容，換不同 UI 質感（適合工作坊示範）
+          <span data-i18n="topbarHint">同一份內容，換不同 UI 質感（適合工作坊示範）</span>
         </span>
       </div>
 
       <!-- Hero -->
       <div class="hero">
-        <p class="hero-kicker">Vibe Coding Workshop</p>
+        <p class="hero-kicker" data-i18n="heroKicker">Vibe Coding Workshop</p>
         <h1 class="hero-title">
-          <span id="previewName">你的名字</span>
+          <span id="previewName">あなたの名前</span>
         </h1>
-        <p class="hero-tagline" id="previewTagline">一句話 Tagline（例如：日系清爽、安靜專業）</p>
+        <p class="hero-tagline" id="previewTagline">一行キャッチコピー（例：日系クリーン、静かでプロ）</p>
       </div>
     </header>
 
@@ -47,144 +53,144 @@
 
       <!-- Identity -->
       <section aria-labelledby="identityTitle">
-        <h2 id="identityTitle">1. 我的定位 (Identity)</h2>
+        <h2 id="identityTitle" data-i18n="identityTitle">1. 我的定位 (Identity)</h2>
         <p class="helpText">
-          這一段會放你「一句話介紹自己」的版本（也會同步到上面的 Hero）。
+          <span data-i18n="identityHelp">這一段會放你「一句話介紹自己」的版本（也會同步到上面的 Hero）。</span>
         </p>
 
         <div class="formRow">
-          <label for="inputName">名字</label>
-          <input id="inputName" type="text" value="你的名字" />
+          <label for="inputName" data-i18n="labelName">名字</label>
+          <input id="inputName" type="text" value="あなたの名前" />
         </div>
 
         <div class="formRow">
-          <label for="inputTagline">一句話 Tagline</label>
+          <label for="inputTagline" data-i18n="labelTagline">一句話 Tagline</label>
           <input
             id="inputTagline"
             type="text"
-            value="一句話 Tagline（例如：日系清爽、安靜專業）"
+            value="一行キャッチコピー（例：日系クリーン、静かでプロ）"
           />
         </div>
 
         <div class="formRow">
-          <label for="inputSkill">擅長 / 技能</label>
-          <input id="inputSkill" type="text" value="使用 AI 協作做出清爽作品集網站" />
+          <label for="inputSkill" data-i18n="labelSkill">擅長 / 技能</label>
+          <input id="inputSkill" type="text" value="AIと協働してクリーンなポートフォリオを作る" />
         </div>
 
         <div class="formRow">
-          <label for="inputDirection">正在往 / 方向</label>
-          <input id="inputDirection" type="text" value="前端設計與內容策展" />
+          <label for="inputDirection" data-i18n="labelDirection">正在往 / 方向</label>
+          <input id="inputDirection" type="text" value="フロントエンドデザインとコンテンツ設計" />
         </div>
 
         <p class="previewLine">
-          <strong>預覽：</strong>
+          <strong data-i18n="previewLabel">預覽：</strong>
           <span id="previewIdentity">
-            我是 你的名字，擅長 使用 AI 協作做出清爽作品集網站，正在往 前端設計與內容策展 發展。
+            私は あなたの名前 です。AIと協働してクリーンなポートフォリオを作る が得意で、現在は フロントエンドデザインとコンテンツ設計 を目指しています。
           </span>
         </p>
       </section>
 
       <!-- Keywords -->
       <section aria-labelledby="keywordsTitle">
-        <h2 id="keywordsTitle">2. 網站 Vibe (Keywords)</h2>
-        <p class="helpText">請選 3 個關鍵詞（可多選，工作坊示範用）。</p>
+        <h2 id="keywordsTitle" data-i18n="keywordsTitle">2. 網站 Vibe (Keywords)</h2>
+        <p class="helpText" data-i18n="keywordsHelp">請選 3 個關鍵詞（可多選，工作坊示範用）。</p>
 
         <fieldset>
-          <legend>Vibe keywords（選 3 個）</legend>
+          <legend data-i18n="keywordsLegend">Vibe keywords（選 3 個）</legend>
 
           <label class="checkItem">
-            <input type="checkbox" name="keyword" value="乾淨 (Clean)" checked />
-            乾淨 (Clean)
+            <input type="checkbox" name="keyword" data-kw="clean" value="乾淨 (Clean)" checked />
+            <span data-i18n="kwClean">乾淨 (Clean)</span>
           </label>
           <label class="checkItem">
-            <input type="checkbox" name="keyword" value="安靜 (Quiet)" checked />
-            安靜 (Quiet)
+            <input type="checkbox" name="keyword" data-kw="quiet" value="安靜 (Quiet)" checked />
+            <span data-i18n="kwQuiet">安靜 (Quiet)</span>
           </label>
           <label class="checkItem">
-            <input type="checkbox" name="keyword" value="可愛 (Kawaii)" />
-            可愛 (Kawaii)
+            <input type="checkbox" name="keyword" data-kw="kawaii" value="可愛 (Kawaii)" />
+            <span data-i18n="kwKawaii">可愛 (Kawaii)</span>
           </label>
           <label class="checkItem">
-            <input type="checkbox" name="keyword" value="聰明 (Smart)" />
-            聰明 (Smart)
+            <input type="checkbox" name="keyword" data-kw="smart" value="聰明 (Smart)" />
+            <span data-i18n="kwSmart">聰明 (Smart)</span>
           </label>
           <label class="checkItem">
-            <input type="checkbox" name="keyword" value="可靠 (Reliable)" />
-            可靠 (Reliable)
+            <input type="checkbox" name="keyword" data-kw="reliable" value="可靠 (Reliable)" />
+            <span data-i18n="kwReliable">可靠 (Reliable)</span>
           </label>
           <label class="checkItem">
-            <input type="checkbox" name="keyword" value="俐落 (Sharp)" />
-            俐落 (Sharp)
+            <input type="checkbox" name="keyword" data-kw="sharp" value="俐落 (Sharp)" />
+            <span data-i18n="kwSharp">俐落 (Sharp)</span>
           </label>
           <label class="checkItem">
-            <input type="checkbox" name="keyword" value="溫柔 (Gentle)" />
-            溫柔 (Gentle)
+            <input type="checkbox" name="keyword" data-kw="gentle" value="溫柔 (Gentle)" />
+            <span data-i18n="kwGentle">溫柔 (Gentle)</span>
           </label>
           <label class="checkItem">
-            <input type="checkbox" name="keyword" value="專業 (Pro)" checked />
-            專業 (Pro)
+            <input type="checkbox" name="keyword" data-kw="pro" value="專業 (Pro)" checked />
+            <span data-i18n="kwPro">專業 (Pro)</span>
           </label>
         </fieldset>
 
         <div class="chips" aria-label="Selected keywords">
-          <strong>已選：</strong>
+          <strong data-i18n="selectedLabel">已選：</strong>
           <span id="previewKeywords"></span>
         </div>
       </section>
 
       <!-- Core Content -->
       <section aria-labelledby="contentTitle">
-        <h2 id="contentTitle">3. 核心內容 (Content)</h2>
-        <p class="helpText">
+        <h2 id="contentTitle" data-i18n="contentTitle">3. 核心內容 (Content)</h2>
+        <p class="helpText" data-i18n="contentHelp">
           這個工作坊的網站內容通常包含以下三塊（本 Demo 先把 Now / Contact 留成提示文字）。
         </p>
         <ul>
-          <li><strong>Works</strong>: 作品集展示（本頁已實作）</li>
-          <li><strong>Now</strong>: 最近在做什麼 / 關注什麼（可在下一版加上）</li>
-          <li><strong>Contact</strong>: 聯絡方式（可在下一版加上）</li>
+          <li><strong>Works</strong>: <span data-i18n="contentWorks">作品集展示（本頁已實作）</span></li>
+          <li><strong>Now</strong>: <span data-i18n="contentNow">最近在做什麼 / 關注什麼（可在下一版加上）</span></li>
+          <li><strong>Contact</strong>: <span data-i18n="contentContact">聯絡方式（可在下一版加上）</span></li>
         </ul>
       </section>
 
       <!-- Works -->
       <section aria-labelledby="worksTitle">
-        <h2 id="worksTitle">4. 作品清單 (Works)</h2>
-        <p class="helpText">填寫 3 個作品（標題 + 簡短描述）。</p>
+        <h2 id="worksTitle" data-i18n="worksTitle">4. 作品清單 (Works)</h2>
+        <p class="helpText" data-i18n="worksHelp">填寫 3 個作品（標題 + 簡短描述）。</p>
 
         <!-- Work item inputs -->
         <div class="workInputs" aria-label="Works input area">
           <div class="workInput">
-            <h3>Work 1</h3>
+            <h3 data-i18n="workHeading1">Work 1</h3>
             <div class="formRow">
-              <label for="work1Title">Title</label>
+              <label for="work1Title" data-i18n="labelWorkTitle">Title</label>
               <input id="work1Title" type="text" value="J-Style Clean Portfolio" />
             </div>
             <div class="formRow">
-              <label for="work1Desc">Desc</label>
-              <textarea id="work1Desc" rows="3">用純 HTML/CSS/JS 做出日系清爽單頁作品集，適合 GitHub Pages 直接上線。</textarea>
+              <label for="work1Desc" data-i18n="labelWorkDesc">Desc</label>
+              <textarea id="work1Desc" rows="3">純粋な HTML/CSS/JS だけで、日系クリーンな1ページポートフォリオを作成。GitHub Pages でそのまま公開できる。</textarea>
             </div>
           </div>
 
           <div class="workInput">
-            <h3>Work 2</h3>
+            <h3 data-i18n="workHeading2">Work 2</h3>
             <div class="formRow">
-              <label for="work2Title">Title</label>
+              <label for="work2Title" data-i18n="labelWorkTitle">Title</label>
               <input id="work2Title" type="text" value="Shared Brain Prompt Builder" />
             </div>
             <div class="formRow">
-              <label for="work2Desc">Desc</label>
-              <textarea id="work2Desc" rows="3">把 Identity / Keywords / Works 轉成一段可貼給 AI 的 Prompt，方便協作與迭代。</textarea>
+              <label for="work2Desc" data-i18n="labelWorkDesc">Desc</label>
+              <textarea id="work2Desc" rows="3">Identity / Keywords / Works を、AI に貼れる読みやすい Prompt にまとめて、共同作業と改善をしやすくする。</textarea>
             </div>
           </div>
 
           <div class="workInput">
-            <h3>Work 3</h3>
+            <h3 data-i18n="workHeading3">Work 3</h3>
             <div class="formRow">
-              <label for="work3Title">Title</label>
+              <label for="work3Title" data-i18n="labelWorkTitle">Title</label>
               <input id="work3Title" type="text" value="Micro-interactions Demo" />
             </div>
             <div class="formRow">
-              <label for="work3Desc">Desc</label>
-              <textarea id="work3Desc" rows="3">用非常克制的 hover / transition，讓作品卡片質感提升，但保持優雅與可讀性。</textarea>
+              <label for="work3Desc" data-i18n="labelWorkDesc">Desc</label>
+              <textarea id="work3Desc" rows="3">控えめな hover / transition だけでカードの質感を上げつつ、読みやすさと上品さを保つ。</textarea>
             </div>
           </div>
         </div>
@@ -225,12 +231,12 @@
 
       <!-- Prompt Preview -->
       <section aria-labelledby="promptTitle">
-        <h2 id="promptTitle">5. Prompt Staging (AI 指令區)</h2>
+        <h2 id="promptTitle" data-i18n="promptTitle">5. Prompt Staging (AI 指令區)</h2>
 
         <div class="promptBox">
-          <p class="helpText"><strong>This information can be sent to an AI as a prompt</strong></p>
+          <p class="helpText"><strong data-i18n="promptHint">This information can be sent to an AI as a prompt</strong></p>
           <pre id="promptPreview" aria-label="Prompt preview text"></pre>
-          <button id="copyPromptBtn" type="button">複製 Prompt</button>
+          <button id="copyPromptBtn" type="button" data-i18n="copyBtn">複製 Prompt</button>
           <p class="copyStatus" id="copyStatus" aria-live="polite"></p>
         </div>
       </section>
@@ -238,7 +244,7 @@
 
     <footer>
       <p>
-        這是一個教學用 Demo：同一份內容，用不同 CSS 呈現 3 個 UI Level。
+        <span data-i18n="footerNote">這是一個教學用 Demo：同一份內容，用不同 CSS 呈現 3 個 UI Level。</span>
       </p>
     </footer>
 
