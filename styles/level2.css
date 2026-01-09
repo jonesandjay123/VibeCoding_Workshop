@@ -1,0 +1,348 @@
+/*
+  Level 2: Polished UI（克制、優雅、有質感）
+  - 微互動（hover / focus / transitions）
+  - 卡片 hover 微上移
+  - UI Level 切換時淡出/淡入（由 script.js 控制 body[data-switching]）
+  - 仍然保持日系清爽：不做厚重陰影、避免花俏效果
+*/
+
+:root {
+  --bg: #fbfbfc;
+  --panel: #ffffff;
+  --text: #0f1220;
+  --muted: #5a6072;
+  --line: rgba(17, 17, 17, 0.12);
+  --softLine: rgba(17, 17, 17, 0.08);
+  --chip: rgba(15, 18, 32, 0.05);
+  --focus: rgba(60, 120, 255, 0.25);
+  --shadow: 0 10px 30px rgba(15, 18, 32, 0.06);
+  --radius: 14px;
+}
+
+body {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial,
+    "Noto Sans", "PingFang TC", "Heiti TC", sans-serif;
+  color: var(--text);
+  background: radial-gradient(1200px 500px at 50% -50px, #f2f4ff, transparent),
+    var(--bg);
+  margin: 0;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: opacity 240ms ease, background-color 240ms ease;
+}
+
+/* UI Level 切換時的淡出（script.js 會短暫加上 data-switching="true"） */
+body[data-switching="true"] {
+  opacity: 0;
+}
+
+header,
+main,
+footer {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 28px 22px;
+}
+
+header {
+  padding-top: 18px;
+}
+
+footer {
+  border-top: 1px solid var(--softLine);
+  color: var(--muted);
+  padding-bottom: 34px;
+}
+
+.topbar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 12px 14px;
+  border: 1px solid var(--softLine);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+}
+
+.topbar-hint {
+  color: var(--muted);
+}
+
+select {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+
+select:focus,
+input:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--focus);
+}
+
+.hero {
+  padding: 22px 6px 8px;
+}
+
+.hero-kicker {
+  margin: 10px 0 0;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.hero-title {
+  margin: 10px 0 10px;
+  font-size: 46px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.hero-tagline {
+  margin: 0;
+  color: rgba(15, 18, 32, 0.8);
+}
+
+section {
+  padding: 26px 0;
+  border-bottom: 1px solid var(--softLine);
+}
+
+section:last-of-type {
+  border-bottom: none;
+}
+
+h2 {
+  font-size: 22px;
+  margin: 0 0 12px;
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+}
+
+.helpText {
+  margin: 0 0 12px;
+  color: var(--muted);
+}
+
+/* 輸入區 */
+.formRow {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 12px;
+  align-items: start;
+  margin: 10px 0;
+}
+
+input,
+textarea,
+button,
+select {
+  font: inherit;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 11px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.previewLine {
+  margin-top: 14px;
+  color: rgba(15, 18, 32, 0.9);
+}
+
+/* Keywords */
+fieldset {
+  border: 1px solid var(--softLine);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.checkItem {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  margin-right: 14px;
+  margin-bottom: 8px;
+  user-select: none;
+}
+
+.chips {
+  margin-top: 12px;
+}
+
+.chip {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--chip);
+  border: 1px solid var(--softLine);
+  margin: 6px 8px 0 0;
+  transition: transform 180ms ease, background-color 180ms ease;
+}
+
+.chip:hover {
+  transform: translateY(-1px);
+  background: rgba(60, 120, 255, 0.08);
+}
+
+/* Works */
+.workInputs {
+  display: grid;
+  gap: 16px;
+  margin: 16px 0 18px;
+}
+
+.workInput {
+  padding: 14px;
+  border-radius: var(--radius);
+  border: 1px solid var(--softLine);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.worksGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.workCard {
+  border-radius: var(--radius);
+  border: 1px solid var(--softLine);
+  background: var(--panel);
+  overflow: hidden;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  transform: translateY(0);
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.workCard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  border-color: rgba(60, 120, 255, 0.22);
+}
+
+.workCard img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transform: scale(1);
+  transition: transform 260ms ease;
+}
+
+.workCard:hover img {
+  transform: scale(1.02);
+}
+
+.workCard h3,
+.workCard p {
+  padding: 0 14px;
+}
+
+.workCard h3 {
+  margin: 12px 0 6px;
+}
+
+.workCard p {
+  margin: 0 0 14px;
+  color: rgba(15, 18, 32, 0.82);
+}
+
+/* Prompt box */
+.promptBox {
+  border-radius: var(--radius);
+  border: 1px solid var(--softLine);
+  background: rgba(255, 255, 255, 0.75);
+  padding: 14px;
+}
+
+pre {
+  white-space: pre-wrap;
+  border-radius: 12px;
+  background: rgba(15, 18, 32, 0.04);
+  padding: 12px;
+  border: 1px solid rgba(15, 18, 32, 0.08);
+  margin: 10px 0;
+}
+
+button {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  cursor: pointer;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(60, 120, 255, 0.35);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+.copyStatus {
+  margin: 8px 0 0;
+  color: var(--muted);
+  min-height: 1.2em;
+}
+
+@media (max-width: 900px) {
+  .worksGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .formRow {
+    grid-template-columns: 150px 1fr;
+  }
+
+  .hero-title {
+    font-size: 38px;
+  }
+}
+
+@media (max-width: 600px) {
+  header,
+  main,
+  footer {
+    padding: 18px;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+
+  .worksGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
