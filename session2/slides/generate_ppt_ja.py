@@ -8,7 +8,7 @@ from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN
 
 # Parse the markdown
-with open("/Users/jarvis/Downloads/code/vibe-coding-course/slides/P1_slide_content_ja.md", "r") as f:
+with open("/Users/jarvis/Downloads/code/VibeCoding_Workshop/session2/slides/P1_slide_content_ja.md", "r") as f:
     content = f.read()
 
 # Split by "---" to get slide blocks
@@ -194,7 +194,7 @@ for block in blocks:
         slide.notes_slide.notes_text_frame.text = notes_text.strip()
 
 # Save
-output_path = "/Users/jarvis/Downloads/code/vibe-coding-course/slides/Session2_VibeCoding_JA.pptx"
+output_path = "/Users/jarvis/Downloads/code/VibeCoding_Workshop/session2/slides/Session2_VibeCoding_JA.pptx"
 prs.save(output_path)
 print(f"PPT saved: {output_path}")
 print(f"Total slides: {len(prs.slides)}")
