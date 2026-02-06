@@ -1,53 +1,53 @@
-# Vibe Coding Workshop
+# Vibe Coding ワークショップ
 
-> AI 輔助開發教學工作坊 — 為櫻井妹妹（Azunyan）設計的實作課程
+> AI支援開発ワークショップ — 櫻井さん（Azunyan）のための実践コース
 
-## 課程概覽
+## コース概要
 
-這是一系列 Vibe Coding 教學課程，教導如何運用 AI 工具進行軟體開發。
+AIツールを活用したソフトウェア開発を学ぶVibe Codingワークショップシリーズです。
 
-| Session | 主題 | 日期 | 時長 |
-|---------|------|------|------|
-| [Session 1](./session1/) | Vibe Coding 入門 | 2026-01-31 | ~2hr |
-| [Session 2](./session2/) | Git、JavaScript、API 概念 | 2026-02-07 | ~3hr |
+| Session | テーマ | 日付 | 時間 |
+|---------|--------|------|------|
+| [Session 1](./session1/) | Vibe Coding 入門 | 2026-01-31 | 約2時間 |
+| [Session 2](./session2/) | Git、JavaScript、API概念 | 2026-02-07 | 約3時間 |
 
-## 專案結構
+## プロジェクト構成
 
 ```
 VibeCoding_Workshop/
-├── README.md           # 本檔案
-├── README_ZH.md        # 繁體中文說明（舊版）
-├── session1/           # 第一堂課教材
+├── README.md           # 本ファイル（日本語）
+├── README_ZH.md        # 繁体字中国語版
+├── session1/           # 第1回教材
 │   ├── VibeCoding_TrainingDeck.pptx
 │   ├── VibeCoding_TrainingDeck_JP.pptx
 │   ├── workshop_plan.md
 │   ├── index.html
 │   ├── script.js
 │   └── context.txt
-└── session2/           # 第二堂課教材
-    ├── materials/      # 教學文件
-    ├── slides/         # 簡報
-    └── research/       # 研究資料
+└── session2/           # 第2回教材
+    ├── materials/      # 教材ドキュメント
+    ├── slides/         # スライド
+    └── research/       # リサーチ資料
 ```
 
-## 學生背景
+## 受講者情報
 
-- **姓名**：櫻井妹妹（Azunyan）
-- **年級**：大二
-- **背景**：非資工科系，對程式有興趣
-- **語言**：日文母語，中文流利
+- **名前**：櫻井さん（Azunyan）
+- **学年**：大学2年
+- **背景**：情報系以外の学科、プログラミングに興味あり
+- **言語**：日本語ネイティブ、中国語も流暢
 
-## 教學方法
+## 教育方法
 
-1. **概念先行**：用生活化比喻解釋技術概念
-2. **動手實作**：每個概念都有對應的 Demo
-3. **AI 輔助**：展示如何用 AI 工具解決問題
-4. **雙語支援**：教材提供中文/日文版本
+1. **概念優先**：日常的な例えで技術概念を説明
+2. **ハンズオン**：各概念に対応するデモを用意
+3. **AI活用**：AIツールで問題解決する方法を実演
+4. **バイリンガル**：教材は中国語/日本語版を用意
 
-## Contributors
+## 貢献者
 
-- **Jones** — 課程設計、Session 1 教材
-- **Jarvis** — Session 2 教材製作、研究整理
+- **Jones** — コース設計、Session 1教材
+- **Jarvis** — Session 2教材作成、リサーチ整理
 
 ---
 
