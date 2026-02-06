@@ -689,6 +689,226 @@ ghi9012 first commit           ← 最早的
 ---
 
 # ═══════════════════════════════════
+# Block 7 ▸ 進階：LLM API 實戰
+# ⏰ 額外延伸（如果時間允許）
+# ═══════════════════════════════════
+
+---
+
+## Slide 34 — LLM 也是 API！
+
+**標題：** 原來 ChatGPT / Gemini 也是 API
+
+```
+之前玩過的 API：
+🐕 Dog API → 隨機狗圖
+🐱 Cat API → 隨機貓圖
+🎌 Anime API → 搜尋動漫角色
+
+LLM API 也一樣！
+📤 輸入：你的問題
+📥 輸出：AI 的回答
+
+差別：普通 API 回固定格式
+     LLM API 回智慧生成的文字
+```
+
+> **講者備註：**
+> 連結到之前的 API 概念。「你記得我們剛才玩的狗狗 API 嗎？給它一個請求，它給你一張狗圖。LLM 其實也是一樣的概念——你給它問題，它給你答案。只是答案是 AI 生成的文字。」
+
+---
+
+## Slide 35 — 去 Google AI Studio 玩
+
+**標題：** 體驗 Gemini API
+
+**操作步驟：**
+1. 打開 https://aistudio.google.com/
+2. 用 Google 帳號登入
+3. 點「Create」→「Chat prompt」
+4. 輸入任何問題試玩！
+
+> **講者備註：**
+> 這步驟讓她自己操作。「我們先去 Google AI Studio 玩一下。這是 Google 提供的 AI 實驗室，可以免費試用 Gemini 模型。」
+> 讓她隨便問幾個問題，感受一下 AI 的回答。
+
+---
+
+## Slide 36 — 創建 API Key
+
+**標題：** 拿到你的鑰匙 🔑
+
+**操作步驟：**
+1. 左側選單點「Get API key」
+2. 點「Create API key」
+3. 選擇 Google Cloud 專案
+4. **複製並保存 API Key！**
+
+```
+⚠️ 重要！
+- API Key 是你的私人鑰匙
+- 不要分享給別人
+- 不要放在公開的程式碼裡
+```
+
+> **講者備註：**
+> 「API Key 就像你家的鑰匙，有這把鑰匙就能進門。Google 會根據這把鑰匙來計算你用了多少資源。所以一定要保護好，不要隨便分享。」
+
+---
+
+## Slide 37 — 用 Terminal 測試
+
+**標題：** 用指令呼叫 AI
+
+打開 Terminal，輸入：
+
+```bash
+curl -X POST https://generativelanguage.googleapis.com/v1beta/interactions \
+  -H "x-goog-api-key: 你的API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gemini-2.5-flash",
+    "input": "Hello, how are you?"
+  }'
+```
+
+> **講者備註：**
+> 「這跟我們之前用 curl 測試狗狗 API 是一樣的概念。只是現在我們打的是 Google Gemini 的 API。」
+> 她可能需要幫忙把 API Key 貼上去。注意引號要用英文的。
+> 如果成功，會看到一大串 JSON，裡面有 AI 的回答。
+
+---
+
+## Slide 38 — 為什麼需要 Worker？
+
+**標題：** 保護你的 API Key
+
+```
+問題：
+如果把 API Key 放在網頁裡...
+❌ 任何人都能看到原始碼
+❌ 任何人都能偷你的 Key
+❌ 你的免費額度會被用光
+
+解決方案：Cloudflare Worker
+✅ Key 藏在 Worker 裡
+✅ 網頁只知道 Worker 的網址
+
+[你的網頁] → [Worker] → [Google AI]
+            Key 在這裡
+```
+
+> **講者備註：**
+> 這是安全觀念的建立。「如果你直接把 API Key 放在網頁的 JavaScript 裡，任何人按 F12 打開開發者工具都能看到。所以我們需要一個中間人來幫我們藏 Key。」
+
+---
+
+## Slide 39 — 部署 Worker
+
+**標題：** 建立你的 LLM Endpoint
+
+**操作步驟：**
+1. 去 https://dash.cloudflare.com/
+2. 用 Google 帳號註冊（免費）
+3. 左側選「Workers & Pages」
+4. 點「Create」→「Create Worker」
+5. 取個名字，例如：my-llm-api
+6. 部署後點「Edit code」
+
+> **講者備註：**
+> 這步驟可以讓她自己操作，你在旁邊指導。「Cloudflare 是一家很大的網路公司，他們提供免費的 Worker 服務。我們可以把代碼放在他們的伺服器上運行。」
+
+---
+
+## Slide 40 — 貼上代碼
+
+**標題：** Worker 代碼
+
+讓 AI 幫忙生成，或用這個：
+
+```javascript
+export default {
+  async fetch(request, env) {
+    if (request.method !== "POST") {
+      return new Response("Use POST", { status: 405 });
+    }
+    const { prompt } = await request.json();
+    const res = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/interactions",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-goog-api-key": env.GEMINI_API_KEY
+        },
+        body: JSON.stringify({
+          model: "gemini-2.5-flash",
+          input: prompt
+        })
+      }
+    );
+    const data = await res.json();
+    const text = data.outputs?.find(o => o.type === "text")?.text || "";
+    return new Response(JSON.stringify({ ok: true, text }), {
+      headers: { 
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      }
+    });
+  }
+};
+```
+
+> **講者備註：**
+> 這段代碼可以讓她的 AI 幫忙生成，或直接複製貼上。重點是讓她理解「這段代碼會接收網頁的請求，然後幫你去問 Google AI，再把答案傳回來」。
+
+---
+
+## Slide 41 — 加上 Secret
+
+**標題：** 把 Key 藏起來
+
+**操作步驟：**
+1. Save and deploy
+2. 回到 Worker 設定頁
+3. 點「Settings」→「Variables」
+4. 在「Secrets」點「Add」
+5. Name: `GEMINI_API_KEY`
+6. Value: 你的 Google API Key
+7. Save and deploy
+
+> **講者備註：**
+> 「Secret 就是秘密變數的意思。我們把 API Key 存在這裡，代碼裡用 env.GEMINI_API_KEY 就能讀到，但外面的人看不到實際的值。」
+
+---
+
+## Slide 42 — 測試成功！🎉
+
+**標題：** 你有了自己的 LLM API
+
+測試指令：
+```bash
+curl -X POST "https://你的worker.workers.dev" \
+  -H "Content-Type: application/json" \
+  -d '{"prompt":"你好，請自我介紹"}'
+```
+
+成功回應：
+```json
+{
+  "ok": true,
+  "text": "你好！我是 Gemini..."
+}
+```
+
+**恭喜！** 你現在有了自己的 AI API endpoint！🚀
+
+> **講者備註：**
+> 這是成就感的高峰！「恭喜你！你現在有了一個只屬於你的 AI API。之後你可以在任何網頁裡呼叫這個網址，讓你的網站也能用 AI 回答問題。」
+
+---
+
+# ═══════════════════════════════════
 # 📝 附錄：Jones 的教學備忘
 # ═══════════════════════════════════
 
@@ -731,6 +951,6 @@ ghi9012 first commit           ← 最早的
 
 ---
 
-> *投影片總數：33 張*
-> *草稿版本：v1.0 — 2026-02-04*
-> *基於 S1 課程大綱六個 Block 結構*
+> *投影片總數：42 張（含 LLM API 進階內容）*
+> *草稿版本：v1.1 — 2026-02-06*
+> *基於 S1 課程大綱六個 Block + LLM API 進階結構*

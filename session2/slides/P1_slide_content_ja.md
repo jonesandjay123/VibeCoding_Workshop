@@ -689,6 +689,226 @@ ghi9012 first commit           ← 一番最初
 ---
 
 # ═══════════════════════════════════
+# Block 7 ▸ 上級：LLM API 実践
+# ⏰ 追加コンテンツ（時間があれば）
+# ═══════════════════════════════════
+
+---
+
+## Slide 34 — LLM も API だ！
+
+**タイトル：** ChatGPT / Gemini も API なんだよ
+
+```
+これまで遊んだ API：
+🐕 Dog API → ランダムな犬の画像
+🐱 Cat API → ランダムな猫の画像
+🎌 Anime API → アニメキャラ検索
+
+LLM API も同じ！
+📤 入力：あなたの質問
+📥 出力：AI の回答
+
+違い：普通の API は固定フォーマット
+     LLM API は知的に生成されたテキスト
+```
+
+> **講者備註：**
+> 先ほどの API コンセプトとつなげる。「さっき遊んだ犬 API 覚えてる？リクエスト送ったら犬の画像が返ってきた。LLM も同じコンセプト——質問送ったら答えが返ってくる。違いは AI が生成したテキストってこと。」
+
+---
+
+## Slide 35 — Google AI Studio で遊ぼう
+
+**タイトル：** Gemini API を体験
+
+**手順：**
+1. https://aistudio.google.com/ を開く
+2. Google アカウントでログイン
+3. 「Create」→「Chat prompt」をクリック
+4. 何でも質問してみよう！
+
+> **講者備註：**
+> この手順は彼女に操作させよう。「まず Google AI Studio で遊んでみよう。Google が提供してる AI の実験室で、Gemini モデルを無料で試せるんだ。」
+> いくつか質問させて、AI の回答を体験させる。
+
+---
+
+## Slide 36 — API Key を作成
+
+**タイトル：** 自分の鍵を手に入れよう 🔑
+
+**手順：**
+1. 左メニューの「Get API key」をクリック
+2. 「Create API key」をクリック
+3. Google Cloud プロジェクトを選択
+4. **API Key をコピーして保存！**
+
+```
+⚠️ 重要！
+- API Key は自分だけの鍵
+- 他の人に教えない
+- 公開コードに書かない
+```
+
+> **講者備註：**
+> 「API Key は家の鍵みたいなもの。この鍵があれば入れる。Google はこの鍵でどれだけリソースを使ったか計算する。だから絶対に守って、勝手に共有しちゃダメ。」
+
+---
+
+## Slide 37 — Terminal でテスト
+
+**タイトル：** コマンドで AI を呼び出す
+
+Terminal を開いて入力：
+
+```bash
+curl -X POST https://generativelanguage.googleapis.com/v1beta/interactions \
+  -H "x-goog-api-key: あなたのAPI_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gemini-2.5-flash",
+    "input": "Hello, how are you?"
+  }'
+```
+
+> **講者備註：**
+> 「これはさっき curl で犬 API をテストしたのと同じコンセプト。今回は Google Gemini の API を叩いてるんだ。」
+> API Key の貼り付けを手伝う必要があるかも。引用符は英語のを使うこと。
+> 成功すれば大量の JSON が返ってきて、中に AI の回答がある。
+
+---
+
+## Slide 38 — Worker が必要な理由
+
+**タイトル：** API Key を守る
+
+```
+問題：
+もし API Key をウェブページに書いたら...
+❌ 誰でもソースコードが見える
+❌ 誰でも Key を盗める
+❌ 無料枠を使い切られる
+
+解決策：Cloudflare Worker
+✅ Key は Worker の中に隠す
+✅ ウェブページは Worker の URL だけ知ってる
+
+[あなたのサイト] → [Worker] → [Google AI]
+                 Key はここ
+```
+
+> **講者備註：**
+> セキュリティの考え方を伝える。「API Key を直接ウェブページの JavaScript に書くと、誰でも F12 押して開発者ツールで見れちゃう。だから中間に Key を隠してくれる人が必要なんだ。」
+
+---
+
+## Slide 39 — Worker をデプロイ
+
+**タイトル：** LLM Endpoint を作る
+
+**手順：**
+1. https://dash.cloudflare.com/ にアクセス
+2. Google アカウントで登録（無料）
+3. 左メニューで「Workers & Pages」を選択
+4. 「Create」→「Create Worker」をクリック
+5. 名前をつける、例：my-llm-api
+6. デプロイ後「Edit code」をクリック
+
+> **講者備註：**
+> この手順は彼女に操作させて、隣でガイドする。「Cloudflare は大きなネットワーク会社で、無料の Worker サービスを提供してる。コードを彼らのサーバーで実行できるんだ。」
+
+---
+
+## Slide 40 — コードを貼り付け
+
+**タイトル：** Worker コード
+
+AI に生成してもらうか、これを使う：
+
+```javascript
+export default {
+  async fetch(request, env) {
+    if (request.method !== "POST") {
+      return new Response("Use POST", { status: 405 });
+    }
+    const { prompt } = await request.json();
+    const res = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/interactions",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-goog-api-key": env.GEMINI_API_KEY
+        },
+        body: JSON.stringify({
+          model: "gemini-2.5-flash",
+          input: prompt
+        })
+      }
+    );
+    const data = await res.json();
+    const text = data.outputs?.find(o => o.type === "text")?.text || "";
+    return new Response(JSON.stringify({ ok: true, text }), {
+      headers: { 
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      }
+    });
+  }
+};
+```
+
+> **講者備註：**
+> このコードは彼女の AI に生成させてもいいし、直接コピペでもOK。「このコードは、ウェブページからのリクエストを受け取って、Google AI に聞いて、答えを返すんだ」と伝える。
+
+---
+
+## Slide 41 — Secret を追加
+
+**タイトル：** Key を隠す
+
+**手順：**
+1. Save and deploy
+2. Worker の設定ページに戻る
+3. 「Settings」→「Variables」をクリック
+4. 「Secrets」で「Add」をクリック
+5. Name: `GEMINI_API_KEY`
+6. Value: あなたの Google API Key
+7. Save and deploy
+
+> **講者備註：**
+> 「Secret は秘密の変数っていう意味。API Key をここに保存すると、コードでは env.GEMINI_API_KEY で読めるけど、外からは実際の値が見えないんだ。」
+
+---
+
+## Slide 42 — テスト成功！🎉
+
+**タイトル：** 自分だけの LLM API ができた
+
+テストコマンド：
+```bash
+curl -X POST "https://あなたのworker.workers.dev" \
+  -H "Content-Type: application/json" \
+  -d '{"prompt":"こんにちは、自己紹介してください"}'
+```
+
+成功レスポンス：
+```json
+{
+  "ok": true,
+  "text": "こんにちは！私は Gemini..."
+}
+```
+
+**おめでとう！** 自分だけの AI API エンドポイントができた！🚀
+
+> **講者備註：**
+> 達成感のピーク！「おめでとう！自分だけの AI API ができたよ。これからどんなウェブページでもこの URL を呼び出せば、AI が答えてくれるようになるんだ。」
+
+---
+
+# ═══════════════════════════════════
 # 📝 付録：Jones の教え方メモ
 # ═══════════════════════════════════
 
@@ -731,6 +951,6 @@ ghi9012 first commit           ← 一番最初
 
 ---
 
-> *スライド総数：33枚*
-> *ドラフトバージョン：v1.0 — 2026-02-04*
-> *S1 カリキュラム 6ブロック構成に基づく*
+> *スライド総数：42枚（LLM API 上級コンテンツ含む）*
+> *ドラフトバージョン：v1.1 — 2026-02-06*
+> *S1 カリキュラム 6ブロック + LLM API 上級構成に基づく*

@@ -19,12 +19,13 @@ session2/
 │   ├── S4_api_demo.md          # API 概念演示
 │   ├── S5_notebooklm_script.md # NotebookLM 使用
 │   ├── S6_openclaw_demo.md     # OpenClaw 演示
+│   ├── S7_llm_api_demo.md      # 🆕 LLM API 實戰（Gemini + Cloudflare Worker）
 │   ├── P1-P5_*                 # 輔助教材
 │   └── demos/                  # 實作 Demo 程式碼
 ├── slides/             # 簡報檔案
-│   ├── Session2_VibeCoding.pptx      # 中文版 (41頁)
-│   ├── Session2_VibeCoding_JA.pptx   # 日文版 (41頁)
-│   └── P1_slide_content*.md          # 簡報內容稿
+│   ├── Session2_VibeCoding.pptx      # 中文版 (42頁)
+│   ├── Session2_VibeCoding_JA.pptx   # 日文版 (42頁)
+│   └── P1_slide_content*.md          # 簡報內容稿（含 LLM API 內容）
 └── research/           # 課前研究資料
 ```
 
@@ -48,6 +49,13 @@ session2/
 ### 模組 4: AI 工具整合
 - NotebookLM 學習輔助
 - OpenClaw/Claude 開發輔助
+
+### 模組 5: LLM API 實戰 🆕
+- 理解 LLM 也是 API
+- Google AI Studio 創建 API Key
+- 用 Terminal 測試 Gemini API
+- 部署 Cloudflare Worker 保護 API Key
+- 建立自己的 LLM endpoint
 
 ## Demo 清單
 
