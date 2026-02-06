@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo 5：動漫搜尋 API 🎌</title>
+  <style>
+    /* === 基本樣式 === */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #fce4ec, #f8bbd0, #f3e5f5);
+      font-family: 'Segoe UI', 'Hiragino Sans', 'Noto Sans TC', sans-serif;
+      color: #4a4a4a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      color: #e91e63;
+      margin-bottom: 0.3rem;
+    }
+
+    .desc {
+      font-size: 0.95rem;
+      color: #888;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* 搜尋區 */
+    .search-area {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 1.5rem 2rem;
+      box-shadow: 0 8px 24px rgba(255, 154, 162, 0.15);
+      max-width: 600px;
+      width: 90%;
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .search-area input {
+      flex: 1;
+      padding: 0.8rem 1.2rem;
+      border: 2px solid rgba(255, 154, 162, 0.3);
+      border-radius: 50px;
+      font-size: 1rem;
+      color: #4a4a4a;
+      background: rgba(255, 255, 255, 0.6);
+      outline: none;
+      transition: border-color 0.3s;
+      font-family: inherit;
+    }
+
+    .search-area input:focus {
+      border-color: #ff9aa2;
+    }
+
+    .btn-search {
+      padding: 0.8rem 1.5rem;
+      background: rgba(255, 154, 162, 0.2);
+      border: 2px solid #ff9aa2;
+      border-radius: 50px;
+      font-size: 1rem;
+      color: #4a4a4a;
+      cursor: pointer;
+      transition: all 0.3s;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+
+    .btn-search:hover {
+      background: rgba(255, 154, 162, 0.4);
+      transform: scale(1.05);
+    }
+
+    .btn-search:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* 快速搜尋標籤 */
+    .quick-tags {
+      max-width: 600px;
+      width: 90%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .tag {
+      padding: 0.4rem 0.8rem;
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(255, 154, 162, 0.3);
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: #888;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .tag:hover {
+      background: rgba(255, 154, 162, 0.2);
+      border-color: #ff9aa2;
+      color: #4a4a4a;
+    }
+
+    /* 結果區 */
+    .results {
+      max-width: 600px;
+      width: 90%;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    /* 狀態訊息 */
+    .status {
+      text-align: center;
+      color: #aaa;
+      font-size: 0.9rem;
+      padding: 2rem;
+    }
+
+    /* 動漫卡片 */
+    .anime-card {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 1.2rem;
+      box-shadow: 0 4px 16px rgba(149, 157, 165, 0.1);
+      display: flex;
+      gap: 1.2rem;
+      transition: all 0.3s;
+    }
+
+    .anime-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(255, 154, 162, 0.2);
+    }
+
+    /* 動漫封面圖 */
+    .anime-img {
+      width: 100px;
+      height: 140px;
+      border-radius: 12px;
+      object-fit: cover;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 動漫資訊 */
+    .anime-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .anime-title {
+      font-size: 1.05rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .anime-title-jp {
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+
+    .anime-meta {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      margin-top: 0.3rem;
+    }
+
+    .anime-meta span {
+      font-size: 0.8rem;
+      padding: 0.2rem 0.6rem;
+      background: rgba(255, 228, 232, 0.4);
+      border-radius: 10px;
+      color: #666;
+    }
+
+    .anime-synopsis {
+      font-size: 0.8rem;
+      color: #888;
+      line-height: 1.4;
+      margin-top: 0.3rem;
+      /* 最多顯示 3 行 */
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* 程式碼說明 */
+    .code-box {
+      max-width: 600px;
+      width: 90%;
+      margin-top: 2rem;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: left;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    .code-box code {
+      font-family: 'Courier New', monospace;
+      color: #c62828;
+      font-size: 0.8rem;
+    }
+
+    /* === 語言切換按鈕 === */
+    .lang-switch {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.3rem;
+      z-index: 10000;
+    }
+
+    .lang-btn {
+      padding: 0.4rem 0.8rem;
+      border: 2px solid #ff9aa2;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(8px);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+      color: #888;
+    }
+
+    .lang-btn:hover {
+      background: rgba(255, 154, 162, 0.2);
+      transform: scale(1.05);
+    }
+
+    .lang-btn.active {
+      background: rgba(255, 154, 162, 0.3);
+      color: #4a4a4a;
+      font-weight: bold;
+      border-color: #e91e63;
+    }
+
+    .i18n-ja { display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- 🌐 語言切換 -->
+  <div class="lang-switch">
+    <button class="lang-btn active" data-lang="zh" onclick="switchLang('zh')">🇨🇳 中文</button>
+    <button class="lang-btn" data-lang="ja" onclick="switchLang('ja')">🇯🇵 日本語</button>
+  </div>
+
+  <h1 data-zh="🎌 Demo 5：動漫搜尋 API" data-ja="🎌 Demo 5：アニメ検索 API">🎌 Demo 5：動漫搜尋 API</h1>
+  <p class="desc">
+    <span class="i18n-zh">用 Jikan API（MyAnimeList 開放資料）搜動漫！<br>體驗 API「帶參數」的威力 ✨</span>
+    <span class="i18n-ja">Jikan API（MyAnimeList のオープンデータ）でアニメ検索！<br>API の「パラメータ付き」のパワーを体験 ✨</span>
+  </p>
+
+  <!-- 搜尋區 -->
+  <div class="search-area">
+    <input
+      type="text"
+      id="search-input"
+      placeholder="搜尋動漫名稱... 例如 spy family"
+      data-zh-placeholder="搜尋動漫名稱... 例如 spy family"
+      data-ja-placeholder="アニメ名を検索... 例: spy family"
+    >
+    <button class="btn-search" id="search-btn" onclick="searchAnime()" data-zh="🔍 搜尋" data-ja="🔍 検索">
+      🔍 搜尋
+    </button>
+  </div>
+
+  <!-- 快速搜尋標籤 -->
+  <div class="quick-tags">
+    <span class="tag" onclick="quickSearch('spy family')">🕵️ SPY×FAMILY</span>
+    <span class="tag" onclick="quickSearch('frieren')" data-zh="🧙‍♀️ 葬送的芙莉蓮" data-ja="🧙‍♀️ 葬送のフリーレン">🧙‍♀️ 葬送的芙莉蓮</span>
+    <span class="tag" onclick="quickSearch('chainsaw man')" data-zh="🪚 鏈鋸人" data-ja="🪚 チェンソーマン">🪚 鏈鋸人</span>
+    <span class="tag" onclick="quickSearch('oshi no ko')" data-zh="⭐ 我推的孩子" data-ja="⭐ 推しの子">⭐ 我推的孩子</span>
+    <span class="tag" onclick="quickSearch('jujutsu kaisen')" data-zh="👊 咒術迴戰" data-ja="👊 呪術廻戦">👊 咒術迴戰</span>
+    <span class="tag" onclick="quickSearch('bocchi the rock')" data-zh="🎸 孤獨搖滾" data-ja="🎸 ぼっち・ざ・ろっく！">🎸 孤獨搖滾</span>
+  </div>
+
+  <!-- 結果顯示區 -->
+  <div class="results" id="results">
+    <div class="status">
+      <span class="i18n-zh">👆 輸入動漫名稱或點上面的標籤開始搜尋！</span>
+      <span class="i18n-ja">👆 アニメ名を入力するか、上のタグをクリックして検索！</span>
+    </div>
+  </div>
+
+  <!-- 程式碼說明 -->
+  <div class="code-box">
+    <div class="i18n-zh">
+      <strong>🔍 核心程式碼</strong><br><br>
+      <code>fetch('https://api.jikan.moe/v4/anime?q=spy+family&limit=5')</code><br><br>
+      ● <strong>?q=spy+family</strong> → 參數：搜尋關鍵字<br>
+      ● <strong>&limit=5</strong> → 參數：最多回傳 5 筆<br><br>
+      👉 <strong>參數就像 UberEats 的「不要辣」「加大」</strong><br>
+      &nbsp;&nbsp;&nbsp;同一個 API，不同參數 → 不同結果！
+    </div>
+    <div class="i18n-ja">
+      <strong>🔍 コアコード</strong><br><br>
+      <code>fetch('https://api.jikan.moe/v4/anime?q=spy+family&limit=5')</code><br><br>
+      ● <strong>?q=spy+family</strong> → パラメータ：検索キーワード<br>
+      ● <strong>&limit=5</strong> → パラメータ：最大5件まで返す<br><br>
+      👉 <strong>パラメータは UberEats の「辛さ抜き」「大盛り」みたいなもの</strong><br>
+      &nbsp;&nbsp;&nbsp;同じ API でも、パラメータが違えば → 結果も違う！
+    </div>
+  </div>
+
+  <script>
+    // === 翻譯用的文字 ===
+    var i18n = {
+      zh: {
+        searching: '🔄 搜尋中...',
+        btnSearch: '🔍 搜尋',
+        btnSearching: '🔄 搜尋中',
+        noResult: function(q) { return '😢 找不到「' + q + '」相關的動漫'; },
+        episodes: function(n) { return n + ' 集'; },
+        unknownEp: '? 集',
+        noSynopsis: '暫無簡介',
+        apiError: '😢 API 呼叫失敗了... 請稍後再試<br><small>（Jikan API 有頻率限制，等幾秒再試）</small>',
+        initStatus: '👆 輸入動漫名稱或點上面的標籤開始搜尋！'
+      },
+      ja: {
+        searching: '🔄 検索中...',
+        btnSearch: '🔍 検索',
+        btnSearching: '🔄 検索中',
+        noResult: function(q) { return '😢「' + q + '」に関連するアニメが見つからない'; },
+        episodes: function(n) { return n + ' 話'; },
+        unknownEp: '? 話',
+        noSynopsis: 'あらすじなし',
+        apiError: '😢 API の呼び出しに失敗... あとでもう一回試してね<br><small>（Jikan API にはレート制限があるよ、数秒待ってね）</small>',
+        initStatus: '👆 アニメ名を入力するか、上のタグをクリックして検索！'
+      }
+    };
+
+    function getLang() {
+      return localStorage.getItem('demo-lang') || 'zh';
+    }
+
+    // === 搜尋動漫 ===
+    function searchAnime() {
+      var lang = getLang();
+      var t = i18n[lang];
+
+      // 1. 取得搜尋框的文字
+      var input = document.getElementById('search-input');
+      var query = input.value.trim();
+
+      // 如果空的就不做事
+      if (query === '') return;
+
+      // 2. 顯示載入中
+      var results = document.getElementById('results');
+      results.innerHTML = '<div class="status">' + t.searching + '</div>';
+
+      var btn = document.getElementById('search-btn');
+      btn.disabled = true;
+      btn.textContent = t.btnSearching;
+
+      // 3. 組合 API 網址
+      //    把空格換成 +（API 的規定）
+      //    limit=5 表示最多回傳 5 筆
+      var url = 'https://api.jikan.moe/v4/anime?q=' +
+        encodeURIComponent(query) + '&limit=5';
+
+      console.log('🎌 呼叫 Jikan API：', url);
+
+      // 4. 用 fetch 向 Jikan API 發送請求
+      fetch(url)
+        .then(function(res) {
+          return res.json();
+        })
+        .then(function(data) {
+          // 5. data.data 是一個陣列，裡面放搜尋結果
+          console.log('🎌 API 回傳：', data);
+
+          // 如果沒有結果
+          if (!data.data || data.data.length === 0) {
+            results.innerHTML =
+              '<div class="status">' + t.noResult(query) + '</div>';
+            btn.disabled = false;
+            btn.textContent = t.btnSearch;
+            return;
+          }
+
+          // 6. 清空結果區，開始建立卡片
+          results.innerHTML = '';
+
+          // 7. 用 forEach 遍歷每一筆結果
+          data.data.forEach(function(anime, index) {
+            // 建立一張卡片
+            var card = document.createElement('div');
+            card.className = 'anime-card';
+
+            // 淡入動畫
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(10px)';
+            card.style.transition = 'all 0.3s ease';
+
+            // 處理可能缺少的資料（有些欄位可能是 null）
+            var score = anime.score ? '⭐ ' + anime.score : '⭐ N/A';
+            var episodes = anime.episodes ? '📺 ' + t.episodes(anime.episodes) : '📺 ' + t.unknownEp;
+            var titleJp = anime.title_japanese || '';
+            var synopsis = anime.synopsis ?
+              anime.synopsis.slice(0, 150) + '...' : t.noSynopsis;
+            var imageUrl = anime.images && anime.images.jpg ?
+              anime.images.jpg.image_url : '';
+
+            // 填入 HTML
+            card.innerHTML = `
+              ${imageUrl ?
+                `<img class="anime-img" src="${imageUrl}" alt="${anime.title}">` :
+                ''
+              }
+              <div class="anime-info">
+                <div class="anime-title">${anime.title}</div>
+                ${titleJp ?
+                  `<div class="anime-title-jp">${titleJp}</div>` :
+                  ''
+                }
+                <div class="anime-meta">
+                  <span>${score}</span>
+                  <span>${episodes}</span>
+                  ${anime.year ? `<span>📅 ${anime.year}</span>` : ''}
+                </div>
+                <div class="anime-synopsis">${synopsis}</div>
+              </div>
+            `;
+
+            results.appendChild(card);
+
+            // 延遲出現（依序淡入，更有動感）
+            setTimeout(function() {
+              card.style.opacity = '1';
+              card.style.transform = 'translateY(0)';
+            }, 100 * (index + 1));
+
+            // 印出詳細資訊到 console
+            console.log(
+              `🎬 第 ${index + 1} 部：${anime.title}` +
+              `（${titleJp}）` +
+              `｜${score}｜${episodes}`
+            );
+          });
+
+          btn.disabled = false;
+          btn.textContent = t.btnSearch;
+        })
+        .catch(function(error) {
+          // API 出錯時
+          console.error('❌ API 呼叫失敗：', error);
+          results.innerHTML =
+            '<div class="status">' + t.apiError + '</div>';
+          btn.disabled = false;
+          btn.textContent = t.btnSearch;
+        });
+    }
+
+    // === 快速搜尋（點標籤） ===
+    function quickSearch(keyword) {
+      document.getElementById('search-input').value = keyword;
+      searchAnime();
+    }
+
+    // === 按 Enter 搜尋 ===
+    document.getElementById('search-input').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        searchAnime();
+      }
+    });
+
+    // === 語言切換功能 ===
+    function switchLang(lang) {
+      localStorage.setItem('demo-lang', lang);
+      applyLang(lang);
+    }
+
+    function applyLang(lang) {
+      document.querySelectorAll('.lang-btn').forEach(function(btn) {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+
+      document.querySelectorAll('[data-zh][data-ja]').forEach(function(el) {
+        if (!el.classList.contains('lang-btn')) {
+          el.textContent = el.dataset[lang];
+        }
+      });
+
+      document.querySelectorAll('.i18n-zh, .i18n-ja').forEach(function(el) {
+        el.style.display = el.classList.contains('i18n-' + lang) ? '' : 'none';
+      });
+
+      // 處理 placeholder
+      document.querySelectorAll('[data-zh-placeholder]').forEach(function(el) {
+        el.placeholder = el.dataset[lang + 'Placeholder'] || el.placeholder;
+      });
+    }
+
+    (function() {
+      var lang = localStorage.getItem('demo-lang') || 'zh';
+      applyLang(lang);
+    })();
+  </script>
+
+</body>
+</html>

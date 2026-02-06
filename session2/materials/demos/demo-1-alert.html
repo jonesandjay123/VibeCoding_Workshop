@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo 1：打招呼 Alert ✨</title>
+  <style>
+    /* === 基本樣式：粉色可愛風 === */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      /* 粉色漸層背景 */
+      background: linear-gradient(135deg, #fce4ec, #f8bbd0, #f3e5f5);
+      font-family: 'Segoe UI', 'Hiragino Sans', 'Noto Sans TC', sans-serif;
+      color: #4a4a4a;
+    }
+
+    /* 主要卡片容器 */
+    .card {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 3rem;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(255, 154, 162, 0.2);
+      max-width: 480px;
+      width: 90%;
+    }
+
+    /* 標題 */
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+      color: #e91e63;
+    }
+
+    /* 說明文字 */
+    .desc {
+      font-size: 1rem;
+      color: #888;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    /* 重點：這顆按鈕！ */
+    .btn-hello {
+      padding: 0.8rem 2rem;
+      font-size: 1.1rem;
+      /* 粉色半透明背景 */
+      background: rgba(255, 154, 162, 0.2);
+      border: 2px solid #ff9aa2;
+      border-radius: 50px;
+      color: #4a4a4a;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+
+    /* 滑鼠移上去時變深 */
+    .btn-hello:hover {
+      background: rgba(255, 154, 162, 0.4);
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(255, 154, 162, 0.3);
+    }
+
+    /* 程式碼說明區 */
+    .code-box {
+      margin-top: 2rem;
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 12px;
+      padding: 1.2rem;
+      text-align: left;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    .code-box code {
+      font-family: 'Courier New', monospace;
+      color: #c62828;
+    }
+
+    /* 底部教學提示 */
+    .hint {
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: #aaa;
+    }
+
+    /* === 語言切換按鈕 === */
+    .lang-switch {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.3rem;
+      z-index: 10000;
+    }
+
+    .lang-btn {
+      padding: 0.4rem 0.8rem;
+      border: 2px solid #ff9aa2;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(8px);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+      color: #888;
+    }
+
+    .lang-btn:hover {
+      background: rgba(255, 154, 162, 0.2);
+      transform: scale(1.05);
+    }
+
+    .lang-btn.active {
+      background: rgba(255, 154, 162, 0.3);
+      color: #4a4a4a;
+      font-weight: bold;
+      border-color: #e91e63;
+    }
+
+    .i18n-ja { display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- 🌐 語言切換 -->
+  <div class="lang-switch">
+    <button class="lang-btn active" data-lang="zh" onclick="switchLang('zh')">🇨🇳 中文</button>
+    <button class="lang-btn" data-lang="ja" onclick="switchLang('ja')">🇯🇵 日本語</button>
+  </div>
+
+  <div class="card">
+    <h1 data-zh="✨ Demo 1：打招呼 Alert" data-ja="✨ Demo 1：あいさつ Alert">✨ Demo 1：打招呼 Alert</h1>
+    <p class="desc">
+      <span class="i18n-zh">JavaScript 最簡單的第一步！<br>按下按鈕 → 跳出一個小視窗 🎉</span>
+      <span class="i18n-ja">JavaScript の一番カンタンな第一歩！<br>ボタンを押す → ウィンドウがポップアップ 🎉</span>
+    </p>
+
+    <!-- ✨ 重點：onclick 就是「被點擊時，執行引號裡的 JS」 -->
+    <!-- alert() 會跳出瀏覽器內建的小視窗 -->
+    <button class="btn-hello" onclick="sayHello()"
+      data-zh="✨ 點我打招呼" data-ja="✨ クリックであいさつ">
+      ✨ 點我打招呼
+    </button>
+
+    <!-- 程式碼解說 -->
+    <div class="code-box">
+      <div class="i18n-zh">
+        <strong>🔍 這行在幹嘛？</strong><br><br>
+        <code>onclick="alert('...')"</code><br><br>
+        ● <strong>onclick</strong> → 「被點擊的時候」<br>
+        ● <strong>alert('...')</strong> → 「跳出一個小視窗，顯示裡面的文字」<br><br>
+        👉 黃金公式：<strong>當</strong>按鈕被點擊，<strong>對</strong>瀏覽器，<strong>做</strong>跳出 alert
+      </div>
+      <div class="i18n-ja">
+        <strong>🔍 このコードは何してるの？</strong><br><br>
+        <code>onclick="alert('...')"</code><br><br>
+        ● <strong>onclick</strong> → 「クリックされた時」<br>
+        ● <strong>alert('...')</strong> → 「ウィンドウをポップアップして、中のテキストを表示」<br><br>
+        👉 黄金フォーミュラ：ボタンが<strong>クリックされたら</strong>、ブラウザ<strong>に対して</strong>、alert を<strong>出す</strong>
+      </div>
+    </div>
+
+    <p class="hint" data-zh="💡 這是全世界最小的 JavaScript —— 只有 alert() 一個指令！" data-ja="💡 世界一小さな JavaScript —— alert() たった1つの命令だけ！">💡 這是全世界最小的 JavaScript —— 只有 alert() 一個指令！</p>
+  </div>
+
+  <script>
+    // === 打招呼功能 ===
+    function sayHello() {
+      var lang = localStorage.getItem('demo-lang') || 'zh';
+      if (lang === 'ja') {
+        alert('こんにちは！あずにゃんの世界へようこそ 🎀');
+      } else {
+        alert('你好！歡迎來到 Azunyan 的世界 🎀');
+      }
+    }
+
+    // === 語言切換功能 ===
+    function switchLang(lang) {
+      localStorage.setItem('demo-lang', lang);
+      applyLang(lang);
+    }
+
+    function applyLang(lang) {
+      // 更新按鈕狀態
+      document.querySelectorAll('.lang-btn').forEach(function(btn) {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+
+      // 替換 data-zh / data-ja 的 textContent
+      document.querySelectorAll('[data-zh][data-ja]').forEach(function(el) {
+        if (!el.classList.contains('lang-btn')) {
+          el.textContent = el.dataset[lang];
+        }
+      });
+
+      // 切換 i18n-zh / i18n-ja 區塊顯示
+      document.querySelectorAll('.i18n-zh, .i18n-ja').forEach(function(el) {
+        el.style.display = el.classList.contains('i18n-' + lang) ? '' : 'none';
+      });
+    }
+
+    // 頁面載入時套用語言
+    (function() {
+      var lang = localStorage.getItem('demo-lang') || 'zh';
+      applyLang(lang);
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo 2：Dark Mode 切換 🌙</title>
+  <style>
+    /* === 基本樣式：Kawaii 風格 === */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* --- 淺色主題（預設）--- */
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #fce4ec, #f8bbd0, #f3e5f5);
+      font-family: 'Segoe UI', 'Hiragino Sans', 'Noto Sans TC', sans-serif;
+      color: #4a4a4a;
+      transition: all 0.5s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    /* --- 深色主題：當 body 有 dark-mode class 時生效 --- */
+    body.dark-mode {
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+      color: #e0e0e0;
+    }
+
+    /* 主要卡片 */
+    .card {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 2.5rem;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(255, 154, 162, 0.2);
+      max-width: 520px;
+      width: 90%;
+      transition: all 0.5s ease;
+    }
+
+    /* 深色模式下的卡片 */
+    body.dark-mode .card {
+      background: rgba(30, 30, 50, 0.75);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    /* 標題 */
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+      color: #e91e63;
+      transition: color 0.5s;
+    }
+
+    body.dark-mode h1 {
+      color: #f48fb1;
+    }
+
+    /* 說明 */
+    .desc {
+      font-size: 1rem;
+      color: #888;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    body.dark-mode .desc {
+      color: #aaa;
+    }
+
+    /* 模擬的小網站內容 */
+    .fake-site {
+      background: rgba(255, 228, 232, 0.3);
+      border: 2px dashed #ff9aa2;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: all 0.5s;
+    }
+
+    body.dark-mode .fake-site {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 154, 162, 0.3);
+    }
+
+    .fake-site h2 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .fake-site p {
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .fake-nav {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .fake-nav span {
+      padding: 0.4rem 1rem;
+      background: rgba(255, 154, 162, 0.2);
+      border-radius: 20px;
+      font-size: 0.85rem;
+      transition: all 0.3s;
+    }
+
+    body.dark-mode .fake-nav span {
+      background: rgba(255, 154, 162, 0.15);
+    }
+
+    /* Dark Mode 切換按鈕（固定在右下角） */
+    .theme-toggle {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: 2px solid #ff9aa2;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(8px);
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 9999;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(255, 154, 162, 0.3);
+    }
+
+    body.dark-mode .theme-toggle {
+      background: rgba(30, 30, 50, 0.8);
+      border-color: rgba(255, 154, 162, 0.5);
+    }
+
+    /* 程式碼說明 */
+    .code-box {
+      margin-top: 1.5rem;
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 12px;
+      padding: 1.2rem;
+      text-align: left;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      transition: all 0.5s;
+    }
+
+    body.dark-mode .code-box {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .code-box code {
+      font-family: 'Courier New', monospace;
+      color: #c62828;
+    }
+
+    body.dark-mode .code-box code {
+      color: #ef9a9a;
+    }
+
+    .hint {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: #aaa;
+    }
+
+    /* === 語言切換按鈕 === */
+    .lang-switch {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.3rem;
+      z-index: 10000;
+    }
+
+    .lang-btn {
+      padding: 0.4rem 0.8rem;
+      border: 2px solid #ff9aa2;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(8px);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+      color: #888;
+    }
+
+    .lang-btn:hover {
+      background: rgba(255, 154, 162, 0.2);
+      transform: scale(1.05);
+    }
+
+    .lang-btn.active {
+      background: rgba(255, 154, 162, 0.3);
+      color: #4a4a4a;
+      font-weight: bold;
+      border-color: #e91e63;
+    }
+
+    body.dark-mode .lang-btn {
+      background: rgba(30, 30, 50, 0.8);
+      color: #aaa;
+    }
+
+    body.dark-mode .lang-btn.active {
+      background: rgba(255, 154, 162, 0.25);
+      color: #e0e0e0;
+      border-color: #f48fb1;
+    }
+
+    .i18n-ja { display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- 🌐 語言切換 -->
+  <div class="lang-switch">
+    <button class="lang-btn active" data-lang="zh" onclick="switchLang('zh')">🇨🇳 中文</button>
+    <button class="lang-btn" data-lang="ja" onclick="switchLang('ja')">🇯🇵 日本語</button>
+  </div>
+
+  <div class="card">
+    <h1 data-zh="🌙 Demo 2：Dark Mode 切換" data-ja="🌙 Demo 2：Dark Mode 切り替え">🌙 Demo 2：Dark Mode 切換</h1>
+    <p class="desc">
+      <span class="i18n-zh">JS 最實用的魔法！按右下角的按鈕試試看 👇</span>
+      <span class="i18n-ja">JS の一番使える魔法！右下のボタンを押してみて 👇</span>
+    </p>
+
+    <!-- 模擬一個小網站 -->
+    <div class="fake-site">
+      <div class="fake-nav">
+        <span>🏠 Home</span>
+        <span>📸 Gallery</span>
+        <span>💌 Contact</span>
+      </div>
+      <h2>🎀 Azunyan's World</h2>
+      <p>
+        <span class="i18n-zh">這是我的可愛網站。<br>Dark Mode 可以改變整個外觀！</span>
+        <span class="i18n-ja">これは私のかわいいウェブサイト。<br>Dark Mode で見た目が全部変わるよ！</span>
+      </p>
+    </div>
+
+    <!-- 程式碼解說 -->
+    <div class="code-box">
+      <div class="i18n-zh">
+        <strong>🔍 核心只有一行！</strong><br><br>
+        <code>document.body.classList.toggle('dark-mode')</code><br><br>
+        ● <strong>document.body</strong> → 整個網頁的 body<br>
+        ● <strong>classList.toggle()</strong> → 「有就拿掉、沒有就加上」<br>
+        ● <strong>'dark-mode'</strong> → 要 toggle 的 CSS class 名稱<br><br>
+        👉 JS 只是開關，<strong>CSS 負責外觀</strong>！
+      </div>
+      <div class="i18n-ja">
+        <strong>🔍 コアはたった1行！</strong><br><br>
+        <code>document.body.classList.toggle('dark-mode')</code><br><br>
+        ● <strong>document.body</strong> → ページ全体の body<br>
+        ● <strong>classList.toggle()</strong> → 「あれば外す、なければ付ける」<br>
+        ● <strong>'dark-mode'</strong> → toggle する CSS class の名前<br><br>
+        👉 JS はスイッチだけ、<strong>見た目は CSS の仕事</strong>！
+      </div>
+    </div>
+
+    <p class="hint">
+      <span class="i18n-zh">💡 重點：JS 只做了「加/拿掉 class」這一件事，深色的樣式全部由 CSS 控制</span>
+      <span class="i18n-ja">💡 ポイント：JS は「class を付ける/外す」だけ、ダークスタイルは全部 CSS が担当</span>
+    </p>
+  </div>
+
+  <!-- ✨ Dark Mode 切換按鈕 ✨ -->
+  <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+
+  <script>
+    // === Dark Mode 切換功能 ===
+
+    function toggleTheme() {
+      // 1. 對 body 加上或拿掉 'dark-mode' 這個 class
+      //    toggle = 「有就拿掉、沒有就加上」（像開關一樣！）
+      document.body.classList.toggle('dark-mode');
+
+      // 2. 抓到切換按鈕
+      var btn = document.querySelector('.theme-toggle');
+
+      // 3. 根據目前是深色還是淺色，換按鈕的 emoji
+      if (document.body.classList.contains('dark-mode')) {
+        btn.textContent = '☀️';   // 深色模式 → 顯示太陽
+      } else {
+        btn.textContent = '🌙';   // 淺色模式 → 顯示月亮
+      }
+
+      // 4. 在 console 留個紀錄
+      console.log('🎨 主題切換！目前是：' +
+        (document.body.classList.contains('dark-mode') ? '深色模式 🌙' : '淺色模式 ☀️')
+      );
+    }
+
+    // === 語言切換功能 ===
+    function switchLang(lang) {
+      localStorage.setItem('demo-lang', lang);
+      applyLang(lang);
+    }
+
+    function applyLang(lang) {
+      document.querySelectorAll('.lang-btn').forEach(function(btn) {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+
+      document.querySelectorAll('[data-zh][data-ja]').forEach(function(el) {
+        if (!el.classList.contains('lang-btn')) {
+          el.textContent = el.dataset[lang];
+        }
+      });
+
+      document.querySelectorAll('.i18n-zh, .i18n-ja').forEach(function(el) {
+        el.style.display = el.classList.contains('i18n-' + lang) ? '' : 'none';
+      });
+    }
+
+    (function() {
+      var lang = localStorage.getItem('demo-lang') || 'zh';
+      applyLang(lang);
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo 3：動態新增 Todo ✨</title>
+  <style>
+    /* === 基本樣式 === */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #fce4ec, #f8bbd0, #f3e5f5);
+      font-family: 'Segoe UI', 'Hiragino Sans', 'Noto Sans TC', sans-serif;
+      color: #4a4a4a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    /* 標題區 */
+    .header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .header h1 {
+      font-size: 1.8rem;
+      color: #e91e63;
+      margin-bottom: 0.3rem;
+    }
+
+    .header p {
+      font-size: 0.95rem;
+      color: #888;
+    }
+
+    /* 輸入區 */
+    .add-area {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 1.5rem 2rem;
+      box-shadow: 0 8px 24px rgba(255, 154, 162, 0.15);
+      max-width: 500px;
+      width: 90%;
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    /* 輸入框 */
+    .add-area input {
+      flex: 1;
+      padding: 0.8rem 1.2rem;
+      border: 2px solid rgba(255, 154, 162, 0.3);
+      border-radius: 50px;
+      font-size: 1rem;
+      color: #4a4a4a;
+      background: rgba(255, 255, 255, 0.6);
+      outline: none;
+      transition: border-color 0.3s;
+      font-family: inherit;
+    }
+
+    .add-area input:focus {
+      border-color: #ff9aa2;
+    }
+
+    .add-area input::placeholder {
+      color: #ccc;
+    }
+
+    /* 追加按鈕 */
+    .btn-add {
+      padding: 0.8rem 1.5rem;
+      background: rgba(255, 154, 162, 0.2);
+      border: 2px solid #ff9aa2;
+      border-radius: 50px;
+      font-size: 1rem;
+      color: #4a4a4a;
+      cursor: pointer;
+      transition: all 0.3s;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+
+    .btn-add:hover {
+      background: rgba(255, 154, 162, 0.4);
+      transform: scale(1.05);
+    }
+
+    /* Todo 清單容器 */
+    .todo-list {
+      max-width: 500px;
+      width: 90%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    /* 每一個 todo 項目 */
+    .todo-item {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 4px 12px rgba(149, 157, 165, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .todo-item:hover {
+      transform: translateX(4px);
+      box-shadow: 0 6px 16px rgba(255, 154, 162, 0.15);
+    }
+
+    /* 勾選圓圈 */
+    .checkbox {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid #ff9aa2;
+      cursor: pointer;
+      transition: all 0.3s;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .checkbox:hover {
+      background: rgba(255, 154, 162, 0.2);
+    }
+
+    /* 勾選後的樣式 */
+    .todo-item.done .checkbox {
+      background: #ff9aa2;
+    }
+
+    .todo-item.done .checkbox::after {
+      content: '✓';
+      color: white;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    .todo-item.done .todo-text {
+      text-decoration: line-through;
+      color: #ccc;
+    }
+
+    /* Todo 文字 */
+    .todo-text {
+      flex: 1;
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+
+    /* 刪除按鈕 */
+    .btn-delete {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      opacity: 0.3;
+      transition: opacity 0.3s;
+      padding: 0.2rem;
+    }
+
+    .btn-delete:hover {
+      opacity: 0.8;
+    }
+
+    /* 計數器 */
+    .counter {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #aaa;
+      margin-top: 1.5rem;
+    }
+
+    /* 程式碼說明 */
+    .code-box {
+      max-width: 500px;
+      width: 90%;
+      margin-top: 2rem;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: left;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    .code-box code {
+      font-family: 'Courier New', monospace;
+      color: #c62828;
+    }
+
+    /* === 語言切換按鈕 === */
+    .lang-switch {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.3rem;
+      z-index: 10000;
+    }
+
+    .lang-btn {
+      padding: 0.4rem 0.8rem;
+      border: 2px solid #ff9aa2;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(8px);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+      color: #888;
+    }
+
+    .lang-btn:hover {
+      background: rgba(255, 154, 162, 0.2);
+      transform: scale(1.05);
+    }
+
+    .lang-btn.active {
+      background: rgba(255, 154, 162, 0.3);
+      color: #4a4a4a;
+      font-weight: bold;
+      border-color: #e91e63;
+    }
+
+    .i18n-ja { display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- 🌐 語言切換 -->
+  <div class="lang-switch">
+    <button class="lang-btn active" data-lang="zh" onclick="switchLang('zh')">🇨🇳 中文</button>
+    <button class="lang-btn" data-lang="ja" onclick="switchLang('ja')">🇯🇵 日本語</button>
+  </div>
+
+  <div class="header">
+    <h1 data-zh="✨ Demo 3：動態新增 Todo" data-ja="✨ Demo 3：Todo を動的に追加">✨ Demo 3：動態新增 Todo</h1>
+    <p data-zh="用 JS 即時生成新的 HTML 元素！" data-ja="JS でリアルタイムに HTML 要素を生成！">用 JS 即時生成新的 HTML 元素！</p>
+  </div>
+
+  <!-- 輸入區 -->
+  <div class="add-area">
+    <input
+      type="text"
+      id="new-goal"
+      placeholder="新しい目標を入力... ✨"
+      data-zh-placeholder="輸入新目標... ✨"
+      data-ja-placeholder="新しい目標を入力... ✨"
+    >
+    <!-- onclick：點擊時呼叫 addGoal() 函式 -->
+    <button class="btn-add" onclick="addGoal()" data-zh="追加 ✨" data-ja="追加 ✨">追加 ✨</button>
+  </div>
+
+  <!-- Todo 清單（一開始放幾個範例） -->
+  <div class="todo-list" id="todo-list">
+    <div class="todo-item">
+      <div class="checkbox" onclick="toggleDone(this)"></div>
+      <div class="todo-text" data-zh="HTML / CSS 學完 🎨" data-ja="HTML / CSS 学習完了 🎨">HTML / CSS 學完 🎨</div>
+      <button class="btn-delete" onclick="deleteItem(this)">🗑️</button>
+    </div>
+    <div class="todo-item">
+      <div class="checkbox" onclick="toggleDone(this)"></div>
+      <div class="todo-text" data-zh="JavaScript 基礎 💻" data-ja="JavaScript の基礎 💻">JavaScript 基礎 💻</div>
+      <button class="btn-delete" onclick="deleteItem(this)">🗑️</button>
+    </div>
+    <div class="todo-item">
+      <div class="checkbox" onclick="toggleDone(this)"></div>
+      <div class="todo-text" data-zh="API 概念理解 🌐" data-ja="API の概念を理解 🌐">API 概念理解 🌐</div>
+      <button class="btn-delete" onclick="deleteItem(this)">🗑️</button>
+    </div>
+  </div>
+
+  <!-- 計數器 -->
+  <div class="counter" id="counter">目前有 3 個目標 🎯</div>
+
+  <!-- 程式碼解說 -->
+  <div class="code-box">
+    <div class="i18n-zh">
+      <strong>🔍 核心概念</strong><br><br>
+      <code>document.createElement('div')</code> → 憑空建立一個 HTML 元素<br>
+      <code>todoList.appendChild(newItem)</code> → 把新元素塞到清單裡<br><br>
+      👉 HTML 是你事先寫好的，JS 可以在使用者操作時<strong>即時生成新的 HTML</strong>！<br>
+      ⚠️ 重新整理會消失（因為沒有存到資料庫）
+    </div>
+    <div class="i18n-ja">
+      <strong>🔍 コアコンセプト</strong><br><br>
+      <code>document.createElement('div')</code> → HTML 要素をゼロから作る<br>
+      <code>todoList.appendChild(newItem)</code> → 新しい要素をリストに追加<br><br>
+      👉 HTML は事前に書いたもの、JS はユーザーの操作で<strong>リアルタイムに新しい HTML を生成</strong>できる！<br>
+      ⚠️ リロードすると消える（データベースに保存してないから）
+    </div>
+  </div>
+
+  <script>
+    // === 翻譯用的文字 ===
+    var i18n = {
+      zh: {
+        counter: function(n) { return '目前有 ' + n + ' 個目標 🎯'; },
+        placeholder: '輸入新目標... ✨'
+      },
+      ja: {
+        counter: function(n) { return '現在 ' + n + ' 個の目標 🎯'; },
+        placeholder: '新しい目標を入力... ✨'
+      }
+    };
+
+    function getLang() {
+      return localStorage.getItem('demo-lang') || 'zh';
+    }
+
+    // === 動態新增目標功能 ===
+
+    function addGoal() {
+      // 1. 找到輸入框，拿出裡面的文字
+      var input = document.getElementById('new-goal');
+      var text = input.value;
+
+      // 2. 如果什麼都沒打就直接結束
+      //    trim() = 把前後空格去掉
+      if (text.trim() === '') {
+        return;  // return = 函式到此結束
+      }
+
+      // 3. 找到 todo-list 容器
+      var todoList = document.getElementById('todo-list');
+
+      // 4. 憑空建立一個新的 div！
+      var newItem = document.createElement('div');
+      newItem.className = 'todo-item';  // 套用現有的 CSS
+
+      // 5. 填入 HTML 內容
+      //    ${text} = 把使用者輸入的文字塞進來
+      newItem.innerHTML = `
+        <div class="checkbox" onclick="toggleDone(this)"></div>
+        <div class="todo-text">${text}</div>
+        <button class="btn-delete" onclick="deleteItem(this)">🗑️</button>
+      `;
+
+      // 6. 把新項目塞到清單最後面
+      todoList.appendChild(newItem);
+
+      // 7. 清空輸入框
+      input.value = '';
+
+      // 8. 淡入動畫效果
+      newItem.style.opacity = '0';
+      newItem.style.transform = 'translateY(-10px)';
+      newItem.style.transition = 'all 0.3s ease';
+
+      // 延遲 50 毫秒再顯示（這樣動畫才看得到）
+      setTimeout(function() {
+        newItem.style.opacity = '1';
+        newItem.style.transform = 'translateY(0)';
+      }, 50);
+
+      // 9. 更新計數器
+      updateCounter();
+
+      // 10. 偵探筆記
+      console.log('✨ 新目標追加：' + text);
+    }
+
+    // === 勾選完成/取消 ===
+    function toggleDone(checkbox) {
+      // parentElement = 這個 checkbox 的爸爸（todo-item）
+      var item = checkbox.parentElement;
+      item.classList.toggle('done');
+
+      // 偵探筆記
+      var text = item.querySelector('.todo-text').textContent;
+      if (item.classList.contains('done')) {
+        console.log('✅ 完成：' + text);
+      } else {
+        console.log('⬜ 取消完成：' + text);
+      }
+    }
+
+    // === 刪除項目 ===
+    function deleteItem(btn) {
+      var item = btn.parentElement;
+      var text = item.querySelector('.todo-text').textContent;
+
+      // 先做淡出動畫
+      item.style.opacity = '0';
+      item.style.transform = 'translateX(20px)';
+
+      // 動畫結束後真正移除
+      setTimeout(function() {
+        item.remove();
+        updateCounter();
+      }, 300);
+
+      console.log('🗑️ 刪除：' + text);
+    }
+
+    // === 更新計數器 ===
+    function updateCounter() {
+      var count = document.querySelectorAll('.todo-item').length;
+      var lang = getLang();
+      document.getElementById('counter').textContent = i18n[lang].counter(count);
+    }
+
+    // === 按 Enter 也能送出 ===
+    document.getElementById('new-goal').addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        addGoal();
+      }
+    });
+
+    // === 語言切換功能 ===
+    function switchLang(lang) {
+      localStorage.setItem('demo-lang', lang);
+      applyLang(lang);
+    }
+
+    function applyLang(lang) {
+      document.querySelectorAll('.lang-btn').forEach(function(btn) {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+
+      document.querySelectorAll('[data-zh][data-ja]').forEach(function(el) {
+        if (!el.classList.contains('lang-btn')) {
+          el.textContent = el.dataset[lang];
+        }
+      });
+
+      document.querySelectorAll('.i18n-zh, .i18n-ja').forEach(function(el) {
+        el.style.display = el.classList.contains('i18n-' + lang) ? '' : 'none';
+      });
+
+      // 處理 placeholder
+      document.querySelectorAll('[data-zh-placeholder]').forEach(function(el) {
+        el.placeholder = el.dataset[lang + 'Placeholder'] || el.placeholder;
+      });
+
+      // 更新計數器
+      updateCounter();
+    }
+
+    (function() {
+      var lang = localStorage.getItem('demo-lang') || 'zh';
+      applyLang(lang);
+    })();
+  </script>
+
+</body>
+</html>

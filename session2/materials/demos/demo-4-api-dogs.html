@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo 4：隨機狗狗 API 🐕</title>
+  <style>
+    /* === 基本樣式 === */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #fce4ec, #f8bbd0, #f3e5f5);
+      font-family: 'Segoe UI', 'Hiragino Sans', 'Noto Sans TC', sans-serif;
+      color: #4a4a4a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      color: #e91e63;
+      margin-bottom: 0.3rem;
+    }
+
+    .desc {
+      font-size: 0.95rem;
+      color: #888;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    /* 狗狗圖片容器 */
+    .dog-card {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(255, 154, 162, 0.2);
+      max-width: 480px;
+      width: 90%;
+      text-align: center;
+    }
+
+    /* 圖片框 */
+    .dog-frame {
+      width: 100%;
+      height: 300px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(255, 228, 232, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .dog-frame img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      transition: opacity 0.5s;
+    }
+
+    /* 載入中提示 */
+    .loading {
+      font-size: 2rem;
+      animation: bounce 1s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* 品種名稱 */
+    .breed-name {
+      font-size: 1.1rem;
+      color: #e91e63;
+      margin-bottom: 1rem;
+      min-height: 1.5em;
+    }
+
+    /* 再來一張按鈕 */
+    .btn-fetch {
+      padding: 0.8rem 2rem;
+      background: rgba(255, 154, 162, 0.2);
+      border: 2px solid #ff9aa2;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      color: #4a4a4a;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+
+    .btn-fetch:hover {
+      background: rgba(255, 154, 162, 0.4);
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(255, 154, 162, 0.3);
+    }
+
+    .btn-fetch:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* API 流程圖解 */
+    .flow-box {
+      max-width: 480px;
+      width: 90%;
+      margin-top: 2rem;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
+
+    .flow-box .flow {
+      font-size: 1rem;
+      margin: 0.8rem 0;
+      color: #555;
+    }
+
+    .flow-box .arrow {
+      color: #ff9aa2;
+      font-size: 1.2rem;
+    }
+
+    /* 程式碼說明 */
+    .code-box {
+      max-width: 480px;
+      width: 90%;
+      margin-top: 1.5rem;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: left;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    .code-box code {
+      font-family: 'Courier New', monospace;
+      color: #c62828;
+      font-size: 0.8rem;
+    }
+
+    /* 呼叫次數 */
+    .api-count {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: #aaa;
+    }
+
+    /* === 語言切換按鈕 === */
+    .lang-switch {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.3rem;
+      z-index: 10000;
+    }
+
+    .lang-btn {
+      padding: 0.4rem 0.8rem;
+      border: 2px solid #ff9aa2;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(8px);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+      color: #888;
+    }
+
+    .lang-btn:hover {
+      background: rgba(255, 154, 162, 0.2);
+      transform: scale(1.05);
+    }
+
+    .lang-btn.active {
+      background: rgba(255, 154, 162, 0.3);
+      color: #4a4a4a;
+      font-weight: bold;
+      border-color: #e91e63;
+    }
+
+    .i18n-ja { display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- 🌐 語言切換 -->
+  <div class="lang-switch">
+    <button class="lang-btn active" data-lang="zh" onclick="switchLang('zh')">🇨🇳 中文</button>
+    <button class="lang-btn" data-lang="ja" onclick="switchLang('ja')">🇯🇵 日本語</button>
+  </div>
+
+  <h1 data-zh="🐕 Demo 4：隨機狗狗 API" data-ja="🐕 Demo 4：ランダムわんこ API">🐕 Demo 4：隨機狗狗 API</h1>
+  <p class="desc">
+    <span class="i18n-zh">用 <code>fetch()</code> 向 Dog CEO API 「叫外送」🍕<br>每按一次就會拿到一張不同的狗狗照片！</span>
+    <span class="i18n-ja"><code>fetch()</code> で Dog CEO API に「デリバリー注文」🍕<br>押すたびに違うわんこの写真がもらえるよ！</span>
+  </p>
+
+  <div class="dog-card">
+    <!-- 狗狗圖片顯示區 -->
+    <div class="dog-frame" id="dog-frame">
+      <div class="loading">🐾</div>
+    </div>
+
+    <!-- 品種名稱 -->
+    <div class="breed-name" id="breed-name" data-zh="按下按鈕來叫外送！" data-ja="ボタンを押してデリバリー！">按下按鈕來叫外送！</div>
+
+    <!-- 觸發按鈕 -->
+    <button class="btn-fetch" id="fetch-btn" onclick="fetchDog()" data-zh="🐕 再來一隻！" data-ja="🐕 もう一匹！">
+      🐕 再來一隻！
+    </button>
+
+    <!-- 呼叫次數 -->
+    <div class="api-count" id="api-count" data-zh="已呼叫 API：0 次" data-ja="API 呼び出し：0 回">已呼叫 API：0 次</div>
+  </div>
+
+  <!-- API 流程圖解 -->
+  <div class="flow-box">
+    <div class="i18n-zh">
+      <strong>🍕 API 外送流程</strong>
+      <div class="flow">你的網頁（前端）</div>
+      <div class="arrow">⬇️ fetch() 發送請求</div>
+      <div class="flow">Dog CEO 伺服器（後端）</div>
+      <div class="arrow">⬇️ 從資料庫隨機挑一張</div>
+      <div class="flow">回傳 JSON { message: "圖片網址" }</div>
+      <div class="arrow">⬇️ .then() 處理回傳</div>
+      <div class="flow">顯示在你的網頁上！✨</div>
+    </div>
+    <div class="i18n-ja">
+      <strong>🍕 API デリバリーの流れ</strong>
+      <div class="flow">あなたのページ（フロントエンド）</div>
+      <div class="arrow">⬇️ fetch() でリクエスト送信</div>
+      <div class="flow">Dog CEO サーバー（バックエンド）</div>
+      <div class="arrow">⬇️ データベースからランダムに1枚選ぶ</div>
+      <div class="flow">JSON を返す { message: "画像URL" }</div>
+      <div class="arrow">⬇️ .then() で返ってきたデータを処理</div>
+      <div class="flow">あなたのページに表示！✨</div>
+    </div>
+  </div>
+
+  <!-- 程式碼說明 -->
+  <div class="code-box">
+    <div class="i18n-zh">
+      <strong>🔍 核心程式碼</strong><br><br>
+      <code>fetch('https://dog.ceo/api/breeds/image/random')</code><br>
+      <code>&nbsp;&nbsp;.then(res => res.json())</code><br>
+      <code>&nbsp;&nbsp;.then(data => { /* 用 data 做事 */ })</code><br><br>
+      ● <strong>fetch()</strong> → 發送「外送訂單」給 API<br>
+      ● <strong>.then()</strong> → 「然後」（等回來後做什麼）<br>
+      ● <strong>res.json()</strong> → 把回傳的資料解析成 JSON<br>
+      ● <strong>data.message</strong> → 狗狗圖片的網址
+    </div>
+    <div class="i18n-ja">
+      <strong>🔍 コアコード</strong><br><br>
+      <code>fetch('https://dog.ceo/api/breeds/image/random')</code><br>
+      <code>&nbsp;&nbsp;.then(res => res.json())</code><br>
+      <code>&nbsp;&nbsp;.then(data => { /* data を使って処理 */ })</code><br><br>
+      ● <strong>fetch()</strong> → API に「デリバリー注文」を送る<br>
+      ● <strong>.then()</strong> → 「その後」（届いたら何をするか）<br>
+      ● <strong>res.json()</strong> → 返ってきたデータを JSON に変換<br>
+      ● <strong>data.message</strong> → わんこ画像の URL
+    </div>
+  </div>
+
+  <script>
+    // === 翻譯用的文字 ===
+    var i18n = {
+      zh: {
+        loading: '向 API 叫外送中...',
+        btnFetch: '🐕 再來一隻！',
+        btnLoading: '🔄 載入中...',
+        btnRetry: '🐕 再試一次',
+        apiCount: function(n) { return '已呼叫 API：' + n + ' 次'; },
+        errorBreed: '哎呀，外送失敗了... 請再試一次'
+      },
+      ja: {
+        loading: 'API にデリバリー注文中...',
+        btnFetch: '🐕 もう一匹！',
+        btnLoading: '🔄 読み込み中...',
+        btnRetry: '🐕 もう一回',
+        apiCount: function(n) { return 'API 呼び出し：' + n + ' 回'; },
+        errorBreed: 'あらら、デリバリー失敗... もう一回試してね'
+      }
+    };
+
+    function getLang() {
+      return localStorage.getItem('demo-lang') || 'zh';
+    }
+
+    // === 記錄呼叫次數 ===
+    var callCount = 0;
+
+    // === 主函式：呼叫 Dog CEO API ===
+    function fetchDog() {
+      var lang = getLang();
+      var t = i18n[lang];
+
+      // 1. 按鈕暫時不能按（避免連點）
+      var btn = document.getElementById('fetch-btn');
+      btn.disabled = true;
+      btn.textContent = t.btnLoading;
+
+      // 2. 顯示載入動畫
+      document.getElementById('dog-frame').innerHTML =
+        '<div class="loading">🐾</div>';
+      document.getElementById('breed-name').textContent = t.loading;
+
+      // 3. 用 fetch() 向 Dog CEO API 發送請求
+      //    這就是「叫外送」的那一行！
+      fetch('https://dog.ceo/api/breeds/image/random')
+        .then(function(res) {
+          // 4. 把回傳的資料解析成 JSON
+          //    （就像拆開外送包裝）
+          return res.json();
+        })
+        .then(function(data) {
+          // 5. data 就是 API 回傳的 JSON 物件
+          //    裡面有 { message: "圖片網址", status: "success" }
+          console.log('🐕 API 回傳：', data);
+
+          // 6. 從 JSON 裡拿出圖片網址
+          var imageUrl = data.message;
+
+          // 7. 從網址解析出品種名稱
+          //    網址格式：.../breeds/品種名/圖片.jpg
+          var parts = imageUrl.split('/');
+          var breedRaw = parts[4]; // 例如 "terrier-wheaten"
+          var breed = breedRaw.replace('-', ' '); // 把 - 換成空格
+          breed = breed.charAt(0).toUpperCase() + breed.slice(1); // 首字母大寫
+
+          // 8. 建立 <img> 元素，把圖片顯示出來！
+          var img = document.createElement('img');
+          img.src = imageUrl;
+          img.alt = breed;
+          img.style.opacity = '0';
+
+          // 圖片載入完成後淡入
+          img.onload = function() {
+            img.style.opacity = '1';
+          };
+
+          // 9. 放進畫面
+          document.getElementById('dog-frame').innerHTML = '';
+          document.getElementById('dog-frame').appendChild(img);
+          document.getElementById('breed-name').textContent = '🐕 ' + breed;
+
+          // 10. 更新計數器
+          callCount++;
+          document.getElementById('api-count').textContent = t.apiCount(callCount);
+
+          // 11. 恢復按鈕
+          btn.disabled = false;
+          btn.textContent = t.btnFetch;
+        })
+        .catch(function(error) {
+          // 如果 API 出錯（例如網路斷了）
+          console.error('❌ API 呼叫失敗：', error);
+          document.getElementById('dog-frame').innerHTML =
+            '<div class="loading">😢</div>';
+          document.getElementById('breed-name').textContent = t.errorBreed;
+
+          btn.disabled = false;
+          btn.textContent = t.btnRetry;
+        });
+    }
+
+    // === 語言切換功能 ===
+    function switchLang(lang) {
+      localStorage.setItem('demo-lang', lang);
+      applyLang(lang);
+    }
+
+    function applyLang(lang) {
+      var t = i18n[lang];
+
+      document.querySelectorAll('.lang-btn').forEach(function(btn) {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+
+      document.querySelectorAll('[data-zh][data-ja]').forEach(function(el) {
+        if (!el.classList.contains('lang-btn')) {
+          el.textContent = el.dataset[lang];
+        }
+      });
+
+      document.querySelectorAll('.i18n-zh, .i18n-ja').forEach(function(el) {
+        el.style.display = el.classList.contains('i18n-' + lang) ? '' : 'none';
+      });
+
+      // 更新動態文字
+      document.getElementById('api-count').textContent = t.apiCount(callCount);
+      var btn = document.getElementById('fetch-btn');
+      if (!btn.disabled) {
+        btn.textContent = t.btnFetch;
+      }
+    }
+
+    // 頁面載入時套用語言並自動抓一隻
+    (function() {
+      var lang = localStorage.getItem('demo-lang') || 'zh';
+      applyLang(lang);
+      fetchDog();
+    })();
+  </script>
+
+</body>
+</html>
