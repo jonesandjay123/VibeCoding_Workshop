@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>英文打卡 + 每日鼓勵 ✨</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      background: #1a1a2e;
+      font-family: 'Segoe UI', 'Hiragino Sans', 'Noto Sans TC', sans-serif;
+      color: #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .header h1 {
+      font-size: 1.8rem;
+      color: #7c83ff;
+      margin-bottom: 0.3rem;
+    }
+
+    .header p {
+      font-size: 0.95rem;
+      color: #888;
+    }
+
+    /* 每日鼓勵 */
+    .quote-box {
+      max-width: 450px;
+      width: 100%;
+      background: linear-gradient(135deg, rgba(124, 131, 255, 0.1), rgba(99, 102, 241, 0.05));
+      border: 1px solid rgba(124, 131, 255, 0.2);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .quote-text {
+      font-size: 1.05rem;
+      font-style: italic;
+      color: #c9d1d9;
+      line-height: 1.5;
+      margin-bottom: 0.5rem;
+    }
+
+    .quote-author {
+      font-size: 0.85rem;
+      color: #7c83ff;
+    }
+
+    .quote-loading {
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    .btn-new-quote {
+      margin-top: 0.8rem;
+      padding: 0.4rem 1rem;
+      background: transparent;
+      border: 1px solid rgba(124, 131, 255, 0.3);
+      border-radius: 8px;
+      color: #7c83ff;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+
+    .btn-new-quote:hover {
+      background: rgba(124, 131, 255, 0.1);
+    }
+
+    /* 連續天數 */
+    .streak-display {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .streak-number {
+      font-size: 4rem;
+      font-weight: bold;
+      color: #ffd700;
+      line-height: 1;
+    }
+
+    .streak-label {
+      font-size: 0.95rem;
+      color: #888;
+      margin-top: 0.3rem;
+    }
+
+    /* 成功訊息 */
+    .success-msg {
+      display: none;
+      text-align: center;
+      padding: 1rem;
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 12px;
+      color: #22c55e;
+      margin-bottom: 1.5rem;
+      max-width: 450px;
+      width: 100%;
+    }
+
+    /* 打卡表單 */
+    .checkin-form {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 450px;
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.9rem;
+      color: #aaa;
+      margin-bottom: 0.4rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      background: #0d1117;
+      border: 1px solid #333;
+      border-radius: 12px;
+      font-size: 1rem;
+      color: #e0e0e0;
+      outline: none;
+      font-family: inherit;
+      transition: border-color 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: #7c83ff;
+    }
+
+    .form-group textarea {
+      height: 80px;
+      resize: vertical;
+    }
+
+    .btn-checkin {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, #7c83ff, #6366f1);
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+
+    .btn-checkin:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(124, 131, 255, 0.4);
+    }
+
+    /* 歷史紀錄 */
+    .history {
+      max-width: 450px;
+      width: 100%;
+    }
+
+    .history h2 {
+      font-size: 1.1rem;
+      color: #7c83ff;
+      margin-bottom: 1rem;
+    }
+
+    .record {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .record-date {
+      font-size: 0.8rem;
+      color: #666;
+      margin-bottom: 0.3rem;
+    }
+
+    .record-stats {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 0.3rem;
+    }
+
+    .record-words {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #79c0ff;
+    }
+
+    .record-sentence {
+      font-size: 0.9rem;
+      color: #aaa;
+      font-style: italic;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: #555;
+      padding: 2rem;
+    }
+
+    .actions {
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+
+    .btn-clear {
+      padding: 0.5rem 1.2rem;
+      background: transparent;
+      border: 1px solid #555;
+      border-radius: 8px;
+      color: #888;
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn-clear:hover {
+      border-color: #f85149;
+      color: #f85149;
+    }
+
+    .code-box {
+      max-width: 450px;
+      width: 100%;
+      margin-top: 2rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 1.2rem;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: #888;
+    }
+
+    .code-box strong { color: #7c83ff; }
+    .code-box code { font-family: 'Courier New', monospace; color: #79c0ff; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>✨ 英文打卡 + 每日鼓勵</h1>
+    <p>每天打卡，每天一句鼓勵的話！</p>
+  </div>
+
+  <!-- 每日鼓勵名言 -->
+  <div class="quote-box" id="quote-box">
+    <div class="quote-loading">💭 正在載入每日鼓勵...</div>
+  </div>
+
+  <!-- 連續天數 -->
+  <div class="streak-display">
+    <div class="streak-number" id="streak-num">0</div>
+    <div class="streak-label">🔥 連續打卡天數</div>
+  </div>
+
+  <!-- 成功訊息 -->
+  <div class="success-msg" id="success-msg">🎉 打卡成功！繼續加油！</div>
+
+  <!-- 打卡表單 -->
+  <div class="checkin-form">
+    <div class="form-group">
+      <label>📚 今天學了幾個單字？</label>
+      <input type="number" id="words-input" placeholder="例：10" min="0">
+    </div>
+    <div class="form-group">
+      <label>✏️ 用英文寫一句話</label>
+      <textarea id="sentence-input" placeholder="例：I will study every day."></textarea>
+    </div>
+    <button class="btn-checkin" onclick="doCheckin()">打卡！🎯</button>
+  </div>
+
+  <!-- 歷史紀錄 -->
+  <div class="history">
+    <h2>📜 打卡歷史</h2>
+    <div id="history-list"></div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-clear" onclick="clearAll()">🗑️ 清除所有紀錄</button>
+  </div>
+
+  <!-- 教學說明 -->
+  <div class="code-box">
+    <strong>🔍 這頁多了什麼？</strong><br><br>
+    跟 demo-2 比，這頁多了「每日鼓勵」區塊。它用 <code>fetch()</code> 呼叫 API，拿到一句名言。<br><br>
+    <code>fetch("https://api.quotable.io/random")</code> → GET 請求 → 伺服器回傳 JSON → 顯示在畫面上<br><br>
+    👉 <strong>GET = 去拿資料</strong>（跟服務生說「給我菜單」）<br>
+    👉 <strong>POST = 傳資料</strong>（填表格交給服務生）← 今天不用
+  </div>
+
+  <script>
+    var STORAGE_KEY = 'checkin-records';
+
+    // === 載入每日鼓勵名言（API GET！）===
+    function loadQuote() {
+      var quoteBox = document.getElementById('quote-box');
+
+      // fetch = 呼叫 API（GET 請求）
+      // 這裡用了多個備用 API，以防主要的掛了
+      fetchQuote()
+        .then(function(quote) {
+          quoteBox.innerHTML =
+            '<div class="quote-text">"' + escapeHtml(quote.text) + '"</div>' +
+            '<div class="quote-author">— ' + escapeHtml(quote.author) + '</div>' +
+            '<button class="btn-new-quote" onclick="loadQuote()">🔄 換一句</button>';
+          console.log('💬 API 回傳的名言：', quote);
+        })
+        .catch(function(err) {
+          // API 掛了就用備用名言
+          var fallback = getFallbackQuote();
+          quoteBox.innerHTML =
+            '<div class="quote-text">"' + fallback.text + '"</div>' +
+            '<div class="quote-author">— ' + fallback.author + '</div>' +
+            '<button class="btn-new-quote" onclick="loadQuote()">🔄 換一句</button>';
+          console.log('⚠️ API 失敗，使用備用名言', err);
+        });
+    }
+
+    function fetchQuote() {
+      // 嘗試 Quotable API
+      return fetch('https://api.quotable.io/random')
+        .then(function(response) {
+          if (!response.ok) throw new Error('Quotable API failed');
+          return response.json();
+        })
+        .then(function(data) {
+          return { text: data.content, author: data.author };
+        })
+        .catch(function() {
+          // 備用：Advice Slip API
+          return fetch('https://api.adviceslip.com/advice')
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+              return { text: data.slip.advice, author: 'Daily Advice' };
+            });
+        });
+    }
+
+    // 備用名言（完全離線也能用）
+    function getFallbackQuote() {
+      var quotes = [
+        { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
+        { text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" },
+        { text: "A journey of a thousand miles begins with a single step.", author: "Lao Tzu" },
+        { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+        { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+        { text: "Every expert was once a beginner.", author: "Helen Hayes" },
+        { text: "Small progress is still progress.", author: "Unknown" }
+      ];
+      return quotes[Math.floor(Math.random() * quotes.length)];
+    }
+
+    // === 打卡功能（跟 demo-2 一樣）===
+    function doCheckin() {
+      var wordsInput = document.getElementById('words-input');
+      var sentenceInput = document.getElementById('sentence-input');
+      var words = parseInt(wordsInput.value) || 0;
+      var sentence = sentenceInput.value.trim();
+
+      if (words === 0 && sentence === '') {
+        alert('至少填一項吧！📝');
+        return;
+      }
+
+      var records = getRecords();
+      var today = new Date().toISOString().split('T')[0];
+      var streak = calculateStreak(records, today);
+
+      var newRecord = {
+        date: today,
+        words_learned: words,
+        sentence: sentence,
+        streak: streak,
+        timestamp: new Date().toISOString()
+      };
+
+      records.push(newRecord);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+
+      console.log('✅ 打卡成功！', newRecord);
+      renderAll();
+
+      wordsInput.value = '';
+      sentenceInput.value = '';
+
+      var msg = document.getElementById('success-msg');
+      msg.style.display = 'block';
+      setTimeout(function() { msg.style.display = 'none'; }, 2000);
+
+      // 打卡成功後換一句名言！
+      loadQuote();
+    }
+
+    function getRecords() {
+      var data = localStorage.getItem(STORAGE_KEY);
+      if (!data) return [];
+      try { return JSON.parse(data); }
+      catch (e) { return []; }
+    }
+
+    function calculateStreak(records, today) {
+      if (records.length === 0) return 1;
+      var lastRecord = records[records.length - 1];
+      var lastDate = new Date(lastRecord.date);
+      var todayDate = new Date(today);
+      var diffDays = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+      if (diffDays === 0) return lastRecord.streak;
+      if (diffDays === 1) return lastRecord.streak + 1;
+      return 1;
+    }
+
+    function renderAll() {
+      var records = getRecords();
+      var streak = records.length > 0 ? records[records.length - 1].streak : 0;
+      document.getElementById('streak-num').textContent = streak;
+
+      var historyList = document.getElementById('history-list');
+      if (records.length === 0) {
+        historyList.innerHTML = '<div class="empty-state">還沒有打卡紀錄，開始你的第一次吧！✨</div>';
+        return;
+      }
+
+      var html = '';
+      for (var i = records.length - 1; i >= 0; i--) {
+        var r = records[i];
+        html += '<div class="record">';
+        html += '<div class="record-date">📅 ' + r.date + '</div>';
+        html += '<div class="record-stats">';
+        html += '<span class="record-words">📚 ' + r.words_learned + ' 個單字</span>';
+        html += '<span>🔥 連續 ' + r.streak + ' 天</span>';
+        html += '</div>';
+        if (r.sentence) {
+          html += '<div class="record-sentence">"' + escapeHtml(r.sentence) + '"</div>';
+        }
+        html += '</div>';
+      }
+      historyList.innerHTML = html;
+    }
+
+    function clearAll() {
+      if (confirm('確定要清除所有打卡紀錄嗎？')) {
+        localStorage.removeItem(STORAGE_KEY);
+        renderAll();
+      }
+    }
+
+    function escapeHtml(text) {
+      var div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // === 頁面載入 ===
+    renderAll();
+    loadQuote();
+    console.log('📋 打卡頁面（含 API）載入完成');
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo 1：JSON 視覺化 📦</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      background: #1a1a2e;
+      font-family: 'Segoe UI', 'Hiragino Sans', 'Noto Sans TC', sans-serif;
+      color: #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .header h1 {
+      font-size: 1.8rem;
+      color: #7c83ff;
+      margin-bottom: 0.3rem;
+    }
+
+    .header p {
+      font-size: 0.95rem;
+      color: #888;
+    }
+
+    .container {
+      display: flex;
+      gap: 2rem;
+      max-width: 900px;
+      width: 95%;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .panel {
+      flex: 1;
+      min-width: 300px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 1.5rem;
+    }
+
+    .panel h2 {
+      font-size: 1.1rem;
+      color: #7c83ff;
+      margin-bottom: 1rem;
+    }
+
+    textarea {
+      width: 100%;
+      height: 280px;
+      background: #0d1117;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      color: #c9d1d9;
+      resize: vertical;
+      outline: none;
+      line-height: 1.6;
+    }
+
+    textarea:focus {
+      border-color: #7c83ff;
+    }
+
+    .card {
+      background: rgba(124, 131, 255, 0.1);
+      border: 1px solid rgba(124, 131, 255, 0.2);
+      border-radius: 16px;
+      padding: 1.5rem;
+    }
+
+    .card-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .card-row:last-child { border-bottom: none; }
+
+    .card-key {
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    .card-value {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #e0e0e0;
+    }
+
+    .card-value.number {
+      color: #79c0ff;
+      font-size: 1.4rem;
+    }
+
+    .card-value.emoji {
+      font-size: 2rem;
+    }
+
+    .error-msg {
+      color: #f85149;
+      font-size: 0.9rem;
+      padding: 1rem;
+    }
+
+    .hint {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    .compare-section {
+      max-width: 900px;
+      width: 95%;
+      margin-top: 2rem;
+    }
+
+    .compare-section h2 {
+      color: #7c83ff;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .compare-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 1rem;
+    }
+
+    .compare-box h3 {
+      font-size: 0.9rem;
+      color: #58a6ff;
+      margin-bottom: 0.5rem;
+    }
+
+    .compare-box pre {
+      font-family: 'Courier New', monospace;
+      font-size: 0.8rem;
+      color: #aaa;
+      white-space: pre-wrap;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>📦 Demo 1：JSON 視覺化</h1>
+    <p>左邊是 JSON 原始碼，右邊是人類看的版本。試著改左邊的值！</p>
+  </div>
+
+  <div class="container">
+    <div class="panel">
+      <h2>📝 JSON 原始碼</h2>
+      <textarea id="json-input">{
+  "date": "2026-02-27",
+  "words_learned": 10,
+  "sentence": "I will study every day.",
+  "streak": 3,
+  "mood": "😊"
+}</textarea>
+    </div>
+
+    <div class="panel">
+      <h2>👀 視覺化卡片</h2>
+      <div id="card-output"></div>
+    </div>
+  </div>
+
+  <div class="hint">💡 試試看：改改數字、改改 emoji、加一個新欄位！</div>
+
+  <div class="compare-section">
+    <h2>📊 三種格式比較：同一份資料</h2>
+    <div class="compare-grid">
+      <div class="compare-box">
+        <h3>📄 .txt 純文字</h3>
+        <pre>2026年2月27日 學了10個單字
+I will study every day.
+連續3天 心情好</pre>
+      </div>
+      <div class="compare-box">
+        <h3>📋 .md Markdown</h3>
+        <pre>## 打卡紀錄
+- 日期：2026-02-27
+- 學了：10 個單字
+- 句子：I will study every day.
+- 連續：3 天
+- 心情：😊</pre>
+      </div>
+      <div class="compare-box">
+        <h3>🔧 .json JSON</h3>
+        <pre>{
+  "date": "2026-02-27",
+  "words_learned": 10,
+  "sentence": "I will study...",
+  "streak": 3,
+  "mood": "😊"
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var textarea = document.getElementById('json-input');
+    var output = document.getElementById('card-output');
+
+    // 每次輸入都重新渲染
+    textarea.addEventListener('input', render);
+
+    function render() {
+      try {
+        var data = JSON.parse(textarea.value);
+        var html = '<div class="card">';
+
+        // 把 JSON 的每個 key-value 變成卡片的一行
+        var keys = Object.keys(data);
+        for (var i = 0; i < keys.length; i++) {
+          var key = keys[i];
+          var value = data[key];
+          var valueClass = 'card-value';
+
+          // 判斷值的類型，給不同樣式
+          if (typeof value === 'number') {
+            valueClass += ' number';
+          }
+          // 簡單判斷是否只有 emoji
+          if (typeof value === 'string' && /^[\p{Emoji}]+$/u.test(value.trim())) {
+            valueClass += ' emoji';
+          }
+
+          html += '<div class="card-row">';
+          html += '<span class="card-key">' + escapeHtml(key) + '</span>';
+          html += '<span class="' + valueClass + '">' + escapeHtml(String(value)) + '</span>';
+          html += '</div>';
+        }
+
+        html += '</div>';
+        output.innerHTML = html;
+      } catch (e) {
+        output.innerHTML = '<div class="error-msg">⚠️ JSON 格式有誤：' + escapeHtml(e.message) + '</div>';
+      }
+    }
+
+    function escapeHtml(text) {
+      var div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // 初始渲染
+    render();
+  </script>
+
+</body>
+</html>

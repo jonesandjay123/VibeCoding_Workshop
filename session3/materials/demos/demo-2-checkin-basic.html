@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>英文打卡 ✨ Daily English Check-in</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      background: #1a1a2e;
+      font-family: 'Segoe UI', 'Hiragino Sans', 'Noto Sans TC', sans-serif;
+      color: #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .header h1 {
+      font-size: 1.8rem;
+      color: #7c83ff;
+      margin-bottom: 0.3rem;
+    }
+
+    .header p {
+      font-size: 0.95rem;
+      color: #888;
+    }
+
+    /* 連續天數大字 */
+    .streak-display {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .streak-number {
+      font-size: 4rem;
+      font-weight: bold;
+      color: #ffd700;
+      line-height: 1;
+    }
+
+    .streak-label {
+      font-size: 0.95rem;
+      color: #888;
+      margin-top: 0.3rem;
+    }
+
+    /* 打卡表單 */
+    .checkin-form {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 450px;
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.9rem;
+      color: #aaa;
+      margin-bottom: 0.4rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      background: #0d1117;
+      border: 1px solid #333;
+      border-radius: 12px;
+      font-size: 1rem;
+      color: #e0e0e0;
+      outline: none;
+      font-family: inherit;
+      transition: border-color 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: #7c83ff;
+    }
+
+    .form-group textarea {
+      height: 80px;
+      resize: vertical;
+    }
+
+    .btn-checkin {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, #7c83ff, #6366f1);
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+
+    .btn-checkin:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(124, 131, 255, 0.4);
+    }
+
+    .btn-checkin:active {
+      transform: translateY(0);
+    }
+
+    /* 成功訊息 */
+    .success-msg {
+      display: none;
+      text-align: center;
+      padding: 1rem;
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 12px;
+      color: #22c55e;
+      margin-bottom: 1.5rem;
+      max-width: 450px;
+      width: 100%;
+    }
+
+    /* 歷史紀錄 */
+    .history {
+      max-width: 450px;
+      width: 100%;
+    }
+
+    .history h2 {
+      font-size: 1.1rem;
+      color: #7c83ff;
+      margin-bottom: 1rem;
+    }
+
+    .record {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 0.8rem;
+      transition: all 0.3s;
+    }
+
+    .record:hover {
+      background: rgba(255, 255, 255, 0.06);
+      transform: translateX(4px);
+    }
+
+    .record-date {
+      font-size: 0.8rem;
+      color: #666;
+      margin-bottom: 0.3rem;
+    }
+
+    .record-stats {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 0.3rem;
+    }
+
+    .record-words {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #79c0ff;
+    }
+
+    .record-sentence {
+      font-size: 0.9rem;
+      color: #aaa;
+      font-style: italic;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: #555;
+      padding: 2rem;
+      font-size: 0.95rem;
+    }
+
+    /* 底部操作 */
+    .actions {
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+
+    .btn-clear {
+      padding: 0.5rem 1.2rem;
+      background: transparent;
+      border: 1px solid #555;
+      border-radius: 8px;
+      color: #888;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+
+    .btn-clear:hover {
+      border-color: #f85149;
+      color: #f85149;
+    }
+
+    /* 教學說明 */
+    .code-box {
+      max-width: 450px;
+      width: 100%;
+      margin-top: 2rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 1.2rem;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: #888;
+    }
+
+    .code-box strong {
+      color: #7c83ff;
+    }
+
+    .code-box code {
+      font-family: 'Courier New', monospace;
+      color: #79c0ff;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>✨ 英文打卡</h1>
+    <p>每天打卡，累積你的英文力！</p>
+  </div>
+
+  <!-- 連續天數 -->
+  <div class="streak-display">
+    <div class="streak-number" id="streak-num">0</div>
+    <div class="streak-label">🔥 連續打卡天數</div>
+  </div>
+
+  <!-- 成功訊息 -->
+  <div class="success-msg" id="success-msg">🎉 打卡成功！繼續加油！</div>
+
+  <!-- 打卡表單 -->
+  <div class="checkin-form">
+    <div class="form-group">
+      <label>📚 今天學了幾個單字？</label>
+      <input type="number" id="words-input" placeholder="例：10" min="0">
+    </div>
+    <div class="form-group">
+      <label>✏️ 用英文寫一句話</label>
+      <textarea id="sentence-input" placeholder="例：I will study every day."></textarea>
+    </div>
+    <button class="btn-checkin" onclick="doCheckin()">打卡！🎯</button>
+  </div>
+
+  <!-- 歷史紀錄 -->
+  <div class="history">
+    <h2>📜 打卡歷史</h2>
+    <div id="history-list"></div>
+  </div>
+
+  <!-- 操作按鈕 -->
+  <div class="actions">
+    <button class="btn-clear" onclick="clearAll()">🗑️ 清除所有紀錄</button>
+  </div>
+
+  <!-- 教學說明 -->
+  <div class="code-box">
+    <strong>🔍 資料流動路徑</strong><br><br>
+    輸入框 → JavaScript 收集資料 → <code>JSON.stringify()</code> 變成文字 → <code>localStorage.setItem()</code> 存進瀏覽器<br><br>
+    頁面載入 → <code>localStorage.getItem()</code> 拿出文字 → <code>JSON.parse()</code> 變回物件 → 顯示在畫面上<br><br>
+    👉 打開 DevTools → <strong>Application</strong> → <strong>Local Storage</strong> 看看資料在哪裡！
+  </div>
+
+  <script>
+    // === 常數 ===
+    var STORAGE_KEY = 'checkin-records';
+
+    // === 打卡功能 ===
+    function doCheckin() {
+      // 1. 從輸入框拿資料
+      var wordsInput = document.getElementById('words-input');
+      var sentenceInput = document.getElementById('sentence-input');
+
+      var words = parseInt(wordsInput.value) || 0;
+      var sentence = sentenceInput.value.trim();
+
+      // 2. 驗證：至少要填一個
+      if (words === 0 && sentence === '') {
+        alert('至少填一項吧！📝');
+        return;
+      }
+
+      // 3. 從 localStorage 拿出現有紀錄
+      var records = getRecords();
+
+      // 4. 計算連續天數
+      var today = new Date().toISOString().split('T')[0]; // "2026-02-27"
+      var streak = calculateStreak(records, today);
+
+      // 5. 建立新的打卡紀錄（這就是 JSON！）
+      var newRecord = {
+        date: today,
+        words_learned: words,
+        sentence: sentence,
+        streak: streak,
+        timestamp: new Date().toISOString()
+      };
+
+      // 6. 加到紀錄陣列裡
+      records.push(newRecord);
+
+      // 7. 存回 localStorage
+      //    JSON.stringify = 把物件變成文字（因為 localStorage 只能存文字）
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+
+      // 8. 偵探筆記
+      console.log('✅ 打卡成功！', newRecord);
+      console.log('📦 目前所有紀錄：', records);
+
+      // 9. 更新畫面
+      renderAll();
+
+      // 10. 清空輸入框
+      wordsInput.value = '';
+      sentenceInput.value = '';
+
+      // 11. 顯示成功訊息
+      var msg = document.getElementById('success-msg');
+      msg.style.display = 'block';
+      setTimeout(function() {
+        msg.style.display = 'none';
+      }, 2000);
+    }
+
+    // === 從 localStorage 拿紀錄 ===
+    function getRecords() {
+      var data = localStorage.getItem(STORAGE_KEY);
+      if (!data) return [];
+
+      // JSON.parse = 把文字變回物件
+      try {
+        return JSON.parse(data);
+      } catch (e) {
+        console.error('❌ JSON 解析失敗', e);
+        return [];
+      }
+    }
+
+    // === 計算連續天數 ===
+    function calculateStreak(records, today) {
+      if (records.length === 0) return 1;
+
+      // 找最後一筆紀錄
+      var lastRecord = records[records.length - 1];
+      var lastDate = new Date(lastRecord.date);
+      var todayDate = new Date(today);
+
+      // 計算兩天之間差幾天
+      var diffDays = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+
+      if (diffDays === 0) {
+        // 今天已經打過了，維持連續天數
+        return lastRecord.streak;
+      } else if (diffDays === 1) {
+        // 連續！+1
+        return lastRecord.streak + 1;
+      } else {
+        // 斷了，重新開始
+        return 1;
+      }
+    }
+
+    // === 渲染所有內容 ===
+    function renderAll() {
+      var records = getRecords();
+
+      // 更新連續天數
+      var streak = records.length > 0 ? records[records.length - 1].streak : 0;
+      document.getElementById('streak-num').textContent = streak;
+
+      // 更新歷史紀錄（最新的在上面）
+      var historyList = document.getElementById('history-list');
+
+      if (records.length === 0) {
+        historyList.innerHTML = '<div class="empty-state">還沒有打卡紀錄，開始你的第一次吧！✨</div>';
+        return;
+      }
+
+      var html = '';
+      // 反轉顯示（最新在上）
+      for (var i = records.length - 1; i >= 0; i--) {
+        var r = records[i];
+        html += '<div class="record">';
+        html += '<div class="record-date">📅 ' + r.date + '</div>';
+        html += '<div class="record-stats">';
+        html += '<span class="record-words">📚 ' + r.words_learned + ' 個單字</span>';
+        html += '<span>🔥 連續 ' + r.streak + ' 天</span>';
+        html += '</div>';
+        if (r.sentence) {
+          html += '<div class="record-sentence">"' + escapeHtml(r.sentence) + '"</div>';
+        }
+        html += '</div>';
+      }
+
+      historyList.innerHTML = html;
+    }
+
+    // === 清除所有紀錄 ===
+    function clearAll() {
+      if (confirm('確定要清除所有打卡紀錄嗎？')) {
+        localStorage.removeItem(STORAGE_KEY);
+        console.log('🗑️ 所有紀錄已清除');
+        renderAll();
+      }
+    }
+
+    // === 工具函式 ===
+    function escapeHtml(text) {
+      var div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // === 頁面載入時渲染 ===
+    renderAll();
+    console.log('📋 打卡頁面載入完成');
+    console.log('💡 試試看：localStorage.getItem("checkin-records")');
+    console.log('💡 或是：JSON.parse(localStorage.getItem("checkin-records"))');
+  </script>
+
+</body>
+</html>
