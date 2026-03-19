@@ -10,6 +10,8 @@ AIツールを活用したソフトウェア開発を学ぶVibe Codingワーク�
 |---------|--------|------|------|
 | [Session 1](./session1/) | Vibe Coding 入門 | 2026-01-31 | 約2時間 |
 | [Session 2](./session2/) | Git、JavaScript、API概念 | 2026-02-07 | 約3時間 |
+| [Session 3](./session3/) | データフロー＆バージョン管理 | 2026-02-27 | 約3時間 |
+| [Session 4](./session4/) | JSON駆動UI＋AI生成 | 2026-03-20 | 約3時間 |
 
 ## プロジェクト構成
 
