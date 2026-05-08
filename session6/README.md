@@ -38,6 +38,123 @@ session6/ideacanvas-ios-reader-original.md
 
 ---
 
+## 今晚角色分工（重要）
+
+這堂課的備課和實作不要再走「Jones 遠端叫 Jarvis 做完、自己 pull 下來測」的模式。那個模式對 Jones 很有效，但不是今晚要教給妹妹的核心能力。
+
+今晚的分工建議是：
+
+| 角色 | 任務 |
+| --- | --- |
+| Jones | 主導教學方向、親自預演、判斷哪些步驟適合妹妹 |
+| GPT / ChatGPT | 顧問、課程設計、prompt 拆解、自然語言需求整理 |
+| Codex Desktop / CLI | 實際 coding agent，修改 `KoreanPhraseBuddy` 專案 |
+| Xcode | 建 iOS project、簽名、build、跑 Simulator / 實機 |
+| Jarvis | 只負責 `VibeCoding_Workshop/session6` 教材沉澱、README 更新、commit / push |
+| 妹妹 | 晚上跟著走一條自己也能複製的 Codex + Xcode 開發流程 |
+
+教學重點是：
+
+> 她坐在自己的電腦前，用 AI coding agent 把自己的旅行需求做成 iOS app。
+
+所以 `KoreanPhraseBuddy` 的開發預演應盡量使用 Jones 晚上會教她的工具鏈：
+
+```text
+GitHub repo → Xcode SwiftUI project → Codex 修改 → Xcode build/run → 記錄 prompt 與卡點
+```
+
+Jarvis 不應主導 app 實作；Jarvis 的價值是在每次預演後，把過程整理成可教、可複製、可 commit 的教材。
+
+---
+
+## 工具主線與備援路線
+
+### 首選：Codex Desktop / Codex App
+
+如果帳號與環境可用，今晚最推薦用 Codex Desktop / Codex App 當主線。
+
+理由：
+
+- Jones 的 `JapanPhraseBuddy` 本來就是靠 Codex 做出來，故事很完整
+- Codex 比純聊天更像真正的 coding partner：能看 repo、改檔、產 diff
+- 「Codex 寫專案、Xcode build/run」是很自然的 iOS vibe coding 工作流
+- 妹妹可以學到的是方法，不是只複製老師的程式碼
+
+### 備援 A：Codex CLI
+
+如果 Desktop 不順，但 CLI 可以登入，可以改用 CLI。
+
+概念流程：
+
+```bash
+# 具體安裝方式以當天官方文件 / 環境為準
+codex
+```
+
+教學時不要把 CLI 安裝卡關變成主線；如果登入或權限卡太久，切換備援。
+
+### 備援 B：Antigravity + Gemini
+
+妹妹已經熟悉 Antigravity，而且她可用 Gemini Pro。若 Codex 帳號、額度、安裝、登入任一環節卡住，就回到 Antigravity。
+
+今晚的目標不是指定某個品牌工具，而是讓她學會：
+
+> 把需求拆小，交給 AI coding tool，一步一步驗證。
+
+### 備援 C：ChatGPT / Gemini 網頁版手動貼 code
+
+最保底的方法：用聊天工具產生 code，手動貼進 Xcode。體驗比較弱，但仍可完成 MVP。
+
+---
+
+## 給打字慢學生的語音 → Prompt 工作流
+
+妹妹可能不像 Jones 一樣打字快、prompt 精準。不要要求她一開始就能輸入很長的 coding prompt。
+
+建議教她一個輔助流程：
+
+1. 用 ChatGPT 手機 App 語音說出想法
+2. 請 ChatGPT 幫她整理成適合貼給 Codex 的英文 prompt
+3. 複製 prompt 到 Codex Desktop / CLI
+4. Codex 修改專案
+5. Xcode build/run
+6. 如果出錯，把錯誤訊息貼回 Codex
+
+可以給她固定句型：
+
+```text
+請把我剛剛說的需求整理成一段適合貼給 Codex 的英文 prompt。
+請包含：
+1. 我想修改哪個 app
+2. 我想新增什麼功能
+3. UI 大概要長什麼樣
+4. 不要一次改太多
+5. 修改完請告訴我改了哪些檔案
+```
+
+範例：她用語音說：
+
+> 我想讓這個 app 可以輸入中文，按一個按鈕之後加入到旅行片語列表裡，每個片語卡片有中文跟韓文，先不用真的翻譯，可以先用假資料。
+
+整理後給 Codex 的 prompt 可以是：
+
+```text
+Please update this SwiftUI app to add a simple phrase list feature.
+
+Requirements:
+- Add a text input where the user can type a Chinese phrase.
+- Add an “Add Phrase” button.
+- When the button is tapped, create a new phrase card and show it in a list.
+- Each card should display the Chinese phrase and a placeholder Korean translation for now.
+- Keep the implementation simple and beginner-friendly.
+- Do not add networking or API calls yet.
+- After editing, summarize which files you changed.
+```
+
+這個流程本身也是重要能力：她不用直接會寫完美 prompt，只要會描述需求，再讓另一個 AI 幫她整理成 coding agent 能執行的指令。
+
+---
+
 ## 為什麼推薦 `KoreanPhraseBuddy`，不是 `KoreaPhraseBuddy`？
 
 - `Korean` 是形容詞，表示「韓文的／韓國的」
@@ -83,9 +200,16 @@ Seoul Phrase Buddy
 
 ---
 
-## 課前預演目標（Jones 自己先做一次）
+## 課前預演目標（Jones 自己先用 Codex 走一次）
 
-Jones 的計畫是課前先自己預演一次，確認 iPad / iPhone 實機部署與 SwiftUI 開發流程會遇到哪些坑。這非常重要，因為今晚真正難的可能不是寫 app，而是第一次 iOS 開發的細節。
+Jones 的計畫是課前先自己預演一次，但這次預演要刻意走妹妹晚上會走的路：不要讓 Jarvis 代寫 `KoreanPhraseBuddy`，而是用 Codex + Xcode 一步一步做。
+
+這非常重要，因為今晚真正要準備的不是「Jones 能不能做出 app」，而是：
+
+- 第一次 Xcode / signing / device 會卡在哪裡
+- 哪些 prompt 對 Codex 來說剛好，哪些太大
+- 哪些錯誤適合讓學生自己貼回 Codex 修
+- 哪些步驟應該 Jones demo，哪些步驟應該讓妹妹親手做
 
 預演時請特別記錄：
 
@@ -100,6 +224,35 @@ Jones 的計畫是課前先自己預演一次，確認 iPad / iPhone 實機部�
 - Gemini API key 放在哪裡比較適合教學
 - 哪些 prompt 一次成功，哪些 prompt 太大、容易壞
 - 哪些步驟適合讓妹妹自己操作，哪些適合 Jones demo
+
+建議用以下格式記錄每一步，之後可以直接交給 Jarvis 整理進教材：
+
+````md
+## Step N: 功能名稱
+
+Goal:
+- 這一步要完成什麼
+
+Prompt used:
+```text
+貼給 Codex 的 prompt
+```
+
+Result:
+- 成功 / 失敗 / 部分成功
+- Codex 改了哪些檔案
+
+Xcode result:
+- build 成功嗎？
+- Simulator / 實機有跑起來嗎？
+
+Potential student issue:
+- 學生可能會卡在哪裡
+- 老師應該先 demo 還是讓她自己試
+
+Teaching note:
+- 這一步要講的觀念是什麼
+````
 
 ---
 
@@ -311,6 +464,16 @@ struct PhraseCard: Identifiable, Codable {
 ---
 
 ## 建議 AI Coding Prompts
+
+以下 prompt 不是要一次全部丟給 AI。教學上應該一段一段用：每次只讓 Codex 做一個小功能，然後立刻回 Xcode build/run。
+
+建議節奏：
+
+```text
+需求 → Codex 修改 → 看 diff / summary → Xcode build → 截取錯誤或確認成功 → 下一個小需求
+```
+
+如果 Codex 改壞，不要直接重來。把錯誤訊息、Xcode build log 或畫面現象貼回 Codex，讓學生看到「debug 也是跟 AI 對話的一部分」。
 
 ### Prompt 1：建立基本 UI
 
@@ -553,3 +716,9 @@ Gemini API 很可能卡在：
 7. 如果她很興奮，哪些 optional 最值得加
 
 今晚真正的教學價值不是 app 多完整，而是讓她帶著一個想法走進陌生平台，然後真的把它做出來。
+
+本堂課的 repo 更新策略：
+
+- `KoreanPhraseBuddy`：由 Jones + Codex/GPT 預演與開發，不由 Jarvis 主導
+- `VibeCoding_Workshop/session6`：由 Jarvis 根據預演結果更新教材、prompt、checklist，並 commit + push
+- 若課中工具卡住，優先保住「學生自己跟 AI coding tool 合作」的體驗，而不是改回 Jarvis 遠端代工
