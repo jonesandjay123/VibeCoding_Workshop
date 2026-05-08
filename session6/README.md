@@ -1,126 +1,652 @@
-# Session 6: KoreanPhraseBuddy — 首爾旅行用 iOS 韓文小幫手
+# Session 6: KoreanPhraseBuddy — 用 Codex + Xcode 做首爾旅行韓文小幫手
 
-> **狀態：** 2026-05-07 晚上課前備課版
-> **場景：** Jones 正在日本旅行中，今晚要和櫻井妹妹進行第六堂 Vibe Coding 課程。她下週左右要去首爾，因此本堂課從原本的「IdeaCanvas iOS Reader」調整為更貼近生活情境的「韓文旅行 Phrase Buddy iOS App」。
-> **參考 repo：** [`JapanPhraseBuddy`](https://github.com/jonesandjay123/JapanPhraseBuddy)
-> **建議新試作 repo：** `KoreanPhraseBuddy`
-> **App 顯示名稱建議：** `Seoul Phrase Buddy`
-
----
-
-## 給 GPT / 共同備課者的快速背景
-
-Jones 原本的 Session 6 教材是：
-
-> 從 Web Mind Map 到 iOS — 把 Session 5 的 IdeaCanvas 心智圖資料用 JSON 匯出，再用 SwiftUI 做 iOS Reader。
-
-這個版本的核心學習目標是：
-
-- 第一次進入 Xcode / SwiftUI
-- 理解「資料」和「介面」分離
-- 體驗「不熟悉的平台也能靠 AI coding 做出東西」
-
-但今晚實際情境變了：櫻井妹妹下週要去首爾旅行。Jones 想把課程改成更有立即用途的作品：
-
-> 做一個 iOS 版韓文旅行小幫手：輸入中文句子，存成小卡，需要時翻成自然禮貌韓文，並能複製或用 iPhone 播放。
-
-這個改動仍然保留 Session 6 的核心精神：
-
-- 從熟悉的網頁 / AI coding 經驗，跨到陌生的 iOS / SwiftUI
-- 不要求學生先學完 Swift，而是透過 AI prompt 拆小步驟完成 MVP
-- 把「我下週真的會用到」變成學習動機
-
-原版 IdeaCanvas iOS Reader 已保留在：
-
-```text
-session6/ideacanvas-ios-reader-original.md
-```
+> **狀態：** 2026-05-08，根據 Jones 課前實際預演後更新
+> **對象：** 已完成 Session 1-5、熟悉一點 HTML / JS / React / AI coding，但第一次正式進入 iOS / SwiftUI 的學生
+> **場景：** Azunyan 即將去首爾旅行，所以本堂課把原本的 IdeaCanvas iOS Reader 改成更貼近真實需求的旅行工具 App
+> **預演 repo：** [`KoreanPhraseBuddy`](https://github.com/jonesandjay123/KoreanPhraseBuddy)
+> **原始方案保留：** [`ideacanvas-ios-reader-original.md`](./ideacanvas-ios-reader-original.md)
 
 ---
 
-## 今晚角色分工（重要）
+## 一句話版本
 
-這堂課的備課和實作不要再走「Jones 遠端叫 Jarvis 做完、自己 pull 下來測」的模式。那個模式對 Jones 很有效，但不是今晚要教給妹妹的核心能力。
+這堂課不是要教會 Swift，也不是要做完整商業 App。
 
-今晚的分工建議是：
+這堂課要讓學生體驗：
+
+> **我下週真的要去首爾，所以今晚我可以用 AI coding agent + Xcode，做一個自己手機上真的能用的韓文小幫手。**
+
+完成版概念叫 **Seoul Phrase Buddy**：
+
+- 輸入一句自己可能會在首爾用到的句子
+- 存成旅行小卡
+- App 幫忙轉成自然、禮貌的韓文
+- 可以複製給店員看
+- 可以用 iPhone 播放韓文
+- 沒網路或 API 卡住時，也能用外部 ChatGPT / Gemini 網頁版批次翻譯後匯入
+
+---
+
+## 為什麼從 IdeaCanvas 改成 KoreanPhraseBuddy？
+
+原本 Session 6 的方向是：
+
+> 把 Session 5 的 IdeaCanvas 心智圖 JSON 匯出，再用 SwiftUI 做 iOS Reader。
+
+這個設計很好，核心概念是「資料和介面分離」。但這次實際上課情境更明確：Azunyan 很快要去首爾。
+
+所以本堂課改成更有生活動機的作品：
+
+> 做一個旅行現場真的會打開用的小工具。
+
+這個改動保留了原本 Session 6 的核心精神：
+
+- 第一次打開 Xcode
+- 第一次看 SwiftUI
+- 第一次在陌生平台上靠 AI coding agent 前進
+- 繼續練習把需求拆小、逐步驗證
+- 繼續強調「資料」不是畫面：小卡資料可以本機保存、JSON 匯出、外部 AI 處理、再回到 App
+
+但它比 IdeaCanvas Reader 更適合這次課：
+
+- 學生馬上知道為什麼要做
+- 每一步都有肉眼可見的成果
+- 語音輸入、韓文 TTS、翻譯都跟旅行場景直接連上
+- 成品即使很小，也真的有用
+
+---
+
+## 角色分工
+
+這次預演已經由 Jones 在外出電腦上，用 ChatGPT + Codex 把 `KoreanPhraseBuddy` 做出來。Jarvis 不需要也不應該代跑 app 實作；Jarvis 的任務是把走過的路、踩過的坑、適合教學的順序整理回 workshop 教材。
+
+課堂上的角色建議：
 
 | 角色 | 任務 |
 | --- | --- |
-| Jones | 主導教學方向、親自預演、判斷哪些步驟適合妹妹 |
-| GPT / ChatGPT | 顧問、課程設計、prompt 拆解、自然語言需求整理 |
-| Codex Desktop / CLI | 實際 coding agent，修改 `KoreanPhraseBuddy` 專案 |
-| Xcode | 建 iOS project、簽名、build、跑 Simulator / 實機 |
-| Jarvis | 只負責 `VibeCoding_Workshop/session6` 教材沉澱、README 更新、commit / push |
-| 妹妹 | 晚上跟著走一條自己也能複製的 Codex + Xcode 開發流程 |
+| Jones | 主導教學節奏、決定哪些地方 demo、哪些地方讓學生親手做 |
+| Azunyan | 坐在自己的電腦前，用 AI coding agent 修改自己的 Xcode project |
+| ChatGPT / Gemini | 幫忙把口語需求整理成適合貼給 Codex 的 prompt |
+| Codex Desktop / CLI | 實際修改 SwiftUI 專案 |
+| Xcode | 建 project、build、跑 Simulator / 實機、處理權限和 signing |
+| Jarvis | 課後整理教材、沉澱流程、commit / push workshop docs |
+
+教學重點不是「老師事先寫好一個 app 給學生看」。
 
 教學重點是：
 
-> 她坐在自己的電腦前，用 AI coding agent 把自己的旅行需求做成 iOS app。
-
-所以 `KoreanPhraseBuddy` 的開發預演應盡量使用 Jones 晚上會教她的工具鏈：
-
-```text
-GitHub repo → Xcode SwiftUI project → Codex 修改 → Xcode build/run → 記錄 prompt 與卡點
-```
-
-Jarvis 不應主導 app 實作；Jarvis 的價值是在每次預演後，把過程整理成可教、可複製、可 commit 的教材。
+> 學生學會在陌生技術棧裡，把一個真實需求拆成小步驟，交給 AI coding agent，然後用 Xcode 一步一步驗證。
 
 ---
 
-## 工具主線與備援路線
+## 最重要的教學結論
+
+### 1. App 要先變有用，再接 API
+
+預演證明，Gemini API 不是第一步。
+
+最安全的教學順序是先讓 App 成為一個本機可用的小工具：
+
+1. 可以打開
+2. 可以輸入
+3. 可以新增小卡
+4. 可以保存
+5. 可以語音輸入
+6. 可以顯示韓文欄位
+7. 可以複製 / 播放韓文
+
+等學生已經感覺「這個 App 活了」，再接 Gemini。
+
+如果一開始就進 API key、Info.plist、網路錯誤，學生會把整堂課記成「Xcode 很可怕」。
+
+### 2. 課堂版要 Japanese-first
+
+`KoreanPhraseBuddy` 預演 repo 是 Jones 自己用的繁中版本：
+
+- 中文輸入
+- 繁中 UI
+- `SFSpeechRecognizer(locale: "zh-TW")`
+
+但 Azunyan 的母語是日文，所以課堂版應改成：
+
+- 日文 UI
+- 日文語音輸入
+- `SFSpeechRecognizer(locale: "ja-JP")`
+- 按鈕文字例如：`音声入力`、`停止`、`カードを追加`
+
+目的語仍然是韓文，因為產品場景是首爾旅行。
+
+### 3. 語音輸入要提早
+
+預演時因為開發速度快，先做了韓文 TTS，後來才加中文語音輸入。
+
+但教學時應該調整：
+
+> 本機保存完成後，就先加日文語音輸入。
+
+原因是語音輸入給學生的成就感很直接：
+
+- 她不用打很多字
+- 她可以直接說出旅行句子
+- 句子立刻出現在 App 裡
+- 這會讓 App 很快變得像「自己的工具」
+
+### 4. Gemini key 是最大坑
+
+預演踩到的重要坑：
+
+`Config/Secrets.xcconfig` 裡有 `GEMINI_API_KEY`，不代表 App runtime 讀得到。
+
+資料流必須完整：
+
+```text
+Config/Secrets.xcconfig
+  -> GEMINI_API_KEY build setting
+  -> Info.plist 裡的 GeminiAPIKey
+  -> AppConfig.swift
+  -> GeminiTranslator.swift
+```
+
+也就是說，Xcode target 的 Info 裡需要有：
+
+```text
+GeminiAPIKey = $(GEMINI_API_KEY)
+```
+
+或 target build settings 裡要有：
+
+```text
+INFOPLIST_KEY_GeminiAPIKey = $(GEMINI_API_KEY)
+```
+
+如果少了這個 mapping，`xcodebuild -showBuildSettings` 看起來可能是對的，但 App 仍然會顯示：
+
+```text
+請先在 Secrets.xcconfig 設定 GEMINI_API_KEY
+```
+
+這一段課堂上要用 checklist，不要臨場猜。
+
+### 5. 外部 LLM 匯出 / 匯入不是多餘功能，而是教學亮點
+
+預演版加入了外部 LLM fallback：
+
+- App 把所有小卡匯出成 JSON prompt
+- 使用者貼到 ChatGPT / Gemini 網頁版
+- 外部 LLM 回傳 JSON array
+- App 用 `id` 對應原本小卡，只更新 `korean` 欄位
+
+這件事很值得教，因為它讓學生理解：
+
+> App 裡的資料可以變成 JSON，交給外部 AI 處理，再回到 App。
+
+這比單純「按一個 API 翻譯」更能建立資料流概念，也能避免 Gemini API、quota、Wi-Fi、key setup 在課堂上卡死。
+
+---
+
+## 建議課堂順序
+
+這是根據預演後調整出的順序，不是 `KoreanPhraseBuddy` repo 的實作順序。
+
+### Step 0: 開場 — 今天不是學 Swift，是做旅行工具
+
+目標：降低焦慮，建立動機。
+
+可以這樣說：
+
+> 今天我們不是要從頭學 Swift。今天是要證明一件事：妳下週真的要去首爾，所以我們今晚做一個手機上可以幫妳說韓文的小工具。Swift 不熟沒關係，我們要練的是怎麼跟 AI coding agent 合作。
+
+---
+
+### Step 1: Xcode Hello World 跑起來
+
+目標：讓學生第一次看到 iOS app 在 Simulator 或實機上跑起來。
+
+建議：
+
+- Xcode → New Project → iOS App
+- Product Name 可用 `KoreanPhraseBuddy` 或學生自己的名字版本
+- Interface: SwiftUI
+- Language: Swift
+- 不勾 Core Data / Tests
+- 先按 Run，不改任何 code
+
+驗收：
+
+- Simulator / iPhone 上看到 Hello World
+
+教學重點：
+
+- 不解釋太多 Swift
+- 先建立「Xcode 可以跑」的信心
+- 如果 signing / device 卡住，先用 Simulator
+
+---
+
+### Step 2: 做第一版 SwiftUI 畫面
+
+目標：把 Hello World 變成 Seoul Phrase Buddy 的外殼。
+
+學生 prompt：
+
+```text
+Please update this SwiftUI app to make a simple Seoul Phrase Buddy UI.
+
+Requirements:
+- Page title: Seoul Phrase Buddy
+- A text input where the user can type a Japanese phrase
+- An Add Card button
+- A simple empty state that says there are no phrase cards yet
+- Use @State only for now
+- Do not add networking or API calls yet
+- Keep the code beginner-friendly
+```
+
+驗收：
+
+- App 標題變成 Seoul Phrase Buddy
+- 有輸入框
+- 有新增按鈕
+- UI 看起來像一個 App，而不是 Hello World
+
+教學重點：
+
+- SwiftUI `View` 跟 React component 有家族相似性
+- 先做畫面，不做資料、不做 API
+
+---
+
+### Step 3: 用 `@State` 新增小卡
+
+目標：讓學生第一次看到自己輸入的內容出現在列表中。
+
+學生 prompt：
+
+```text
+Please add phrase cards in memory.
+
+Requirements:
+- When the user types a Japanese phrase and taps Add Card, add it to a list
+- Show the newest card at the top
+- Each card should display the original Japanese phrase
+- Clear the text field after adding
+- Use @State for the card array for now
+- Do not save data yet
+- Do not add translation yet
+```
+
+驗收：
+
+- 輸入一句日文
+- 按 Add Card
+- 卡片出現在列表上方
+- 關掉 App 後資料消失沒關係
+
+教學重點：
+
+- 先用記憶體資料
+- 讓學生理解「畫面是資料長出來的」
+
+---
+
+### Step 4: 加 `PhraseCard` model 和本機保存
+
+目標：讓小卡重開 App 後還在。
+
+學生 prompt：
+
+```text
+Please add a PhraseCard model and local saving.
+
+Requirements:
+- Create a PhraseCard model that is Identifiable and Codable
+- Fields: id, japanese, korean, createdAt
+- Save the card list with UserDefaults using JSONEncoder
+- Load the saved list when the app starts
+- Keep the implementation simple and beginner-friendly
+- Do not add networking yet
+```
+
+驗收：
+
+- 新增幾張卡
+- 關掉 App / 重開 App
+- 卡片還在
+
+教學重點：
+
+- `Codable` 可以把資料變成可保存的形式
+- `UserDefaults` 適合小型本機資料
+- 這是 iOS 版 localStorage 類比
+
+可能卡點：
+
+- 保存是隱形的，學生不會感覺到它存在
+- 要用「重開 App 還在」來示範它真的有用
+
+---
+
+### Step 5: 加日文語音輸入
+
+目標：讓學生可以用說話建立卡片，降低打字成本。
+
+學生 prompt：
+
+```text
+Please add simple Japanese voice input to this SwiftUI phrase card app.
+
+Requirements:
+- Use iOS native Speech framework
+- Recognize Japanese speech with the ja-JP locale
+- Add a microphone button near the text field
+- While listening, update the text field with the recognized sentence
+- Let the user stop listening manually
+- Add the required Info.plist privacy usage descriptions
+- Keep the app UI copy Japanese-first
+- Keep the UI and code beginner-friendly
+```
+
+驗收：
+
+- 按 `音声入力`
+- 允許麥克風和語音辨識權限
+- 說一句日文
+- 文字出現在輸入框
+- 按停止
+- 按新增小卡
+
+教學重點：
+
+- 手機 App 能用裝置能力：麥克風、語音辨識
+- iOS 使用隱私功能時需要 Info.plist usage description
+- 真機通常比 Simulator 更適合測語音
+
+可能卡點：
+
+- 麥克風權限被拒後，要去 iOS Settings 重開
+- Simulator 的麥克風設定可能不穩
+- `SFSpeechRecognizer` locale 一定要是 `ja-JP`，不要沿用預演版 `zh-TW`
+
+---
+
+### Step 6: 加韓文欄位與假翻譯
+
+目標：先完成翻譯 UI，不接 API。
+
+學生 prompt：
+
+```text
+Please improve each phrase card with a Korean translation area.
+
+Requirements:
+- Show the original Japanese text
+- Show Korean text if it exists
+- If Korean is empty, show "まだ翻訳されていません"
+- Add a Translate button
+- For now, Translate should set a fake Korean sample text
+- Do not call Gemini yet
+- Keep the code simple
+```
+
+驗收：
+
+- 每張卡有原文和韓文區
+- 按 Translate 後出現假韓文
+
+教學重點：
+
+- 先設計互動，再接真正 AI
+- 假資料是正常開發方法，不是偷懶
+
+---
+
+### Step 7: 加複製韓文
+
+目標：讓 App 開始接近旅行現場用途。
+
+學生 prompt：
+
+```text
+Please implement Copy for the Korean text.
+
+Requirements:
+- Add a Copy button on each card
+- Use UIPasteboard to copy the Korean text
+- If the Korean text is empty, do nothing or show a simple status message
+- Keep the UI compact and beginner-friendly
+```
+
+驗收：
+
+- 按 Copy
+- 貼到 Notes / Messages 可看到韓文
+
+教學重點：
+
+- App 可以跟系統剪貼簿互動
+- 旅行時「給店員看」比語音更可靠
+
+---
+
+### Step 8: 加韓文 TTS 播放
+
+目標：讓 App 可以把韓文念出來。
+
+學生 prompt：
+
+```text
+Please implement Speak for the Korean text.
+
+Requirements:
+- Add a Speak button on each card
+- Use AVSpeechSynthesizer
+- Korean speech language should be ko-KR
+- If another speech is playing, stop it before starting the new one
+- If the Korean text is empty, do nothing or show a simple status message
+```
+
+驗收：
+
+- 按 Speak
+- iPhone / Simulator 播放韓文
+
+教學重點：
+
+- `ko-KR` 是韓文語音
+- 裝置音量 / 靜音模式可能影響播放
+- TTS 聽起來不完美沒關係，重點是功能可用
+
+---
+
+### Step 9: 最後才接 Gemini
+
+目標：把假翻譯換成真翻譯。
+
+學生 prompt：
+
+```text
+Please replace the fake translation with a Gemini API call.
+
+Requirements:
+- Translate the Japanese phrase into natural, polite Korean for Seoul travel situations
+- Keep the prompt short and focused
+- Read the Gemini API key from the app bundle Info.plist key named GeminiAPIKey
+- If the API key is missing, show a clear user-facing error message
+- Show a loading state while translating
+- Disable the Translate button while the request is running
+- Save the Korean result back into the existing card list
+- Do not commit any real API key
+```
+
+建議 Gemini prompt：
+
+```text
+You are an interpreter for a Japanese traveler visiting Seoul.
+Translate the following Japanese sentence into natural, polite Korean suitable for saying directly to shop staff, station staff, hotel staff, or local people.
+Do not add facts that are not in the original sentence.
+Return only the Korean sentence. No explanation. No Markdown.
+```
+
+驗收：
+
+- 設定 key 後按 Translate
+- 出現自然韓文
+- 翻譯結果保存到小卡
+
+教學重點：
+
+- API key 不要 commit
+- prototype 可以把 key 放 app bundle，但正式產品不應該這樣做
+- `Secrets.xcconfig` 是本機 secret 管理，類似 Android `local.properties`
+
+---
+
+### Step 10: 加外部 LLM 匯出 / 匯入 fallback
+
+目標：當 Gemini API、quota、Wi-Fi、key setup 卡住時，App 還是能用。
+
+學生 prompt：
+
+```text
+Please add an external LLM export/import fallback.
+
+Requirements:
+- Add Export and Import buttons above the card list
+- Export should copy a prompt to the clipboard
+- The prompt should include all phrase cards as JSON
+- Ask ChatGPT or Gemini web to fill or update only the korean field
+- Import should open a sheet where the user can paste a JSON array
+- Import should match cards by id and update only the korean field
+- Preserve the original card order
+- Show a simple success or error message
+- Keep the code beginner-friendly
+```
+
+驗收：
+
+- 按 Export，prompt 進剪貼簿
+- 貼到 ChatGPT / Gemini 網頁版
+- 拿回 JSON array
+- 回 App 按 Import 貼上
+- 小卡韓文被補上
+
+教學重點：
+
+- 這是資料流，不只是 UI 功能
+- JSON 是 App 和 AI 之間的交換格式
+- fallback 是實用產品設計的一部分
+
+---
+
+### Step 11: 加排序與刪除確認
+
+目標：收尾成旅行現場比較安全的工具。
+
+學生 prompt：
+
+```text
+Please add final travel usability improvements.
+
+Requirements:
+- Let the user reorder phrase cards using the native SwiftUI List edit mode
+- Save the new order using the existing UserDefaults persistence
+- Ask for confirmation before deleting a card
+- Keep the implementation native and simple
+```
+
+驗收：
+
+- 至少三張小卡
+- 按 Edit，拖曳排序
+- 重開 App 後順序仍保留
+- 刪除前會跳確認
+
+教學重點：
+
+- iOS `List` 有很多原生能力
+- 資料順序也是資料的一部分
+- 旅行現場誤刪很煩，所以 destructive action 要確認
+
+---
+
+## 課堂時間配置建議
+
+如果只有約 3 小時，不要硬塞完整預演版。
+
+### 3 小時推薦版
+
+| 段落 | 內容 | 時間 |
+| --- | --- | --- |
+| 1 | Xcode Hello World + 專案導覽 | 25 min |
+| 2 | 第一版 UI + `@State` 小卡 | 35 min |
+| 3 | `PhraseCard` + UserDefaults 保存 | 35 min |
+| 4 | 日文語音輸入 | 35 min |
+| 5 | 韓文欄位 + 假翻譯 + 複製 | 30 min |
+| 6 | 韓文 TTS | 20 min |
+| 7 | Gemini 或外部 LLM fallback 二選一 | 30 min |
+| 8 | 收尾 / commit / 回顧 | 10 min |
+
+### 如果時間不夠，優先保留
+
+1. Xcode 跑起來
+2. 新增小卡
+3. 本機保存
+4. 日文語音輸入
+5. 韓文欄位 + 複製
+
+這樣即使沒有 Gemini，也已經是一個可用的旅行筆記工具。
+
+### 如果狀態很好，再加
+
+- 韓文 TTS
+- Gemini API
+- 外部 LLM 匯出 / 匯入
+- 排序
+- 刪除確認
+- App icon / display name polish
+
+---
+
+## 工具主線與備援
 
 ### 首選：Codex Desktop / Codex App
 
-如果帳號與環境可用，今晚最推薦用 Codex Desktop / Codex App 當主線。
+推薦原因：
 
-理由：
-
-- Jones 的 `JapanPhraseBuddy` 本來就是靠 Codex 做出來，故事很完整
-- Codex 比純聊天更像真正的 coding partner：能看 repo、改檔、產 diff
-- 「Codex 寫專案、Xcode build/run」是很自然的 iOS vibe coding 工作流
-- 妹妹可以學到的是方法，不是只複製老師的程式碼
+- 能看 repo、改檔、產 diff
+- 很適合「Xcode build/run → 錯誤貼回 Codex → 修」的循環
+- 比純聊天更像 coding partner
 
 ### 備援 A：Codex CLI
 
-如果 Desktop 不順，但 CLI 可以登入，可以改用 CLI。
+如果 Desktop 不穩但 CLI 可用，可以改 CLI。
 
-概念流程：
-
-```bash
-# 具體安裝方式以當天官方文件 / 環境為準
-codex
-```
-
-教學時不要把 CLI 安裝卡關變成主線；如果登入或權限卡太久，切換備援。
+不要讓 CLI 安裝 / 登入變成課程主線。卡太久就切備援。
 
 ### 備援 B：Antigravity + Gemini
 
-妹妹已經熟悉 Antigravity，而且她可用 Gemini Pro。若 Codex 帳號、額度、安裝、登入任一環節卡住，就回到 Antigravity。
-
-今晚的目標不是指定某個品牌工具，而是讓她學會：
-
-> 把需求拆小，交給 AI coding tool，一步一步驗證。
+Azunyan 已經熟悉 Antigravity，也可用 Gemini Pro。若 Codex 帳號、額度、登入、權限卡住，就回 Antigravity。
 
 ### 備援 C：ChatGPT / Gemini 網頁版手動貼 code
 
-最保底的方法：用聊天工具產生 code，手動貼進 Xcode。體驗比較弱，但仍可完成 MVP。
+最保底。體驗比較弱，但仍能完成核心 MVP。
 
 ---
 
 ## 給打字慢學生的語音 → Prompt 工作流
 
-妹妹可能不像 Jones 一樣打字快、prompt 精準。不要要求她一開始就能輸入很長的 coding prompt。
+不要要求學生一開始就能打出很長、很精準的 coding prompt。
 
-建議教她一個輔助流程：
+教她這個流程：
 
-1. 用 ChatGPT 手機 App 語音說出想法
-2. 請 ChatGPT 幫她整理成適合貼給 Codex 的英文 prompt
-3. 複製 prompt 到 Codex Desktop / CLI
-4. Codex 修改專案
+1. 用 ChatGPT 手機 App 語音說需求
+2. 請 ChatGPT 整理成適合貼給 Codex 的英文 prompt
+3. 把 prompt 貼給 Codex
+4. Codex 改 Xcode project
 5. Xcode build/run
-6. 如果出錯，把錯誤訊息貼回 Codex
+6. 錯誤訊息貼回 Codex
 
-可以給她固定句型：
+固定句型：
 
 ```text
 請把我剛剛說的需求整理成一段適合貼給 Codex 的英文 prompt。
@@ -132,106 +658,139 @@ codex
 5. 修改完請告訴我改了哪些檔案
 ```
 
-範例：她用語音說：
+這本身就是本堂課的重要能力：
 
-> 我想讓這個 app 可以輸入中文，按一個按鈕之後加入到旅行片語列表裡，每個片語卡片有中文跟韓文，先不用真的翻譯，可以先用假資料。
-
-整理後給 Codex 的 prompt 可以是：
-
-```text
-Please update this SwiftUI app to add a simple phrase list feature.
-
-Requirements:
-- Add a text input where the user can type a Chinese phrase.
-- Add an “Add Phrase” button.
-- When the button is tapped, create a new phrase card and show it in a list.
-- Each card should display the Chinese phrase and a placeholder Korean translation for now.
-- Keep the implementation simple and beginner-friendly.
-- Do not add networking or API calls yet.
-- After editing, summarize which files you changed.
-```
-
-這個流程本身也是重要能力：她不用直接會寫完美 prompt，只要會描述需求，再讓另一個 AI 幫她整理成 coding agent 能執行的指令。
+> 不會寫完美 prompt 沒關係；先會描述需求，再讓另一個 AI 幫你整理成 coding agent 能執行的指令。
 
 ---
 
-## 為什麼推薦 `KoreanPhraseBuddy`，不是 `KoreaPhraseBuddy`？
+## Xcode / iOS 常見坑
 
-- `Korean` 是形容詞，表示「韓文的／韓國的」
-- `Korea` 是名詞，表示「韓國」
+### 1. Xcode 可能藏起 root-level README / `.gitignore`
 
-因此 repo / project 名稱建議：
+學生可能以為檔案不見了。提醒她 Xcode project navigator 和 Finder / repo tree 不是完全一樣的視角。
+
+### 2. App icon / display name 可能被 iOS cache
+
+如果 iPad 主畫面還顯示舊名稱或舊 icon：
+
+1. 從裝置刪掉 App
+2. 回 Xcode 重新 Run
+
+### 3. Gemini key mapping 容易漏
+
+再次強調：
+
+```text
+GEMINI_API_KEY build setting ≠ App runtime 一定讀得到
+```
+
+runtime 讀的是：
+
+```swift
+Bundle.main.object(forInfoDictionaryKey: "GeminiAPIKey")
+```
+
+所以 Info.plist / target Info 必須真的有 `GeminiAPIKey = $(GEMINI_API_KEY)`。
+
+### 4. 語音權限被拒後很麻煩
+
+如果學生第一次按錯拒絕：
+
+- 到 iOS Settings 找 App
+- 打開 Microphone / Speech Recognition
+- 或刪 App 重裝再試
+
+### 5. Simulator log 很吵
+
+Xcode console 可能出現 app launch measurement、gesture gate、reporter disconnected 等系統 log。
+
+只要 App 沒 crash、功能正常，先當作雜訊，不要讓學生被 log 嚇到。
+
+### 6. TTS 沒聲音不一定是 code 壞
+
+先檢查：
+
+- 裝置音量
+- 靜音模式
+- Simulator 音訊輸出
+- 韓文 voice 是否可用
+
+---
+
+## API key 教學安全說法
+
+課堂上可以這樣講：
+
+> 今天我們是 private workshop prototype，所以可以先把 Gemini API key 透過本機 `.xcconfig` 放進 App bundle，方便學習。但正式上架或給很多人用的 App 不能這樣做，因為 App bundle 裡的 key 有機會被拆出來。正式產品應該走後端 proxy 或其他安全設計。
+
+務必提醒：
+
+- 不要 commit `Config/Secrets.xcconfig`
+- repo 裡只放 `Config/Secrets.example.xcconfig`
+- 真 key 只留在本機
+
+---
+
+## App 命名建議
+
+Repo / Xcode project：
 
 ```text
 KoreanPhraseBuddy
 ```
 
-課堂上的產品名稱可以更情境化：
+原因：
+
+- `Korean` 是形容詞，表示韓文的 / 韓國的
+- `Korea` 是名詞，表示韓國
+
+App 內標題：
 
 ```text
 Seoul Phrase Buddy
 ```
 
-也就是：
+iPad / iPhone Home Screen display name 可以短一點：
 
-- GitHub repo：`KoreanPhraseBuddy`
-- Xcode project：`KoreanPhraseBuddy`
-- App display name：`Seoul Phrase Buddy`
-- 課程主題：做一個首爾旅行用韓文小幫手
+```text
+Seoul Buddy
+```
 
----
-
-## 本堂課的核心命題
-
-> **「下週要去首爾，所以今晚做一個真的能在旅行中打開用的小工具。」**
-
-這堂課不是要完整複製 `JapanPhraseBuddy`。`JapanPhraseBuddy` 已經包含 Android、Wear OS、Gemini、TTS、furigana、同步、匯入匯出等功能，太完整，不適合直接當 3 小時課程目標。
-
-今晚只做 iOS MVP：
-
-1. 可以輸入中文
-2. 可以新增成小卡
-3. 小卡會保存在手機本機
-4. 可以把中文翻成自然禮貌韓文
-5. 可以複製韓文
-6. 可以播放韓文 TTS
-
-如果這六件事完成，就是巨大勝利。
+避免 `Seoul Phrase Buddy` 被主畫面截斷。
 
 ---
 
-## 課前預演目標（Jones 自己先用 Codex 走一次）
+## 最小完成定義
 
-Jones 的計畫是課前先自己預演一次，但這次預演要刻意走妹妹晚上會走的路：不要讓 Jarvis 代寫 `KoreanPhraseBuddy`，而是用 Codex + Xcode 一步一步做。
+如果今晚只完成以下項目，就算成功：
 
-這非常重要，因為今晚真正要準備的不是「Jones 能不能做出 app」，而是：
+- iOS App 可以跑
+- 可以輸入 / 語音輸入日文句子
+- 可以新增成小卡
+- 小卡會本機保存
+- 可以看到韓文欄位
+- 可以複製韓文或假韓文
 
-- 第一次 Xcode / signing / device 會卡在哪裡
-- 哪些 prompt 對 Codex 來說剛好，哪些太大
-- 哪些錯誤適合讓學生自己貼回 Codex 修
-- 哪些步驟應該 Jones demo，哪些步驟應該讓妹妹親手做
+如果再完成以下任一項，就是加分：
 
-預演時請特別記錄：
+- 韓文 TTS
+- Gemini 真翻譯
+- 外部 LLM 匯出 / 匯入
+- 小卡排序
+- 刪除確認
+- App icon / display name polish
 
-- Xcode 建 project 時選了哪些選項
-- Bundle Identifier 怎麼命名
-- Signing & Capabilities 是否需要登入 Apple ID
-- Personal Team 是否可用
-- iPad / iPhone 是否能被 Xcode 偵測到
-- 第一次開 Developer Mode 是否要重開機
-- USB-C / Lightning 線是否能資料傳輸，不只是充電
-- Simulator 是否比實機更穩
-- Gemini API key 放在哪裡比較適合教學
-- 哪些 prompt 一次成功，哪些 prompt 太大、容易壞
-- 哪些步驟適合讓妹妹自己操作，哪些適合 Jones demo
+---
 
-建議用以下格式記錄每一步，之後可以直接交給 Jarvis 整理進教材：
+## 課後整理方向
+
+課後可以把學生實際走過的 prompt 和錯誤補回這份文件：
 
 ````md
-## Step N: 功能名稱
+## Actual Class Log
 
-Goal:
-- 這一步要完成什麼
+### Step N: 功能名稱
 
 Prompt used:
 ```text
@@ -240,485 +799,18 @@ Prompt used:
 
 Result:
 - 成功 / 失敗 / 部分成功
-- Codex 改了哪些檔案
+- 改了哪些檔案
 
 Xcode result:
 - build 成功嗎？
 - Simulator / 實機有跑起來嗎？
 
-Potential student issue:
-- 學生可能會卡在哪裡
-- 老師應該先 demo 還是讓她自己試
+Student issue:
+- 哪裡卡住
+- 老師怎麼提示
 
 Teaching note:
-- 這一步要講的觀念是什麼
+- 下次要怎麼調整
 ````
 
----
-
-## Apple Developer / 實機部署重點
-
-### 是否需要付費 Apple Developer Program？
-
-**今晚大概率不需要。**
-
-只要目標是：
-
-- 在 Simulator 跑
-- 或把 app 跑到自己的 iPhone / iPad 做本機測試
-
-通常只需要：
-
-- 一個 Apple ID
-- Xcode 登入 Apple ID
-- 使用 Personal Team
-- 裝置信任這台 Mac
-- 裝置開啟 Developer Mode
-- Xcode signing 設定正確
-
-不需要付年費 US$99 的 Apple Developer Program。
-
-付費帳號主要用於：
-
-- App Store 上架
-- TestFlight
-- 較正式的 distribution
-- 某些進階 capability
-
-今晚不要把「付費開發者帳號」放進主線，否則很容易變成行政流程地獄。
-
-### 實機部署檢查清單
-
-開課前最好先確認：
-
-- [ ] Mac 已安裝 Xcode，且能打開
-- [ ] Xcode 已完成首次啟動、同意 license、安裝 components
-- [ ] Xcode → Settings → Accounts 已登入 Apple ID
-- [ ] 可以看到 Personal Team
-- [ ] iPhone / iPad 用可傳資料的線接到 Mac
-- [ ] 裝置跳出 Trust This Computer 時選 Trust
-- [ ] iOS / iPadOS 已開啟 Developer Mode
-- [ ] 開 Developer Mode 後若要求重開機，已完成
-- [ ] Xcode 左上角 device list 看得到該裝置
-- [ ] Bundle Identifier 改成唯一值，例如：
-
-```text
-com.joneslab.KoreanPhraseBuddy
-```
-
-如果妹妹的裝置臨時卡住，備案是先用 Simulator 完成本堂課，實機部署當作 optional。
-
----
-
-## MVP 功能範圍
-
-### 必做
-
-- 中文輸入框
-- 「新增小卡」按鈕
-- 小卡列表
-- 小卡本機保存
-- 韓文欄位
-- 「翻譯」按鈕
-- 「複製」按鈕
-- 「播放」按鈕
-
-### 可以延後
-
-- 分類
-- 搜尋
-- 雲端同步
-- Apple Watch
-- 分享 extension
-- App icon 精修
-- 多語言切換
-- 上架 App Store
-- 片語資料庫
-- 羅馬拼音 / 韓文發音標註
-- 匯入 / 匯出 JSON
-
-### 建議資料模型
-
-```swift
-struct PhraseCard: Identifiable, Codable {
-    var id: UUID = UUID()
-    var chinese: String
-    var korean: String = ""
-    var createdAt: Date = Date()
-}
-```
-
----
-
-## 建議課程節奏（約 3 小時）
-
-### 0. 開場：為什麼今天做這個（10 min）
-
-開場不要先講 Swift。先講情境：
-
-> 「妳下週要去首爾。今天我們做一個真的可以放在手機裡、旅行時打開用的小工具。」
-
-讓她先輸入幾句真的會用到的中文：
-
-- 請問這裡可以刷卡嗎？
-- 請問這班車會到弘大入口嗎？
-- 可以幫我推薦不辣的餐點嗎？
-- 我對海鮮過敏，請問這道菜有海鮮嗎？
-- 請問洗手間在哪裡？
-
-### 1. Xcode Hello World（25–35 min）
-
-目標：先讓 app 跑起來，不做功能。
-
-成功標準：
-
-- Simulator 或實機看到 `Hello, world!`
-- 學生知道 Xcode project、Preview、Run button 大概在哪裡
-
-這一步不要貪心。第一次 Xcode 很容易被 signing / device / simulator 佔掉時間。
-
-### 2. 做出第一版 UI（35–45 min）
-
-功能：
-
-- 標題：Seoul Phrase Buddy
-- 中文輸入框
-- 新增小卡按鈕
-- List 顯示小卡
-
-這裡先不要翻譯，不要 API。
-
-成功標準：
-
-- 輸入中文
-- 按新增
-- 下面出現一張卡片
-
-### 3. 本機保存（30–40 min）
-
-功能：
-
-- `PhraseCard` conform `Codable`
-- 用 `UserDefaults` 保存 `[PhraseCard]`
-- App 重開資料還在
-
-教學重點：
-
-> App 的畫面會消失，但資料可以被保存。資料不是畫面，資料可以被 encode 成 JSON。
-
-這一段可以呼應原本 Session 6 的「資料 vs 介面」概念。
-
-### 4. 韓文翻譯（45–60 min）
-
-建議分兩階段：
-
-#### 4A. Fake translation / 手動韓文欄位
-
-先讓 app 支援 `korean` 欄位，並在卡片上顯示。可以暫時用假資料或手動填入。
-
-目的：避免一開始就被 API 卡住。
-
-#### 4B. Gemini / 外部 LLM 翻譯
-
-再加入真正翻譯。
-
-建議 prompt 要求：
-
-- 台灣旅人
-- 首爾旅行
-- 自然、禮貌、可直接對店員 / 站務 / 路人說
-- 不新增中文沒有提到的資訊
-- 只回傳 JSON object 或純文字
-
-如果 API key / quota / network 卡住，備援流程：
-
-1. App 產生 prompt
-2. 複製到 ChatGPT / Gemini web
-3. 把回傳韓文貼回 app
-
-今晚主線可先用 API，但教材應保留外部 LLM 備案。
-
-### 5. 複製與播放（25–35 min）
-
-加入：
-
-- Copy Korean：`UIPasteboard.general.string = korean`
-- Speak Korean：`AVSpeechSynthesizer` + `ko-KR`
-
-成功標準：
-
-- 可以複製韓文給別人看
-- 可以按播放，iPhone 用韓文念出來
-
-這會是整堂課最有「旅行工具完成了」感覺的瞬間。
-
-### 6. 收尾（10–15 min）
-
-反思問題：
-
-- 今天最像魔法的是哪一步？
-- 哪一步其實只是資料在流動？
-- 如果妳明天要加功能，會加什麼？
-- 這個 app 下週首爾真的會用在哪些情境？
-
----
-
-## 建議 AI Coding Prompts
-
-以下 prompt 不是要一次全部丟給 AI。教學上應該一段一段用：每次只讓 Codex 做一個小功能，然後立刻回 Xcode build/run。
-
-建議節奏：
-
-```text
-需求 → Codex 修改 → 看 diff / summary → Xcode build → 截取錯誤或確認成功 → 下一個小需求
-```
-
-如果 Codex 改壞，不要直接重來。把錯誤訊息、Xcode build log 或畫面現象貼回 Codex，讓學生看到「debug 也是跟 AI 對話的一部分」。
-
-### Prompt 1：建立基本 UI
-
-```text
-我正在做一個 SwiftUI iOS app，名稱是 Seoul Phrase Buddy。
-請幫我修改 ContentView，做出以下功能：
-
-- 頁面標題：Seoul Phrase Buddy
-- 一個中文輸入框，placeholder 是「輸入想說的中文」
-- 一個「新增小卡」按鈕
-- 下面用 List 顯示所有已新增的小卡
-- 每張小卡先只需要顯示 chinese 文字
-
-請先用 @State 在 ContentView 裡保存資料，不要加入 API，也不要加入複雜架構。
-請給我可以直接貼進 ContentView.swift 的完整程式碼。
-```
-
-### Prompt 2：加入資料模型與本機保存
-
-```text
-請幫我把剛才的 SwiftUI app 改成使用 PhraseCard model：
-
-struct PhraseCard: Identifiable, Codable {
-    var id: UUID = UUID()
-    var chinese: String
-    var korean: String = ""
-    var createdAt: Date = Date()
-}
-
-請加入 UserDefaults 保存功能：
-- 新增小卡後自動保存
-- App 打開時自動讀取
-- 使用 JSONEncoder / JSONDecoder
-
-請保持程式簡單，適合初學者閱讀。
-```
-
-### Prompt 3：加入韓文欄位與卡片 UI
-
-```text
-請幫我改進 Seoul Phrase Buddy 的卡片 UI。
-每張卡片要顯示：
-
-- 原始中文
-- 如果 korean 不為空，顯示韓文
-- 如果 korean 為空，顯示「尚未翻譯」
-- 每張卡片有三個按鈕：翻譯、複製、播放
-
-目前翻譯按鈕先不要接 API，可以先把 korean 設成範例文字「안녕하세요」。
-複製和播放可以先留空 function，我們下一步再做。
-```
-
-### Prompt 4：加入韓文 TTS
-
-```text
-請幫我在 SwiftUI app 裡加入韓文播放功能。
-需求：
-
-- 使用 AVFoundation
-- 用 AVSpeechSynthesizer 播放韓文
-- language 設定為 ko-KR
-- 如果 korean 是空字串，不要播放
-
-請告訴我需要 import 什麼，並給我最簡單可用的程式碼。
-```
-
-### Prompt 5：加入複製功能
-
-```text
-請幫我加入複製韓文的功能。
-需求：
-
-- 按下「複製」後，把該卡片的 korean 複製到 iOS 剪貼簿
-- 使用 UIPasteboard
-- 如果 korean 是空字串，不要複製
-- 可以用一個簡單的 @State message 顯示「已複製」
-```
-
-### Prompt 6：加入 Gemini 翻譯 API
-
-```text
-請幫我在這個 SwiftUI app 中加入 Gemini 翻譯功能。
-
-需求：
-- 輸入：PhraseCard 的 chinese
-- 輸出：自然、禮貌、適合台灣旅人在首爾對店員、站務、飯店櫃檯或路人直接說的韓文
-- 不要新增中文沒有提到的事實
-- 翻譯完成後更新該卡片的 korean 欄位並保存
-- 使用 async/await
-- API key 先用一個常數 GEMINI_API_KEY 代表，之後我會自己處理安全性
-- 請保持程式碼簡單，適合初學者理解
-
-請先只回傳最小可用版本，不要加入複雜架構。
-```
-
----
-
-## Gemini 翻譯 Prompt 建議
-
-```text
-你是台灣旅人在韓國首爾旅行時的現場口譯助手。
-請把下面這句中文轉成自然、禮貌、適合直接對韓國店員、站務、飯店櫃檯或路人說的韓文。
-可以稍微潤飾成更自然的韓文，但不要新增中文沒有提到的事實。
-請只輸出韓文句子，不要解釋，不要 Markdown。
-
-中文：{chineseText}
-```
-
-如果想要 JSON：
-
-```text
-你是台灣旅人在韓國首爾旅行時的現場口譯助手。
-請把下面這句中文轉成自然、禮貌、適合直接對韓國店員、站務、飯店櫃檯或路人說的韓文。
-可以稍微潤飾成更自然的韓文，但不要新增中文沒有提到的事實。
-請只輸出合法 JSON object，不要 Markdown，不要解釋。
-
-JSON schema:
-{
-  "korean": "自然禮貌的韓文句子"
-}
-
-中文：{chineseText}
-```
-
----
-
-## 參考 `JapanPhraseBuddy` 時要取哪些概念？
-
-可以借用的概念：
-
-- 旅行現場溝通工具，而不是大型片語庫
-- 先存小卡，不要等翻譯成功才保存
-- 每張小卡可以個別翻譯 / 重翻
-- 翻譯失敗時不要丟失原始中文
-- 小卡保存在本機
-- 按鈕順序偏向實用：播放 → 複製 → 翻譯/重翻 → 刪除
-- Gemini 429 / 額度問題要有外部 LLM 備案
-
-今晚不要借用的複雜度：
-
-- Android / Kotlin / Compose
-- Wear OS
-- Data Layer sync
-- furigana / rubySegments
-- 拖曳排序
-- 完整匯入匯出 JSON
-- 多 module project
-
----
-
-## 教學上的關鍵提醒
-
-### 不要一開始就說「今天學 Swift」
-
-比較好的說法：
-
-> 「今天不是要妳學會 Swift，而是要妳體驗：就算是陌生平台，也可以靠 AI 拆小步驟做出真的能用的 app。」
-
-### 每一步都要有可見成果
-
-不要連續 40 分鐘只改 code。每 10–20 分鐘要能按 Run 看到變化。
-
-### API 是高風險區
-
-Gemini API 很可能卡在：
-
-- API key
-- quota
-- HTTP request
-- JSON parsing
-- iOS networking permission / ATS confusion
-- async/await 初學者難懂
-
-所以翻譯 API 不要放太早。先讓 app 本身成立，再加 AI。
-
-### 實機部署也是高風險區
-
-如果 iPhone / iPad 卡住，不要讓整堂課被 signing 吃掉。備案：
-
-1. 先用 Simulator 完成 app
-2. 最後再挑戰實機
-3. 或 Jones demo 自己 iPad 上的版本
-
----
-
-## 今晚最小成功定義
-
-如果最後完成以下任一版本，都算成功：
-
-### A. 完整 MVP 成功
-
-- iOS app 可跑
-- 可新增中文小卡
-- 可保存
-- 可翻譯韓文
-- 可複製
-- 可播放
-
-### B. 無 API 成功
-
-- iOS app 可跑
-- 可新增中文小卡
-- 可保存
-- 可手動填入或假資料顯示韓文
-- 可複製 / 播放韓文
-
-### C. Simulator 成功
-
-- Simulator 完成功能
-- 實機部署列為課後挑戰
-
-不要把成功定義綁死在「一定要實機 + 一定要 Gemini + 一定要完整漂亮」。今晚的核心是完成第一個 iOS 旅行工具。
-
----
-
-## 課後可能延伸
-
-- 加刪除小卡
-- 加重翻
-- 加常用場景分類：交通 / 餐廳 / 飯店 / 購物 / 緊急
-- 加韓文羅馬拼音或中文注音輔助
-- 加外部 LLM prompt 匯出 / 匯入
-- 加 app icon
-- 加分享功能
-- 加 iCloud sync
-- 變成多語言 Travel Phrase Buddy
-
----
-
-## 給 Jones 的備課建議
-
-課前你自己預演時，不要只看「有沒有做出來」。請刻意記錄：
-
-1. 哪些地方 AI 一次就寫對
-2. 哪些地方 AI 會過度工程化
-3. 哪些 prompt 要縮小
-4. 哪些 Xcode / signing / device 步驟很煩
-5. 哪些適合你先 demo，哪些適合讓她親手做
-6. 如果只剩 90 分鐘，應該砍掉哪些功能
-7. 如果她很興奮，哪些 optional 最值得加
-
-今晚真正的教學價值不是 app 多完整，而是讓她帶著一個想法走進陌生平台，然後真的把它做出來。
-
-本堂課的 repo 更新策略：
-
-- `KoreanPhraseBuddy`：由 Jones + Codex/GPT 預演與開發，不由 Jarvis 主導
-- `VibeCoding_Workshop/session6`：由 Jarvis 根據預演結果更新教材、prompt、checklist，並 commit + push
-- 若課中工具卡住，優先保住「學生自己跟 AI coding tool 合作」的體驗，而不是改回 Jarvis 遠端代工
+這樣 Session 6 會從「課前設計」慢慢變成真正可重複使用的教材。
