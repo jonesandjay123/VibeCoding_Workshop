@@ -1,10 +1,25 @@
-# Session 7 指令與概念複習速查卡
+# Session 7 Survival Card：卡住時先看這張
 
 > 這張不是小考，是生存卡。當 AI 工具、Xcode 或專案狀態卡住時，先回來看這張。
 
 ---
 
 ## Terminal 基本移動
+
+今天真的需要記的最小組合：
+
+```text
+pwd
+ls
+cd
+git status
+git diff
+git add .
+git commit -m "message"
+git restore .
+```
+
+其他指令先當查表用，不需要一次背起來。
 
 | 指令 | 做什麼 | 什麼時候用 |
 | --- | --- | --- |
@@ -182,4 +197,3 @@ Please fix it so it matches this format exactly:
 ]
 Return JSON only.
 ```
-

@@ -35,7 +35,7 @@ VibeCoding_Workshop/
     └── research/       # 研究資料
 ```
 
-最新教材在 `session7/`，重點是 Agentic Coding、AI Creator Stack，以及 AI 工具額度用完時仍能繼續推進作品的 fallback 流程。
+最新教材在 `session7/`，重點是 Agentic Coding、AI Creator Stack、工具額度用完時仍能推進作品的 fallback 流程，以及「卡住時先看這張」survival card。
 
 ## 學生背景
 

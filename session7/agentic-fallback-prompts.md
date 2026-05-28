@@ -4,6 +4,26 @@
 
 ---
 
+## 0. 超短 Emergency Prompt
+
+```text
+I am teaching a beginner. Please help us make the smallest safe change.
+
+Context:
+[paste current file, current screen, or error]
+
+Goal:
+[paste one small goal]
+
+Rules:
+- Keep it beginner-friendly.
+- Do not redesign everything.
+- Do not add APIs.
+- Return only the code or steps we need.
+```
+
+---
+
 ## 1. 檢查專案，不修改
 
 ```text
@@ -202,4 +222,3 @@ Tone:
 - Not too corporate
 - Suitable for a student project
 ```
-

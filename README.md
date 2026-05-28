@@ -35,7 +35,7 @@ VibeCoding_Workshop/
     └── research/       # リサーチ資料
 ```
 
-最新の教材は `session7/` にあり、Agentic Coding、AI Creator Stack、ツール制限時の fallback を扱います。
+最新の教材は `session7/` にあり、Agentic Coding、AI Creator Stack、ツール制限時の fallback、そして「卡住時先看這張」survival card を扱います。
 
 ## 受講者情報
 
