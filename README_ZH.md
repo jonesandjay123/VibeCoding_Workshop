@@ -10,6 +10,11 @@
 |---------|------|------|------|
 | [Session 1](./session1/) | Vibe Coding 入門 | 2026-01-31 | 約2小時 |
 | [Session 2](./session2/) | Git、JavaScript、API 概念 | 2026-02-07 | 約3小時 |
+| [Session 3](./session3/) | Data Flow & Version Control | 2026-02-27 | 約3小時 |
+| [Session 4](./session4/) | JSON-Driven UI + AI Generation | 2026-03-20 | 約3小時 |
+| [Session 5](./session5/) | Idea Sorting Board | TBD | 約3小時 |
+| [Session 6](./session6/) | KoreanPhraseBuddy：Codex + Xcode 做 iOS 旅行 App | 2026-05-08 | 約3小時 |
+| [Session 7](./session7/) | AI 工具鏈思維：從 App 到 Creator Stack | 2026-05-29 | 約2-3小時 |
 
 ## 專案結構
 
@@ -29,6 +34,8 @@ VibeCoding_Workshop/
     ├── slides/         # 簡報
     └── research/       # 研究資料
 ```
+
+最新教材在 `session7/`，重點是 Agentic Coding、AI Creator Stack，以及 AI 工具額度用完時仍能繼續推進作品的 fallback 流程。
 
 ## 學生背景
 
