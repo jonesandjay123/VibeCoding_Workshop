@@ -1,6 +1,6 @@
-# Session 7 Agentic / Fallback Prompts
+# Session 7 Agentic Tool-Making Prompts
 
-> 這些 prompt 是課堂保命用。工具還能跑時，讓 agent 小步改。Agent 額度爆掉時，用網頁 LLM 回完整檔案，再手動貼回 Xcode。
+> 這些 prompt 是課堂用的「指揮 AI agent」範本。重點不是讓 AI 一次做完整 app，而是讓學生練習：描述需求、限制範圍、跑起來驗收、用錯誤訊息 debug。
 
 ---
 
@@ -18,137 +18,156 @@ Goal:
 Rules:
 - Keep it beginner-friendly.
 - Do not redesign everything.
+- Do not rewrite the whole project.
 - Do not add APIs.
 - Return only the code or steps we need.
 ```
 
 ---
 
-## 1. 檢查專案，不修改
+## 1. Inspect First, Do Not Modify
 
 ```text
-Please inspect this SwiftUI iOS project and explain the current structure in beginner-friendly terms.
+Please inspect this beginner SwiftUI iOS project and explain it in beginner-friendly terms.
 
 Do not modify files yet.
 
 Focus on:
 - Which file controls the main screen
-- Where the phrase card data is defined
 - Where visible text appears
-- What would be the safest first small change
+- Where sample phrases or examples are defined
+- What would be the safest first small remix task
+- How we can test the change in Xcode Simulator
 ```
 
 ---
 
-## 2. Rename / Re-theme 小步修改
+## 2. Minimal App Remix Prompt
+
+```text
+We are remixing this beginner SwiftUI app into a small personal tool.
+
+Goal:
+Change it from a Korean study buddy into [Fashion Phrase Buddy / Creator Caption Buddy / Travel Korea Buddy v2].
+
+Please make the smallest useful change:
+- Change the visible title and subtitle.
+- Replace the sample examples with 3-5 examples for this theme.
+- Add one simple scene/category if the app already has categories.
+
+Rules:
+- Do not rewrite the whole app.
+- Do not change the project structure.
+- Do not add API integration.
+- Keep the code beginner-friendly.
+- After editing, list exactly which files changed.
+- Explain how I can test the change in Xcode Simulator.
+```
+
+---
+
+## 3. Visible Text Only
 
 ```text
 Please make only one small change:
-Rename the app concept from Korean Phrase Buddy to Vietnam Phrase Buddy.
+Update the visible UI copy so the app feels like [chosen theme].
 
 Requirements:
-- Update visible UI text only.
-- Keep the current data model.
+- Update visible text only.
+- Keep the data model the same.
 - Do not add API integration.
 - Do not change the project structure.
+- Do not rename files or targets.
 - Make sure the app still builds.
 
-After editing, summarize exactly what files you changed.
+After editing:
+- Summarize exactly what changed.
+- Tell me what I should see in the Simulator.
 ```
 
 ---
 
-## 3. 加越南文欄位，不接 API
+## 4. Add One Scene / Category
 
 ```text
-Add a Vietnamese translation field to each phrase card.
+Please add one new scene/category to the existing app:
+[Cafe / Shopping / Content Shoot / Outfit Check / Airport]
 
 Requirements:
-- Do not call any API.
-- When the user adds a Japanese phrase, create a card with the Japanese text and a placeholder Vietnamese text like "Vietnamese translation goes here".
-- Keep the data model simple.
-- Keep the UI beginner-friendly.
-- Make sure the app still builds.
-
-Please keep the change as small as possible.
-```
-
----
-
-## 4. 加 Copy Button
-
-```text
-Only modify the main SwiftUI screen file.
-
-Add a copy button next to each Vietnamese translation.
-
-Requirements:
-- The button should copy the Vietnamese text to the clipboard.
-- Do not change the app structure.
+- Reuse the app's existing category or example pattern.
+- Add only 3-5 beginner-friendly example phrases.
+- Do not redesign the UI.
 - Do not add API integration.
-- Do not redesign the whole screen.
-- Keep the code beginner-friendly.
+- Keep the change small enough for a beginner to review.
 
-After editing, explain how to test it in Xcode.
+After editing:
+1. List the changed files.
+2. Explain where the new examples appear.
+3. Explain how to test in Xcode Simulator.
 ```
 
 ---
 
-## 5. 外部 LLM 翻譯流程
+## 5. Debugging Prompt
 
 ```text
-Add an "Export Translation Prompt" feature.
+The app no longer works as expected.
 
-Goal:
-The app should generate a prompt that the user can copy into ChatGPT or Gemini to translate all untranslated Japanese phrases into natural Vietnamese.
+Error / problem:
+[paste the important Xcode error lines or describe the screen problem]
 
-Requirements:
-- Do not use any API key.
-- The exported prompt should ask the LLM to return JSON.
-- The JSON format should include each card id and Vietnamese translation.
-- Keep the feature simple and beginner-friendly.
-- If adding import is too large, only implement export first.
-
-Please make the smallest safe change.
-```
-
----
-
-## 6. JSON 匯入修復
-
-```text
-The app cannot import this JSON:
-
-[paste JSON here]
-
-Expected format:
-[
-  {
-    "id": "...",
-    "vietnamese": "..."
-  }
-]
-
-Please explain what is wrong in beginner-friendly terms.
-Then return corrected JSON only.
-```
-
----
-
-## 7. Xcode Build Error 修復
-
-```text
-The app no longer builds in Xcode.
-
-Here is the error message:
-
-[paste the important error lines here]
+Context:
+- This is a beginner SwiftUI app.
+- We only want the smallest necessary fix.
+- Do not rewrite the whole project.
+- Do not add new architecture.
 
 Please:
 1. Explain the likely cause in simple terms.
-2. Suggest the smallest safe fix.
-3. Avoid rewriting the whole app unless necessary.
-4. If code changes are needed, tell me exactly which file to edit.
+2. Tell me which file needs to change.
+3. Fix only the minimum necessary part.
+4. List how to confirm the fix in Xcode Simulator.
+```
+
+---
+
+## 6. Expected vs Actual Mismatch Prompt
+
+```text
+The app builds, but the result does not match what I expected.
+
+Expected:
+[describe what I wanted to see]
+
+Actual:
+[describe what I actually see in the Simulator]
+
+Please:
+- Explain the difference in beginner-friendly terms.
+- Propose the smallest change to make the app match the expected behavior.
+- Do not rewrite unrelated parts.
+- If you need to edit code, say which file and why.
+```
+
+---
+
+## 7. AI Changed Too Much
+
+```text
+The agent changed more files than I expected.
+
+Here is the git status / changed file list:
+[paste git status or file list]
+
+Original goal:
+[paste the small task]
+
+Please help me review:
+1. Which changes are necessary for the goal?
+2. Which changes look unrelated or risky?
+3. What is the safest next step for a beginner?
+
+Do not suggest a big rewrite. Focus on controlling scope.
 ```
 
 ---
@@ -158,9 +177,9 @@ Please:
 ```text
 You are helping a beginner modify a simple SwiftUI iOS app.
 
-I will paste the current ContentView.swift below.
+I will paste the current file below.
 
-Please make the requested change and return the full updated ContentView.swift file only.
+Please make the requested change and return the full updated file only.
 
 Requirements:
 - Keep the code beginner-friendly.
@@ -172,53 +191,53 @@ Requirements:
 Requested change:
 [write one small change here]
 
-Current ContentView.swift:
+Current file:
 [paste the full file here]
 ```
 
 ---
 
-## 9. 即興想法拆解 Prompt
+## 9. Product Owner Prompt
 
 ```text
-I am teaching a beginner AI-native creation class.
-The student has this idea:
+I am teaching a beginner AI-native tool-making class.
+The student wants to remix a Korean study app into this tool:
 
 [paste idea]
 
-Please help us turn it into a small 60-90 minute prototype plan.
+Please help us turn it into a 45-60 minute beginner-friendly remix plan.
 
 Return:
-1. One-sentence product concept
+1. One-sentence tool concept
 2. Target user
-3. MVP features
-4. What to avoid today
-5. Best tool path
-6. Fallback path if coding agents run out of quota
-7. First three tiny tasks
+3. The smallest visible change we should make first
+4. 2-3 sample categories or scenes
+5. What to avoid today
+6. First three tiny AI-agent tasks
+7. How to validate each task in the Simulator
 
-Keep it beginner-friendly and practical.
+Keep it practical and do not assume deep iOS knowledge.
 ```
 
 ---
 
-## 10. App 包裝 Prompt
+## 10. Wrap-up Reflection Prompt
 
 ```text
-We made a small prototype app:
+We just completed a beginner AI-agent coding lesson.
 
-[describe app]
+What happened:
+[briefly describe the tool remix and any errors]
 
-Please create:
-1. A friendly app name
-2. A one-line slogan
-3. A short landing page hero text
-4. An iOS app icon prompt
-5. Three possible first social posts introducing the app
+Please create a short reflection for the student:
+- What the human decided
+- What the AI agent executed
+- How we validated the result
+- What to do next time when starting a new tool idea
 
 Tone:
 - Friendly
 - Beginner-friendly
 - Not too corporate
-- Suitable for a student project
+- Suitable for a student learning Vibe Coding
 ```

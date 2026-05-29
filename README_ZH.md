@@ -14,7 +14,7 @@
 | [Session 4](./session4/) | JSON-Driven UI + AI Generation | 2026-03-20 | 約3小時 |
 | [Session 5](./session5/) | Idea Sorting Board | TBD | 約3小時 |
 | [Session 6](./session6/) | KoreanPhraseBuddy：Codex + Xcode 做 iOS 旅行 App | 2026-05-08 | 約3小時 |
-| [Session 7](./session7/) | AI 工具鏈思維：從 App 到 Creator Stack | 2026-05-29 | 約2-3小時 |
+| [Session 7](./session7/) | AI Agentic Tool-Making：用 AI Agent 做自己的工具 | 2026-05-29 | 約2小時 |
 
 ## 專案結構
 
@@ -35,7 +35,7 @@ VibeCoding_Workshop/
     └── research/       # 研究資料
 ```
 
-最新教材在 `session7/`，重點是 Agentic Coding、AI Creator Stack、工具額度用完時仍能推進作品的 fallback 流程，以及「卡住時先看這張」survival card。
+最新教材在 `session7/`，重點是沿用 Session 6 的 KoreanStudyBuddy，練習用 AI agent 小步 remix 成自己的工具、用 Simulator 驗收、用 debug prompt 修正錯誤，以及「卡住時先看這張」survival card。
 
 ## 學生背景
 

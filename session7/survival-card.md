@@ -1,6 +1,6 @@
-# Session 7 Survival Card：卡住時先看這張
+# Session 7 Survival Card：AI Agent 做工具卡住時先看這張
 
-> 這張不是小考，是生存卡。當 AI 工具、Xcode 或專案狀態卡住時，先回來看這張。
+> 這張不是小考，是生存卡。當 AI agent、Xcode 或專案狀態卡住時，先回來看這張。
 
 ---
 
@@ -103,28 +103,49 @@ git restore .
 
 ---
 
+## Agentic Tool-Making 基本節奏
+
+今天最重要的不是背 code，而是這個循環：
+
+```text
+我想做什麼工具？
+-> 最小只改哪一步？
+-> 請 AI agent 改
+-> Simulator 驗收
+-> 不對就描述 expected vs actual
+-> 能跑就 commit
+```
+
+每次 prompt 都要講清楚：
+
+| 要素 | 例子 |
+| --- | --- |
+| Goal | Change this into Creator Caption Buddy |
+| Scope | Only update title, examples, and one category |
+| Constraint | Do not rewrite the whole app |
+| Validation | Explain how to test in Xcode Simulator |
+
+---
+
 ## JSON / Data Flow
 
 | 概念 | 一句話 |
 | --- | --- |
 | JSON | 電腦看的資料格式 |
-| Data model | App 裡一張卡片或一筆資料的形狀 |
+| Data model | App 裡一張卡片、一句 phrase、或一個 category 的形狀 |
 | Import | 把外部資料放進 App |
 | Export | 把 App 資料拿出去給別的工具用 |
 | API | App 跟外部服務要資料 |
 
-本堂最重要的資料流：
+今天只要知道：
 
 ```text
-App 裡的 phrase cards
--> 匯出成 prompt / JSON
--> 貼到 ChatGPT 或 Gemini
--> AI 回傳翻譯 JSON
--> 貼回 App
--> 更新卡片
+畫面上看到的 phrase / category
+通常背後都有一份資料或程式碼
+AI agent 改資料，Simulator 畫面就會變
 ```
 
-這比一開始接 API 更穩，也更容易理解。
+本堂不需要深入 API。先讓本機小工具變有用，再考慮自動化和雲端。
 
 ---
 
@@ -142,11 +163,11 @@ App 裡的 phrase cards
 好 prompt 例子：
 
 ```text
-Only modify ContentView.swift.
-Add a copy button next to the Vietnamese translation.
+Only update visible text and sample examples.
+Change the app into Creator Caption Buddy.
 Do not change the project structure.
 Do not add API integration.
-After editing, summarize what changed.
+After editing, summarize what changed and how to test in Simulator.
 ```
 
 ---
@@ -182,18 +203,19 @@ git restore .
 4. 不要讓它重寫整個 app
 ```
 
-### JSON 格式錯
+### 畫面跟期待不同
 
 貼給 AI：
 
 ```text
-This JSON cannot be imported by my app.
-Please fix it so it matches this format exactly:
-[
-  {
-    "id": "...",
-    "vietnamese": "..."
-  }
-]
-Return JSON only.
+The app builds, but the screen is not what I expected.
+
+Expected:
+[我本來想看到什麼]
+
+Actual:
+[Simulator 現在看到什麼]
+
+Please explain the difference and suggest the smallest fix.
+Do not rewrite the whole app.
 ```

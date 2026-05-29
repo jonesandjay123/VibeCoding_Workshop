@@ -14,7 +14,7 @@ AIツールを活用したソフトウェア開発を学ぶVibe Codingワーク�
 | [Session 4](./session4/) | JSON駆動UI＋AI生成 | 2026-03-20 | 約3時間 |
 | [Session 5](./session5/) | DailyPlanner機能改善＋復習 | TBD | 約3時間 |
 | [Session 6](./session6/) | KoreanPhraseBuddy：Codex + Xcode で iOS 旅行アプリ | 2026-05-08 | 約3時間 |
-| [Session 7](./session7/) | AI 工具鏈思維：從 App 到 Creator Stack | 2026-05-29 | 約2-3時間 |
+| [Session 7](./session7/) | AI Agentic Tool-Making：用 AI Agent 做自己的工具 | 2026-05-29 | 約2時間 |
 
 ## プロジェクト構成
 
@@ -35,7 +35,7 @@ VibeCoding_Workshop/
     └── research/       # リサーチ資料
 ```
 
-最新の教材は `session7/` にあり、Agentic Coding、AI Creator Stack、ツール制限時の fallback、そして「卡住時先看這張」survival card を扱います。
+最新の教材は `session7/` にあり、Session 6 の KoreanStudyBuddy を素材に、AI agent へ小さく依頼して自分用ツールへ remix する流れ、debug prompt、Simulator での検証、そして「卡住時先看這張」survival card を扱います。
 
 ## 受講者情報
 

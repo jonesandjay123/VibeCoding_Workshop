@@ -1,9 +1,11 @@
-# Session 7: AI 工具鏈思維 — 從 App 到 Creator Stack
+# Session 7: AI Agentic Tool-Making — 從「做一個 App」到「用 AI Agent 做自己的工具」
 
-> **日期：** 2026-05-29（預定）  
-> **對象：** 已完成 Session 1-6，做過 Web / React / JSON / iOS 初體驗的櫻井妹妹（Azunyan）  
-> **時長：** 約 2-3 小時  
-> **定位：** 這不是固定專案課，而是 AI 創作實戰課。先問她想做什麼，再用工具鏈把想法推進成作品。
+> **日期：** 2026-05-29
+> **對象：** 已完成 Session 1-6，做過 Web / React / JSON / iOS 初體驗的櫻井妹妹（Azunyan）
+> **時長：** 約 2 小時
+> **場景：** Zoom lesson；Jones 可以用自己的 demo clone + iPhone Simulator 當舞台
+> **參考素材：** [`KoreanStudyBuddy`](https://github.com/azunyanchannel/KoreanStudyBuddy)
+> **定位：** 這不是 iOS 架構課，而是 Vibe Coding / Agentic Coding 課：說清楚想做的工具，請 AI agent 小步修改，跑起來驗收，卡住時 debug。
 
 ---
 
@@ -11,422 +13,369 @@
 
 前六堂主要在學：
 
-> 用 AI 輔助寫出網站或 App。
+```text
+用 AI 輔助做網站、資料流、React prototype、iOS app 初體驗。
+```
 
 第七堂開始升級成：
 
-> 用 AI 工具鏈，把一個模糊想法變成可展示、可使用、可發布的作品。
+```text
+用 AI Agent 做自己的小工具。
+```
 
-這堂不賭某一個工具一定可用。Antigravity、Codex、ChatGPT、Gemini、Xcode、GitHub、Firebase 都只是工具；真正要學的是：
+今天不要把重點放在 SwiftUI 架構、Xcode 設定、iOS project structure。
+真正要練的是這個工作流：
 
 ```text
-想法
--> 表達
--> 拆成 MVP
--> 選工具
--> 指揮 AI
--> 驗收
--> 保存
--> 包裝 / 發布
+想要一個工具
+-> 用人話描述
+-> 拆成很小的任務
+-> 請 AI agent 改一小步
+-> 用 Simulator / 畫面驗收
+-> 看錯誤、改 prompt、再試一次
+-> 成功後保存版本
 ```
 
 ---
 
-## 這堂課的核心判斷
+## 今日核心主題
 
-最近 AI coding 工具快速變強，也開始更吃額度。這不是「沒付費就不能玩」，而是遊戲規則變了：會用 AI 的人，不只是會問一個工具，而是知道工具狀況變動時怎麼換打法。
+### 從 App 開發轉成 Tool-Making
 
-課堂中很可能遇到：
+Session 6 已經做過 iOS first app，所以今天不需要重新教「怎麼做 iOS app」。
+今天要讓她理解：
 
-- Antigravity / Gemini 額度用完
-- Codex Free 額度不夠
-- Agent 改壞專案
-- Xcode build / signing 卡住
-- API key / quota / JSON 格式出錯
+> App 只是其中一種外殼。真正有價值的是：我可以把自己的生活需求，變成一個會幫我的工具。
 
-所以這堂課不要設計成「某個 agent 成功寫完一個 App 才算成功」。
+用 `KoreanStudyBuddy` 當素材，是因為它已經有上一堂課的連續性：
 
-這堂課要讓她知道：
+- 她知道這是語言學習 / 旅行 / creator 生活會用到的東西
+- 畫面變化可以在 Simulator 立刻看到
+- 不需要跳到完全陌生的新專案
+- 可以把注意力放在「怎麼指揮 AI agent」，而不是「iOS 到底怎麼寫」
 
-> 工具會改版、額度會用完、AI 會出錯；但只要知道怎麼拆小任務、保存版本、換工具、改用手動 patch，作品仍然可以往前推。
+### 老師心裡要守住的線
 
----
+今天不是：
 
-## 開場話術
+- 深講 SwiftUI
+- 解釋 MVVM / architecture
+- 從零做一個大型新 app
+- 把所有功能一次丟給 AI
+- 追求完美完成品
 
-可以用半開玩笑的方式講：
+今天是：
 
-```text
-最近 AI 工具升級很快，變得更強，但免費額度也更容易用完。
-所以今天我們不只學一個工具，而是學怎麼當一個 AI 工具指揮官。
-
-今天更重要的是：
-工具能用時，我們用它加速。
-工具不能用時，我們換方法，作品還是要繼續往前。
-```
-
-接著問她：
-
-```text
-妳最近有沒有什麼真的想做的東西？
-可以是 app、網站、IG 角色、旅遊工具、小遊戲、學校用工具、圖片生成、短影片頻道，都可以。
-
-如果妳今天有想法，我們就用妳的想法。
-如果暫時沒有，我有一個備用題目：Vietnam Phrase Buddy。
-```
+- 學會把工具需求講清楚
+- 學會限制 AI agent 的修改範圍
+- 學會用可見畫面驗收
+- 學會把錯誤訊息變成 debug prompt
+- 學會人是 product owner / director，AI 是執行助手
 
 ---
 
-## 今日最低成功標準
+## Session 1-6 輕量回顧
 
-這堂課不需要完成完整 app。只要完成以下任一項，就算成功：
+開場 10-15 分鐘，只要把脈絡接回來，不要變成考試。
 
-1. 把一個想法拆成 MVP，並寫出前三個小任務
-2. 用 AI 修改一個小功能，並成功跑起來
-3. 在 agent 額度用完時，用 fallback prompt 產出完整檔案
-4. 幫一個 prototype 做出名字、slogan、icon prompt 和 landing page 文案
+| Session | 做過什麼 | 今天接到哪裡 |
+| --- | --- | --- |
+| 1 | Static site / Vibe Coding 入門 | 用人話描述想做的畫面 |
+| 2 | Git / Terminal / JavaScript / API 概念 | 知道專案、檔案、指令不是魔法 |
+| 3 | JSON / localStorage / Data Flow | 工具背後有資料形狀 |
+| 4 | React / JSON / AI generation | 用資料驅動畫面，用 AI 生成內容 |
+| 5 | Idea sorting / product sizing | 想法要先縮成 MVP |
+| 6 | iOS first app / Korean study tool | 今天沿用它，練 agentic remix |
 
-老師心裡要守住一件事：
-
-> 今天不是把所有工具鏈講完，而是讓她第一次意識到：AI 創作不是按一個魔法按鈕，而是一套可以管理的工作流。
-
----
-
-## 課程主線：即興顧問模式
-
-第七堂的預設流程不是照表操課，而是先接她的想法。
-
-### Idea Intake 小表
-
-一開始如果她有想法，先用這張表問，不急著開工具：
+可以這樣說：
 
 ```text
-1. 妳想做的是什麼？
-2. 誰會用它？
-3. 使用者打開後第一件事會做什麼？
-4. 今天如果只能做一個最小版本，要有哪 1-2 個功能？
-5. 今天先不要做什麼？
-6. 最後要怎麼知道它成功了？
+前面六堂不是白學的。
+今天我們把它們合起來：妳有一個想法，知道資料大概長什麼樣，知道要拆小，知道要跑起來看，然後用 AI agent 幫妳做自己的工具。
 ```
-
-這張表的目的，是把隨機靈感變成 MVP。
-
-### 如果她想做 App
-
-```text
-想法定義
--> MVP 功能
--> Antigravity / Codex 修改 SwiftUI 或 Web 專案
--> Xcode / browser 跑起來
--> Git 保存
--> icon / slogan / landing page 包裝
-```
-
-### 如果她想做網站
-
-```text
-網站主題
--> 首頁一句話
--> AI 生成 HTML / React
--> 本地預覽
--> GitHub / Firebase Hosting 概念
-```
-
-### 如果她想做 IG / KOL / 虛擬角色
-
-```text
-角色設定
--> 目標受眾
--> 發文語氣
--> 頭像 / 視覺 prompt
--> 第一篇貼文
--> 內容節奏
-```
-
-### 如果她想做影片
-
-```text
-主題
--> 腳本
--> 畫面 prompt
--> 音樂 prompt
--> 剪輯結構
--> 發布平台
-```
-
-### 如果她沒有想法
-
-走預設備案：
-
-```text
-KoreanPhraseBuddy
--> TravelPhraseBuddy
--> VietnamPhraseBuddy
-```
-
----
-
-## 預設備案：Vietnam Phrase Buddy
-
-承接 Session 6 的 `KoreanPhraseBuddy`，把上次的 iOS app 初體驗改造成新的旅行工具。
-
-最小完成版：
-
-- 輸入一句日文旅行用語
-- 存成 phrase card
-- 顯示越南文欄位
-- 可以複製越南文
-- 不接 API key
-- 可以用 ChatGPT / Gemini 網頁版翻譯後貼回 App
-
-本堂不建議把 Gemini API 當主線。API key、quota、Info.plist、runtime mapping 對初學者太容易變成挫折。
-
-核心教學點：
-
-> App 要先變有用，再接 API。
 
 ---
 
 ## 建議 2 小時節奏
 
-先在心裡切成兩層：
+### 0:00-0:15 回顧與今天定位
 
-必做核心：
+目標：讓她知道今天不是 iOS 考試，而是 agentic tool-making 練習。
 
-```text
-開場大環境
--> 問她想法
--> 拆 MVP
--> 做一個最小修改
--> 跑起來 / 或產出一個可展示成果
--> 總結今天學到的工作流
-```
-
-選做拓展：
+可以問：
 
 ```text
-AI Creator Stack
-Firebase / Firestore
-Icon prompt
-Landing page
-社群貼文
+上次 KoreanStudyBuddy / Korean phrase app 裡，妳記得它可以做什麼嗎？
+如果它要變成妳自己的工具，妳最想改哪一點？
 ```
 
-### 0:00-0:15 回顧與開場
-
-- 問她記不記得上次做了什麼
-- 確認 Xcode / Antigravity / ChatGPT 或 Gemini 能不能打開
-- 說明今天的大環境：工具更強，但免費額度更不穩
-- 讓她知道工具爆掉也不是課程失敗
-
-### 0:15-0:35 想法訪談
-
-問：
+接著定義今天：
 
 ```text
-妳今天有沒有想做的東西？
-這個東西誰會用？
-第一版只要做到什麼就算成功？
-什麼功能今天先不要做？
+今天不是要學完整 iOS 架構。
+今天是練習：怎麼把一個小工具想清楚，請 AI agent 幫我們改，然後用畫面驗收。
 ```
 
-如果她有想法，就走她的想法。  
-如果沒有，就走 `Vietnam Phrase Buddy`。
+### 0:15-0:35 Product / User Review
 
-### 0:35-1:05 Agentic coding 小任務
+用 `KoreanStudyBuddy` 做 product review，而不是 code review。
 
-只做安全小步：
+看 app 時只問產品問題：
 
 ```text
-Task 1: Rename / Re-theme
-把 app 從 KoreanPhraseBuddy 改成 VietnamPhraseBuddy，只改可見文案。
-
-Task 2: Data field
-加入 Vietnamese translation 欄位，不接 API，只用 placeholder。
-
-Task 3: Utility
-加 copy button 或 delete button。
+這個工具現在是給誰用？
+使用者打開後第一件事會做什麼？
+現在最有用的功能是哪個？
+如果改成妳自己的版本，最小只改哪 1-2 個地方？
+今天先不要做什麼？
 ```
 
-每一步驗收：
-
-- App 還能 build / run
-- 畫面有改變
-- 沒有大重構
-- 知道改了哪些檔案
-
-### 1:05-1:20 Build / Debug / Commit
-
-教她這個節奏：
+把她放在 product owner / director 的位置：
 
 ```text
-能跑
--> git status
--> git add .
--> git commit -m "..."
--> 再改下一步
+妳不是在背程式。
+妳是在決定：這個工具要幫誰、幫什麼、先改哪一步。
 ```
 
-重點不是 Git 指令背熟，而是知道：
+### 0:35-1:25 Small AI-Agent Remix
 
-> 每個小成功都要保存，因為 AI 可能下一步改壞。
+只做一個小 remix，不要開新大坑。候選主題：
 
-### 1:20-1:45 AI Creator Stack（選做）
+1. **Fashion Phrase Buddy**
+   幫她整理穿搭、拍攝、購物時會用到的韓文 / 日文 / 英文短句。
 
-如果 coding 工具還活著，這段是拓展視野。  
-如果 agent 額度爆了，這段就是主線。
+2. **Creator Caption / Phrase Buddy**
+   幫 creator 準備影片 caption、貼文短句、留言回覆 phrase。
 
-帶她看 AI 工具地圖時只講五類，不要一次把所有工具名字灌給她：
+3. **Travel Korea Buddy v2**
+   沿用首爾旅行場景，把例句、分類、按鈕文字調得更像真實旅行工具。
+
+建議選最小任務：
 
 ```text
-想法工具：ChatGPT / Gemini，幫我整理想法
-Coding 工具：Antigravity / Codex，幫我改專案
-驗證工具：Xcode / Browser，確認真的能跑
-發布工具：GitHub / Firebase，讓作品被保存或看見
-創作工具：圖片 / 影片 / 音樂 AI，幫作品有外觀與內容
+Task 1: 改 title / subtitle / empty state
+Task 2: 換 3-5 個 example phrases
+Task 3: 新增一個 scene / category，例如 Cafe、Shopping、Content Shoot
 ```
 
-其他工具名字可以當「世界地圖」補充，不要求她一次吸收。
-
-### 1:45-2:00 包裝與發布概念
-
-幫今天的作品補上外在生命：
-
-- App name
-- 一句 slogan
-- icon prompt
-- landing page hero text
-- Firebase Hosting / Firestore 概念（只講概念，不強求實作）
-
-可以這樣講：
+每一步都要用同一個節奏：
 
 ```text
-做出來只是第一步。
-讓別人看得到、用得到、記得住，才會變成作品。
+說需求
+-> 請 AI agent 只改必要檔案
+-> Run / Simulator 看畫面
+-> 如果不對，描述 expected vs actual
+-> 成功就 git status / 保存
 ```
 
-### 最後 5 分鐘一定要收束
+### 1:25-1:45 Debugging Prompt Practice
+
+就算現場沒有真的壞，也要練一次「怎麼問 debug」。
+
+讓她看到 debug 不是：
+
+```text
+壞了，幫我重寫整個 app。
+```
+
+而是：
+
+```text
+這是錯誤訊息。
+我本來期待 A，現在看到 B。
+請找最小必要修改，不要重寫整個專案。
+```
+
+可以練三種情境：
+
+- Xcode build error
+- Simulator 畫面跟期待不同
+- AI 改了太多檔案，看不懂它動了什麼
+
+### 1:45-2:00 Wrap-up
+
+最後一定要回到方法，而不是只回顧功能。
 
 問她：
 
 ```text
-今天我們做了什麼？
-今天哪一步是 AI 做的？
-哪一步是人做決定的？
-如果工具額度用完，我們還有哪些方法？
-下一次如果妳自己想做一個東西，第一步應該先問什麼？
+今天哪一步是妳決定的？
+哪一步是 AI agent 做的？
+我們怎麼知道它做對了？
+如果它做錯，妳要怎麼描述問題？
+下一次妳想做自己的工具時，第一個 prompt 應該先問什麼？
 ```
 
-然後總結：
+收束成一句話：
 
 ```text
-今天學到的不是某個工具，而是：
-1. 先把想法講清楚
-2. 拆成最小版本
-3. 選工具
-4. 小步請 AI 修改
-5. 跑起來驗收
-6. 保存版本
-7. 最後包裝成作品
+今天學到的不是 iOS，而是：妳可以當工具的導演，讓 AI agent 幫妳把小工具一步一步做出來。
 ```
 
 ---
 
-## 第七堂的五條規矩
+## Sample Prompts
 
-### 1. 先定義作品，不要先開工具
+### 1. Minimal App Remix Prompt
 
 ```text
-我們今天要做什麼？
-誰會用？
-完成後長什麼樣？
+We are remixing this beginner SwiftUI app into a small personal tool.
+
+Goal:
+Change it from a Korean study buddy into [Fashion Phrase Buddy / Creator Caption Buddy / Travel Korea Buddy v2].
+
+Please make the smallest useful change:
+- Change the visible title and subtitle.
+- Replace the sample examples with 3-5 examples for this theme.
+- Add one simple scene/category if the app already has categories.
+
+Rules:
+- Do not rewrite the whole app.
+- Do not change the project structure.
+- Do not add API integration.
+- Keep the code beginner-friendly.
+- After editing, list exactly which files changed.
+- Explain how I can test the change in Xcode Simulator.
 ```
 
-### 2. 先做最小版，不要一開始做完整版
-
-`Vietnam Phrase Buddy` 的最小版是：
+### 2. Debugging Prompt
 
 ```text
-輸入 phrase
--> 顯示 phrase card
--> 有越南文欄位
--> 可以複製
+The app no longer works as expected.
+
+Error / problem:
+[paste the important Xcode error lines or describe the screen problem]
+
+Context:
+- This is a beginner SwiftUI app.
+- We only want the smallest necessary fix.
+- Do not rewrite the whole project.
+- Do not add new architecture.
+
+Please:
+1. Explain the likely cause in simple terms.
+2. Tell me which file needs to change.
+3. Fix only the minimum necessary part.
+4. List how to confirm the fix in Xcode Simulator.
 ```
 
-不是登入、雲端同步、自動翻譯、App Store 上架。
-
-### 3. 每次只叫 AI 做一小步
-
-不要：
+### 3. Expected vs Actual Mismatch Prompt
 
 ```text
-幫我做完整 app。
-```
+The app builds, but the result does not match what I expected.
 
-要：
+Expected:
+[describe what I wanted to see]
 
-```text
-Only modify ContentView.swift.
-Add a copy button next to the Vietnamese translation.
-Do not change the app structure.
-```
+Actual:
+[describe what I actually see in the Simulator]
 
-### 4. 每成功一次就保存
-
-```text
-能跑
--> commit
--> 再改下一步
-```
-
-### 5. 工具爆掉也要繼續前進
-
-```text
-Agent 額度爆 -> 網頁 LLM 回完整檔案
-網頁 LLM 爆 -> 產品設計 / Firebase / icon / prompt
-Xcode 爆 -> landing page / persona / creator stack
+Please:
+- Explain the difference in beginner-friendly terms.
+- Propose the smallest change to make the app match the expected behavior.
+- Do not rewrite unrelated parts.
+- If you need to edit code, say which file and why.
 ```
 
 ---
 
-## 課前檢查
+## Instructor Notes
 
-請她上課前確認：
+### Keep her as product owner / director
+
+每一個決定都先回到她：
 
 ```text
-1. Xcode 可以打開
-2. 上次的 iOS app project 還在
-3. Antigravity IDE 可以打開
-4. ChatGPT 或 Gemini 網頁版可以登入
-5. Codex 如果已經裝了就登入；沒裝也沒關係
-6. GitHub 可以登入
+妳想讓這個工具幫誰？
+這句話要更像旅行、穿搭、還是 creator？
+這個分類有用嗎？
+畫面現在像不像妳會真的打開用的工具？
 ```
 
-不建議這堂再叫她裝 Claude Code、Gemini CLI、Antigravity CLI、更多新工具。工具太多會讓她從「做作品」變成「我到底要開哪個東西」。
+AI agent 負責執行，但方向由她決定。
+
+### Avoid code-structure lecture
+
+如果她問 code，可以簡短回答。
+但不要主動展開：
+
+- MVVM
+- SwiftUI lifecycle
+- App architecture
+- dependency injection
+- complex state management
+
+更適合的說法：
+
+```text
+我們先不用背它。
+今天只要知道：這個檔案控制畫面文字，這個地方放範例資料。我們請 AI 小步修改，然後用 Simulator 確認。
+```
+
+### Use Simulator as the stage
+
+Zoom lesson 裡畫面回饋很重要。
+讓她一直看到：
+
+```text
+Prompt 改了什麼
+-> Simulator 畫面變了什麼
+-> 我們怎麼判斷對不對
+```
+
+不要讓課程停在 IDE 文字裡太久。
+
+### Teach constraints and validation
+
+今天最重要的 AI 使用能力是「限制」：
+
+```text
+Only modify visible text.
+Do not rewrite the whole app.
+Do not add API integration.
+After editing, tell me how to test.
+```
+
+以及「驗收」：
+
+```text
+Build 能不能過？
+Simulator 看到什麼？
+跟 expected 有沒有一樣？
+git diff 有沒有改到奇怪的地方？
+```
 
 ---
 
 ## 本堂不做
 
-為了避免現場被平台設定拖走，這堂先不要做：
+為了把注意力留給 agentic workflow，今天先不要做：
 
+- 不深入 iOS architecture
+- 不從零開一個全新大型專案
 - 不接真實 API key
 - 不處理 App Store 上架
-- 不強求真機安裝
-- 不新增 Claude / CLI 工具
-- 不做登入與雲端同步
-- 不深入 Firebase console 設定；Firebase / Firestore 今天只講概念，時間充足才示範
+- 不強求真機 signing
+- 不講太多新工具安裝
+- 不讓 AI 一次重寫整個 app
 
 ---
 
-## 本堂成功標準
+## 今日成功標準
 
-不是她懂 SwiftUI，也不是一定要完成完整 App。
+不是她懂 SwiftUI，也不是完成大型 App。
 
-成功標準是她能感覺到：
+成功是她能說出並做過一次：
 
-> 我可以把一個模糊想法講清楚，拆成小任務，選工具，指揮 AI，驗收結果，並把成果保存下來。
+```text
+我想改一個小工具
+-> 我把需求講清楚
+-> 我限制 AI agent 只改一小步
+-> 我跑起來看結果
+-> 不對時我能描述 expected vs actual
+-> 成功時我知道要保存版本
+```
 
-這就是第七堂開始要教的新能力：
+這就是 Session 7 的核心：
 
-> 用 AI 工具鏈，把想法變成作品的能力。
+> **AI Agentic Tool-Making：用 AI agent，把自己的需求變成可驗收的小工具。**
