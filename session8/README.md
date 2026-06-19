@@ -373,6 +373,8 @@ Success criteria:
 
 課程結束時，最好有三個東西：
 
+> 補充備課文件：我另外放了一份 Codex 版 repo feedback 與實作規劃在 [`douce-reverie-codex-feedback.md`](./douce-reverie-codex-feedback.md)，專門針對第七堂做出的 `DouceReverie` repo，規劃第八堂如果繼續擴充網站時最推薦的方向。
+
 ### 1. 一個新的網站頁面或區塊
 
 ```text
@@ -596,4 +598,3 @@ Session 9 或 10 可以再進：
 我不是只學 coding。
 我是在學怎麼把自己的內容、工具、流程，慢慢變成一套 AI 可以幫我運轉的系統。
 ```
-
