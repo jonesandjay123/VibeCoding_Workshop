@@ -40,6 +40,8 @@
 -> 發布後由人和 AI 一起驗證
 ```
 
+> 2026-06-19 課前轉向備註：如果因為社群平台風險，今天決定先不做 creator automation，可以改走「把 DouceReverie 正式部署到網路上」。Firebase Hosting + Spark 的操作手冊見 [`firebase-hosting-spark-guide.md`](./firebase-hosting-spark-guide.md)。
+
 ---
 
 ## 今日核心主題
