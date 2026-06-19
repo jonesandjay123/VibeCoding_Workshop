@@ -15,6 +15,7 @@ AIツールを活用したソフトウェア開発を学ぶVibe Codingワーク�
 | [Session 5](./session5/) | DailyPlanner機能改善＋復習 | TBD | 約3時間 |
 | [Session 6](./session6/) | KoreanPhraseBuddy：Codex + Xcode で iOS 旅行アプリ | 2026-05-08 | 約3時間 |
 | [Session 7](./session7/) | AI Agentic Tool-Making：用 AI Agent 做自己的工具 | 2026-05-29 | 約2時間 |
+| [Session 8](./session8/) | AI Creator Agent：把自媒體流程教給 Codex | 2026-06-19 | 約2時間 |
 
 ## プロジェクト構成
 
@@ -35,7 +36,7 @@ VibeCoding_Workshop/
     └── research/       # リサーチ資料
 ```
 
-最新の教材は `session7/` にあり、Session 6 の KoreanStudyBuddy を素材に、AI agent へ小さく依頼して自分用ツールへ remix する流れ、debug prompt、Simulator での検証、そして「卡住時先看這張」survival card を扱います。
+最新の教材は `session8/` にあり、Codex Record & Replay / reusable skill の概念を使って、創作者の投稿準備 workflow を AI agent に学ばせる流れを扱います。実作業としては `DouceReverie` に AI Creator Workflow / Content Hub を追加し、ツールが当日使えない場合も workflow checklist と fallback prompts で授業が成立するようにしています。
 
 ## 受講者情報
 
