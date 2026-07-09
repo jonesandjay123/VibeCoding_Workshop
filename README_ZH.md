@@ -16,6 +16,7 @@
 | [Session 6](./session6/) | KoreanPhraseBuddy：Codex + Xcode 做 iOS 旅行 App | 2026-05-08 | 約3小時 |
 | [Session 7](./session7/) | AI Agentic Tool-Making：用 AI Agent 做自己的工具 | 2026-05-29 | 約2小時 |
 | [Session 8](./session8/) | AI Creator Agent：把自媒體流程教給 Codex | 2026-06-19 | 約2小時 |
+| [Session 9](./session9/) | AI 對話、創作與思考蒸餾實驗室 | 2026-07-10 | 不滿3小時 |
 
 ## 專案結構
 
@@ -36,7 +37,7 @@ VibeCoding_Workshop/
     └── research/       # 研究資料
 ```
 
-最新教材在 `session8/`，重點是用 Codex Record & Replay / reusable skill 的概念，讓學生理解創作者可以把重複的自媒體準備流程教給 AI agent。實作上會回到 `DouceReverie`，新增 AI Creator Workflow / Content Hub；如果 Record & Replay 現場卡住，也能用 workflow checklist 與 fallback prompts 完成一堂完整的課。
+最新教材在 `session9/`，把 GPT Voice Live 對話、Spark Distiller 對話蒸餾，以及可選的圖像／短片生成放進同一個工作流，讓學生理解人如何與 AI 一起思考與驗收。網站開發不是本堂的必要成果。
 
 ## 學生背景
 
