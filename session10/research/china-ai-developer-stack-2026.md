@@ -1,7 +1,7 @@
 # China AI Developer Stack 2026：Azunyan 在廈門可長期使用的工作流研究
 
 > **研究日期：2026-08-26（America/New_York）**  
-> **適用情境：** 已有 Web / React / Git / terminal / AI-agent 經驗的非資工大二學生；macOS；剛搬到廈門。  
+> **適用情境：** 已有 Web / React / Git / terminal / AI-agent 經驗、即將升大四的非資工學生；macOS；剛搬到廈門。
 > **結論的使用方式：** 網路政策、產品配額、登入與付款規則會變。本文把「官方支援」與「社群實測」分開；上課當天仍要以她自己的網路、帳號與校園 Wi-Fi 做 15 分鐘驗證，不能把任何 VPN 路線當作保證或課程前提。
 
 ## 1. Executive Summary
@@ -77,8 +77,8 @@ VS Code 或 TRAE / Lingma IDE
 
 | 工具 | Agentic 能力（以官方資料） | macOS / IDE / Git | 帳號與成本的實務預期 | 適合的角色 |
 | --- | --- | --- | --- | --- |
-| **通義靈碼 / Lingma IDE** | 官方列「工程自動感知、文件編輯、終端命令、問題排查」與 coding agent；個人免費 [S13] | IDE 與主流 IDE integration 需於當日確認；以 Git repo 開啟即可驗證 | 通常需要阿里帳號與中國手機驗證；付費/企業功能另計 | **No-VPN 第一個 agent 測試者** |
-| **TRAE** | 官方定位為 TraeCode AI coding engineer；社群與產品頁主打 IDE/agent workflow [S14] | 有 macOS 版；同 repo、terminal、diff 必須實測 | 中國版註冊多半以手機/帳號流程為主；免費政策可能有配額/排隊 | 對 Antigravity 使用者最像「下載一個 AI IDE 就開始」的低遷移候選 |
+| **Qoder CN（原通義靈碼 / Lingma）** | 官方列工程感知、文件編輯、終端命令、問題排查與 coding agent [S13] | IDE 與主流 IDE integration 需於當日確認；以 Git repo 開啟即可驗證 | 2026-05-20 結束個人 Pro 限免；免費體驗為兩週與 300 Credits，之後能力有限 | 能力合格，但目前不再是免費額度優先候選 |
+| **TRAE 中國版** | 官方定位為 AI coding engineer；IDE / SOLO 可讀 repo、改檔、跑 terminal、review diff [S14] | 有 macOS 版；VS Code 系介面對 Antigravity 使用者遷移摩擦較低 | 2026-07-31 起採點數制；新戶 4,000 點，另有每月通用點與 TRAE Work 每日簽到點 | **No-VPN 第一個 agent 測試者** |
 | **CodeBuddy（騰訊）** | 中國本地 code assistant/IDE agent 產品；以其目前官方版本的 agent/IDE 說明為準 [S15] | macOS/VS Code family integration 要用她的電腦驗證 | 可能偏向 QQ/微信/騰訊雲帳號與中國手機；學生版與雲資源不要假定免費 | 與 Lingma 並列的備選，而非預設多裝一堆 |
 | **Qwen Code + Qwen3-Coder** | 開源 terminal coding agent；GitHub 說明為「lives in your terminal」，Apache-2.0 [S12] | 最接近 Codex/Claude Code 的 terminal mental model；可連 compatible API 或可用模型端點 | CLI 免費不代表模型 inference 免費；需要 Node、API key/帳戶或合適的本地/雲端模型 | **想保留 international developer ecosystem 手感的第二階段選項** |
 | **Kimi code model / API** | 官方文件列 Kimi K2.7 Code：256K context、文字/圖像/影片輸入；K3 支援 Claude Code agent 場景與 1M context [S11] | 主要是 model/API 層，可配合 compatible client/agent | API 付費是 token-based；註冊與實名規則以當日平台為準 | 長 context / repo reasoning 的模型備用，非零設定新手 IDE |
@@ -149,7 +149,7 @@ Version safety：能否在 commit 前讓人看 diff、撤銷錯改？
 ```text
 Idea / research       DeepSeek、Kimi 或 Qwen Chat（任選一個 daily chat + 一個 backup）
 AI discussion         同上；把需求整理成 acceptance criteria
-Coding agent          先在 Lingma IDE 與 TRAE 做同題試跑，選一個 primary；另一個 backup
+Coding agent          先測 TRAE 中國版；只有登入或實測失敗才改測 Qoder CN
 Editor / local run    VS Code 或選中的 IDE + Node.js + terminal
 Version control       Git 本機 commit；GitHub push 可用時同步
 Deploy                localhost 驗收 → 國內可註冊的靜態託管 fallback；GitHub Pages 作額外國際展示
@@ -159,8 +159,8 @@ Deploy                localhost 驗收 → 國內可註冊的靜態託管 fallba
 
 1. 確認 Node、Git、VS Code 與現有 repo 都在；`npm install` / `npm run dev` 能跑。
 2. 註冊一個 general AI（建議從她介面最願意用的 DeepSeek/Kimi/Qwen 開始），用它讀 repo README 並寫出一個小任務規格。
-3. 安裝 Lingma 或 TRAE，完成一次 1–3 檔的小 diff、畫面驗收、`git diff`、commit。
-4. 再裝第二個 agent，用同一任務但不重做產品；它只作 fallback evidence。
+3. 安裝 TRAE 中國版，完成一次 1–3 檔的小 diff、畫面驗收、`git diff`、commit。
+4. 只有 TRAE 登入或實測失敗時才裝 Qoder CN；不要為了比較而同時安裝。
 5. 建一個 `WORKFLOW.md`（日後可再教）記錄：primary、backup、登入方式、常用 run command、deploy URL、不能交給 agent 的資料。
 
 ### Stack B — International Hybrid Stack
