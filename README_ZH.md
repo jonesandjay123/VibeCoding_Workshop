@@ -17,6 +17,7 @@
 | [Session 7](./session7/) | AI Agentic Tool-Making：用 AI Agent 做自己的工具 | 2026-05-29 | 約2小時 |
 | [Session 8](./session8/) | AI Creator Agent：把自媒體流程教給 Codex | 2026-06-19 | 約2小時 |
 | [Session 9](./session9/) | AI 對話、創作與思考蒸餾實驗室 | 2026-07-10 | 不滿3小時 |
+| [Session 10](./session10/) | AI 輔助人脈記憶庫：外部 LLM Payload + Web App | 2026-08-28 | 約2小時 |
 
 ## 專案結構
 
@@ -37,7 +38,7 @@ VibeCoding_Workshop/
     └── research/       # 研究資料
 ```
 
-最新教材在 `session9/`，把 GPT Voice Live 對話、Spark Distiller 對話蒸餾，以及可選的圖像／短片生成放進同一個工作流，讓學生理解人如何與 AI 一起思考與驗收。網站開發不是本堂的必要成果。
+最新教材在 `session10/`。本堂先用短時間驗證 Antigravity 與中國境內可用的 Agentic IDE，再把主要時間投入一個真實的人脈維護 Web App：由任何外部 LLM 將自然語言整理成固定 payload，App 負責驗證、預覽、人工修正與本機保存，不內建或綁定特定 LLM API。
 
 ## 學生背景
 

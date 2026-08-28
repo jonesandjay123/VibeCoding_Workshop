@@ -1,5 +1,7 @@
 # China AI Developer Stack 2026：Azunyan 在廈門可長期使用的工作流研究
 
+> **文件狀態：背景研究，不是 Session 10 現行教案。** 目前課堂方向已改為「IDE 可用性測試作暖身，主課建立 model-agnostic 的人脈維護 Web App」。請以 [`../README.md`](../README.md) 與 [`../live-runbook.md`](../live-runbook.md) 為準；本文保留作工具選擇、區域風險與長期工作流參考。
+
 > **研究日期：2026-08-26（America/New_York）**  
 > **適用情境：** 已有 Web / React / Git / terminal / AI-agent 經驗、即將升大四的非資工學生；macOS；剛搬到廈門。
 > **結論的使用方式：** 網路政策、產品配額、登入與付款規則會變。本文把「官方支援」與「社群實測」分開；上課當天仍要以她自己的網路、帳號與校園 Wi-Fi 做 15 分鐘驗證，不能把任何 VPN 路線當作保證或課程前提。

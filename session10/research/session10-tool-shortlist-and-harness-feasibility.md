@@ -1,5 +1,7 @@
 # Session 10 工具短名單與 DeepSeek Harness 可行性報告
 
+> **文件狀態：背景研究，原先的課程候選方向已被取代。** DeepSeek Harness 不再是 Session 10 核心；現行教案以「IDE 暖身＋外部 LLM payload＋人脈維護 Web App」為主。請以 [`../README.md`](../README.md)、[`../live-runbook.md`](../live-runbook.md) 與 [`../payload-contract.md`](../payload-contract.md) 為準。
+
 > **研究與查閱日期：2026-08-26（America/New_York）**
 > **預計上課：2026-08-28（週五）**
 > **學生情境：** Azunyan，即將升大四的非資工學生、macOS、目前在廈門；已使用 Antigravity + Gemini，具備 Git、Terminal、Web / React、iOS、AI agent 小步修改與驗收經驗。
