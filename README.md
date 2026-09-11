@@ -18,6 +18,7 @@ AIツールを活用したソフトウェア開発を学ぶVibe Codingワーク�
 | [Session 8](./session8/) | AI Creator Agent：把自媒體流程教給 Codex | 2026-06-19 | 約2時間 |
 | [Session 9](./session9/) | AI対話・創作・思考蒸留ラボ | 2026-07-10 | 3時間未満 |
 | [Session 10](./session10/) | AI支援の人脈メモリー：外部LLM Payload＋Web App | 2026-08-28 | 約2時間 |
+| [Session 11](./session11/) | クラウドへ公開：Cloudflare Pages 自動デプロイ＋Workers AI | 2026-09-11 | 約2時間 |
 
 ## プロジェクト構成
 
@@ -38,7 +39,7 @@ VibeCoding_Workshop/
     └── research/       # リサーチ資料
 ```
 
-最新の教材は `session10/` にあります。最初に Antigravity と中国国内で利用できる Agentic IDE を短時間で確認し、授業の中心では実際に使える人脈管理 Web App を作ります。任意の外部 LLM が自然言語を固定 payload に整理し、App 側が検証・プレビュー・人による修正・ローカル保存を担当するため、特定の LLM API には依存しません。
+最新の教材は `session11/` にあります。Session 10 で作成した「SocialPulse」をローカル環境からクラウド（Cloudflare Pages）へ自動デプロイし、スマートフォンから実際に操作できるWebアプリとして公開します。さらに時間がある場合は Cloudflare Workers AI の無料枠を活用した構造化自然言語整理機能を段階的に導入します。
 
 ## 受講者情報
 

@@ -18,6 +18,7 @@
 | [Session 8](./session8/) | AI Creator Agent：把自媒體流程教給 Codex | 2026-06-19 | 約2小時 |
 | [Session 9](./session9/) | AI 對話、創作與思考蒸餾實驗室 | 2026-07-10 | 不滿3小時 |
 | [Session 10](./session10/) | AI 輔助人脈記憶庫：外部 LLM Payload + Web App | 2026-08-28 | 約2小時 |
+| [Session 11](./session11/) | 走向雲端：Cloudflare Pages 自動部署 ＋ Workers AI 邊緣智慧 | 2026-09-11 | 約2小時 |
 
 ## 專案結構
 
@@ -38,7 +39,7 @@ VibeCoding_Workshop/
     └── research/       # 研究資料
 ```
 
-最新教材在 `session10/`。本堂先用短時間驗證 Antigravity 與中國境內可用的 Agentic IDE，再把主要時間投入一個真實的人脈維護 Web App：由任何外部 LLM 將自然語言整理成固定 payload，App 負責驗證、預覽、人工修正與本機保存，不內建或綁定特定 LLM API。
+最新教材在 `session11/`。接續 Session 10 的「SocialPulse 人脈記憶庫」，本堂帶領學生將本機專案透過 GitHub 綁定 Cloudflare Pages 自動構建發布至公網，達成手機隨時隨地開啟與操作的里程碑，並實測廈門連線環境；在時間允許下，進一步探索 Cloudflare 內建的 Workers AI 邊緣結構化自然語言整理。
 
 ## 學生背景
 
