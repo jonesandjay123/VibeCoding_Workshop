@@ -19,6 +19,7 @@
 | [Session 9](./session9/) | AI 對話、創作與思考蒸餾實驗室 | 2026-07-10 | 不滿3小時 |
 | [Session 10](./session10/) | AI 輔助人脈記憶庫：外部 LLM Payload + Web App | 2026-08-28 | 約2小時 |
 | [Session 11](./session11/) | 走向雲端：Cloudflare Pages 自動部署 ＋ Workers AI 邊緣智慧 | 2026-09-11 | 約2小時 |
+| [Session 12](./session12/) | 數據可視化 × Vibe Coding：用 Python 畫圖、用腦驗算 | 2026-09-25 | 約2小時 |
 
 ## 專案結構
 
@@ -39,7 +40,7 @@ VibeCoding_Workshop/
     └── research/       # 研究資料
 ```
 
-最新教材在 `session11/`。接續 Session 10 的「SocialPulse 人脈記憶庫」，本堂帶領學生將本機專案透過 GitHub 綁定 Cloudflare Pages 自動構建發布至公網，達成手機隨時隨地開啟與操作的里程碑，並實測廈門連線環境；在時間允許下，進一步探索 Cloudflare 內建的 Workers AI 邊緣結構化自然語言整理。
+最新教材在 `session12/`。呼應廈門大學《數據可視化》第四章「Python 可視化庫」的課堂進度，拿 orders.txt 的三道課堂練習題，用 Vibe Coding 的方式（學生講需求 → AI Agent 寫代碼 → 人工驗算迭代）當場做完；同時重建中國境內可用的 AI 工具鏈、處理 matplotlib 中文亂碼經典坑，並建立選圖心智模型。
 
 ## 學生背景
 
