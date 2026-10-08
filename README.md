@@ -20,6 +20,7 @@ AIツールを活用したソフトウェア開発を学ぶVibe Codingワーク�
 | [Session 10](./session10/) | AI支援の人脈メモリー：外部LLM Payload＋Web App | 2026-08-28 | 約2時間 |
 | [Session 11](./session11/) | クラウドへ公開：Cloudflare Pages 自動デプロイ＋Workers AI | 2026-09-11 | 約2時間 |
 | [Session 12](./session12/) | データ可視化×Vibe Coding：Pythonで描き、検証する | 2026-09-25 | 約2時間 |
+| [Session 13](./session13/) | Pandasのメンタルモデル×Codex：Jupyterをデータ実験室に | 2026-10-09 | 約2時間 |
 
 ## プロジェクト構成
 
@@ -40,7 +41,7 @@ VibeCoding_Workshop/
     └── research/       # リサーチ資料
 ```
 
-最新の教材は `session12/` にあります。廈門大学《データ可視化》第4章「Python可視化ライブラリ」の授業進度に合わせ、orders.txt の課題3題を Vibe Coding 流（学生が要件を言語化 → AI Agent がコード生成 → 人間が検証・反復）で解き切ります。中国国内で使える AI ツールチェーンの再構築、matplotlib 中文文字化けの定番トラブル対応、図表選択のメンタルモデルまでを2時間に収めます。
+最新の教材は `session13/` にあります。学生が「Jupyter と Pandas がよく分からない」とフィードバックしたことを受け、API暗記ではなくメンタルモデルを構築する回：Jupyter の notebook / cell / kernel と三大トラブル、Pandas の「表思考」（スプレッドシート思考）と6つの操作（読む・見る・選ぶ・絞る・集計・描く）。学生が復活した Codex を使って課題を解いた成功体験を出発点に、彼女自身が15分間「先生役」でデモを行い、その後は彼女が指揮・Codexが実行の実践へ。中国国内で使えるツールチェーン維持、フォールバック手順付き。
 
 ## 受講者情報
 

@@ -20,6 +20,7 @@
 | [Session 10](./session10/) | AI 輔助人脈記憶庫：外部 LLM Payload + Web App | 2026-08-28 | 約2小時 |
 | [Session 11](./session11/) | 走向雲端：Cloudflare Pages 自動部署 ＋ Workers AI 邊緣智慧 | 2026-09-11 | 約2小時 |
 | [Session 12](./session12/) | 數據可視化 × Vibe Coding：用 Python 畫圖、用腦驗算 | 2026-09-25 | 約2小時 |
+| [Session 13](./session13/) | Pandas 心智模型 × Codex：把 Jupyter 變成數據實驗室 | 2026-10-09 | 約2小時 |
 
 ## 專案結構
 
@@ -40,7 +41,7 @@ VibeCoding_Workshop/
     └── research/       # 研究資料
 ```
 
-最新教材在 `session12/`。呼應廈門大學《數據可視化》第四章「Python 可視化庫」的課堂進度，拿 orders.txt 的三道課堂練習題，用 Vibe Coding 的方式（學生講需求 → AI Agent 寫代碼 → 人工驗算迭代）當場做完；同時重建中國境內可用的 AI 工具鏈、處理 matplotlib 中文亂碼經典坑，並建立選圖心智模型。
+最新教材在 `session13/`。回應學生「Jupyter 和 Pandas 沒有弄明白」的反饋：不背 API，只建心智模型——Jupyter 的 notebook / cell / kernel 三概念＋三大坑，Pandas 的「表格思維」＋六個動作（讀、看、選、篩、分組、畫）。以她用剛找回來的 Codex 獨立完成可視化作業的成功體驗為起點，開場由她當 15 分鐘小老師展示，之後進入「她指揮、Codex 執行」的實戰；主工具升級為 Codex，保留 Session 12 工具鏈作為退路。
 
 ## 學生背景
 
