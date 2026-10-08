@@ -41,7 +41,7 @@ VibeCoding_Workshop/
     └── research/       # 研究資料
 ```
 
-最新教材在 `session13/`。回應學生「Jupyter 和 Pandas 沒有弄明白」的反饋：不背 API，只建心智模型——Jupyter 的 notebook / cell / kernel 三概念＋三大坑，Pandas 的「表格思維」＋六個動作（讀、看、選、篩、分組、畫）。以她用剛找回來的 Codex 獨立完成可視化作業的成功體驗為起點，開場由她當 15 分鐘小老師展示，之後進入「她指揮、Codex 執行」的實戰；主工具升級為 Codex，保留 Session 12 工具鏈作為退路。
+最新教材在 [`session13/`](./session13/)。回應「Jupyter 和 Pandas 沒有弄明白」：保留 15 分鐘學生展示，接著做 kernel 狀態實驗和 Pandas 六動作（讀、看、選、篩、分組、畫）。120 分鐘包含休息、故障緩衝、手算及乾淨重跑；附可執行 notebook、合成資料字典與教師答案。Codex 優先，已有可用工具或本地 notebook 作備援；學生要預測、親手改題、驗證，再輸出圖表。
 
 ## 學生背景
 
