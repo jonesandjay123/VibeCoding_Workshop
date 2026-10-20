@@ -12,18 +12,18 @@
 
 | 你的主要需求 | Dori 建议先试 | 为什么 |
 | --- | --- | --- |
-| 最快得到一份有设计感的初稿，不想处理环境 | Gamma | 网页操作，生成后调整，再导出 PPTX |
-| 已经在用 Claude，只是偶尔做一份报告 | Claude 网页版内置 PowerPoint 功能 | 先试现有能力，不必先安装 GitHub 项目 |
-| 已经使用 Claude Code／Codex，希望读文件、套模板、反复修改 PPTX | PPT Master | 为具备文件和命令执行能力的 Agent 准备的工作流 |
-| 主要使用 Antigravity，想留在 IDE 里完成 | Antigravity＋PPT Master | 架构上可行，值得先做小规模验证；不是已经实测成功 |
-| 主要使用 Gemini，只想尽快完成一份简报 | Gemini Apps Canvas → Google Slides → PPTX | 不需要 GitHub 或 IDE 配置 |
-| 经常做简报，希望有自己的图形界面和自动化服务 | Presenton | 有编辑界面、模板与 API／MCP，但配置和维护更多 |
+| 最快得到一份有设计感的初稿，不想处理环境 | [Gamma](https://gamma.app/) | 网页操作，生成后调整，再导出 PPTX |
+| 已经在用 [Claude](https://support.claude.com/en/articles/12512180-use-skills-in-claude)，只是偶尔做一份报告 | [Claude 网页版内置 PowerPoint 功能](https://support.claude.com/en/articles/12512180-use-skills-in-claude) | 先试现有能力，不必先安装 GitHub 项目 |
+| 已经使用 [Claude Code](https://code.claude.com/docs/en/overview)／[Codex](https://learn.chatgpt.com/docs/build-skills)，希望读文件、套模板、反复修改 PPTX | [PPT Master](https://github.com/hugohe3/ppt-master) | 为具备文件和命令执行能力的 Agent 准备的工作流 |
+| 主要使用 [Antigravity](https://antigravity.google/docs/skills?app=antigravity-ide)，想留在 IDE 里完成 | [Antigravity](https://antigravity.google/docs/skills?app=antigravity-ide)＋[PPT Master](https://github.com/hugohe3/ppt-master) | 架构上可行，值得先做小规模验证；不是已经实测成功 |
+| 主要使用 [Gemini](https://support.google.com/gemini/answer/16047321?hl=en)，只想尽快完成一份简报 | [Gemini Apps Canvas](https://support.google.com/gemini/answer/16047321?hl=en) → [Google Slides](https://support.microsoft.com/en-gb/office/quick-tips-create-and-open-a-powerpoint-presentation-9401a8fb-a164-4d9f-97d5-9d72c1deb1a0) → PPTX | 不需要 GitHub 或 IDE 配置 |
+| 经常做简报，希望有自己的图形界面和自动化服务 | [Presenton](https://github.com/presenton/presenton) | 有编辑界面、模板与 API／MCP，但配置和维护更多 |
 
 **最重要的选择标准不是 stars，而是：内容是否正确、修改是否方便、最终交付格式是否符合需求。**
 
 ## 二、四个主要候选
 
-### 1. PPT Master：优先尝试的 Agent 工作流
+### 1. [PPT Master](https://github.com/hugohe3/ppt-master)：优先尝试的 Agent 工作流
 
 - 项目：[hugohe3/ppt-master](https://github.com/hugohe3/ppt-master)
 - 本次查阅页面约 **6.4 万 stars**，只是当时的近似热度，不代表质量保证。
@@ -33,7 +33,7 @@
 
 适合已经习惯“把材料交给 Agent，让它完成一件事”的人。第一次先验证 5 页，不要把“支持可编辑 PPTX”理解成每种复杂效果都能完美保留。
 
-### 2. Gamma：不想折腾时的省事路线
+### 2. [Gamma](https://gamma.app/)：不想折腾时的省事路线
 
 - 产品：[Gamma](https://gamma.app/)
 - 输入主题或材料，生成后在网页中调整，支持导出 PPTX。
@@ -44,7 +44,7 @@
 
 来源：[Gamma 官方导出说明](https://help.gamma.app/en/articles/8022861-what-s-the-easiest-way-to-export-my-gamma)。
 
-### 3. Claude 内置功能／官方 PPTX skill：先利用已有能力
+### 3. [Claude 内置功能](https://support.claude.com/en/articles/12512180-use-skills-in-claude)／[官方 PPTX skill](https://github.com/anthropics/skills/tree/main/skills/pptx)：先利用已有能力
 
 - Claude 网页版开启“代码执行与文件创建”后，可以按任务使用内置 PowerPoint 功能。
 - Anthropic 另公开了 [PPTX skill](https://github.com/anthropics/skills/tree/main/skills/pptx)，用于创建、读取和修改简报。
@@ -54,7 +54,7 @@
 
 来源：[Claude 官方 Skills 说明](https://support.claude.com/en/articles/12512180-use-skills-in-claude)。
 
-### 4. Presenton：更像完整的 AI 简报软件
+### 4. [Presenton](https://github.com/presenton/presenton)：更像完整的 AI 简报软件
 
 - 项目：[presenton/presenton](https://github.com/presenton/presenton)
 - 提供图形界面、模板、拖曳修改和可编辑 PPTX 导出。
@@ -68,15 +68,15 @@
 
 ## 三、主要使用 Antigravity IDE，该怎么选？
 
-### 推荐起点：Antigravity＋PPT Master
+### 推荐起点：[Antigravity](https://antigravity.google/docs/skills?app=antigravity-ide)＋[PPT Master](https://github.com/hugohe3/ppt-master)
 
 不需要为了做 PPT 换成 Claude Code，也不必额外找 Claude 模型来操作。
 
 可以把它理解为三层：
 
 1. **Gemini 等模型**：理解材料、组织内容、决定如何修改。
-2. **Antigravity Agent**：读取工作区、执行获准的命令、调用工具。
-3. **PPT Master**：提供简报工作流与导出工具，生成 PPTX 文件。
+2. **[Antigravity Agent](https://antigravity.google/docs/skills?app=antigravity-ide)**：读取工作区、执行获准的命令、调用工具。
+3. **[PPT Master](https://github.com/hugohe3/ppt-master)**：提供简报工作流与导出工具，生成 PPTX 文件。
 
 这条路线不是必须打开 PowerPoint 窗口并模拟鼠标操作。
 
@@ -97,9 +97,9 @@
 
 ### 其他候选如何结合？
 
-- **Presenton**：可以评估通过 MCP／API 调用，前提是使用提供这些接口的部署版本，并完成必要的连接与认证。它比直接使用 PPT Master 多一层服务，暂不作为最简单起点。
-- **Anthropic PPTX skill**：可评估移植到支持 Skills 的 Antigravity，但需检查脚本路径、依赖和预装假设。支持相同 skill 格式，不保证所有环境假设都兼容。
-- **Gamma**：本次没有验证 Antigravity 专用接入。需要快速制作时，直接使用其网页通常更简单，不把浏览器自动化作为默认路线。
+- **[Presenton](https://github.com/presenton/presenton)**：可以评估通过 MCP／API 调用，前提是使用提供这些接口的部署版本，并完成必要的连接与认证。它比直接使用 PPT Master 多一层服务，暂不作为最简单起点。
+- **[Anthropic PPTX skill](https://github.com/anthropics/skills/tree/main/skills/pptx)**：可评估移植到支持 Skills 的 Antigravity，但需检查脚本路径、依赖和预装假设。支持相同 skill 格式，不保证所有环境假设都兼容。
+- **[Gamma](https://gamma.app/)**：本次没有验证 Antigravity 专用接入。需要快速制作时，直接使用其网页通常更简单，不把浏览器自动化作为默认路线。
 
 ## 四、Gemini 4 能不能直接做 PPT？
 
@@ -115,10 +115,10 @@ Google 已发布 Gemini 4 Argon；Gemini Apps 的 Canvas 官方文档也明确�
 
 对普通 Gemini Apps，本文推荐的路径是：
 
-1. 在 Gemini 网页版打开 Canvas。
+1. 在 Gemini 网页版打开 [Canvas](https://support.google.com/gemini/answer/16047321?hl=en)。
 2. 提供主题或材料，明确要求制作简报。
 3. 生成后选择 **Export to Slides**。
-4. 在 Google Slides 中选择 **文件 → 下载 → Microsoft PowerPoint（.pptx）**。
+4. 在 [Google Slides](https://support.microsoft.com/en-gb/office/quick-tips-create-and-open-a-powerpoint-presentation-9401a8fb-a164-4d9f-97d5-9d72c1deb1a0) 中选择 **文件 → 下载 → Microsoft PowerPoint（.pptx）**。
 5. 打开下载的文件，检查字体、布局和可编辑性。
 
 这不是承诺每一页、每一个图形都能无损转换，也不是声称普通 Canvas 已有直接下载 PPTX 的同名按钮。它与 Antigravity 内执行简报脚本是两条不同路线。
@@ -129,9 +129,9 @@ Google 已发布 Gemini 4 Argon；Gemini Apps 的 Canvas 官方文档也明确�
 
 ### 测试组合
 
-- 已有 Claude：比较 **Claude 网页版直接生成** 与 **Claude Code＋PPT Master**。
-- 主要使用 Antigravity：比较 **Gemini Canvas** 与 **Antigravity＋PPT Master**。
-- 不想配置环境：先看 **Gamma**，不必一次试完所有工具。
+- 已有 Claude：比较 **[Claude 网页版直接生成](https://support.claude.com/en/articles/12512180-use-skills-in-claude)** 与 **[Claude Code](https://code.claude.com/docs/en/overview)＋[PPT Master](https://github.com/hugohe3/ppt-master)**。
+- 主要使用 Antigravity：比较 **[Gemini Canvas](https://support.google.com/gemini/answer/16047321?hl=en)** 与 **[Antigravity](https://antigravity.google/docs/skills?app=antigravity-ide)＋[PPT Master](https://github.com/hugohe3/ppt-master)**。
+- 不想配置环境：先看 **[Gamma](https://gamma.app/)**，不必一次试完所有工具。
 
 给两条路线相同的材料、页数、语言、受众和时间限制，避免拿不同任务比较效果。
 
@@ -154,8 +154,8 @@ Google 已发布 Gemini 4 Argon；Gemini Apps 的 Canvas 官方文档也明确�
 
 对主要使用 Antigravity 的人：
 
-- 想今天就完成：先试 Gemini Canvas。
-- 想留在 IDE，读取多份材料、套模板、反复修改 PPTX：先验证 PPT Master。
-- 暂时不为这个需求另架 Presenton 服务，也不因为一个工具较热门就更换熟悉的 IDE。
+- 想今天就完成：先试 [Gemini Canvas](https://support.google.com/gemini/answer/16047321?hl=en)。
+- 想留在 IDE，读取多份材料、套模板、反复修改 PPTX：先验证 [PPT Master](https://github.com/hugohe3/ppt-master)。
+- 暂时不为这个需求另架 [Presenton](https://github.com/presenton/presenton) 服务，也不因为一个工具较热门就更换熟悉的 IDE。
 
 本文只完成资料整理与选型建议，未安装软件、连接账户、执行生成或作出质量验收。下一步应由一份小型真实材料测试来决定，而不是继续增加候选清单。
